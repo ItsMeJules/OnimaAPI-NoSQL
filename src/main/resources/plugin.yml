@@ -1,0 +1,176 @@
+name: OnimaAPI
+author: Jestiz
+main: net.onima.onimaapi.OnimaAPI
+version: 1.0
+description: API
+
+commands:
+  oniwand:
+    aliases: [owand, ow]
+    description: Donne la wand pour les zones etc.
+    permission: onimaapi.wand.command
+  rank:
+    aliases: ranks
+    description: Gère les rangs.
+    permission: onimaapi.rank.command
+  menu:
+    description: Ouvre un menu.
+    permission: onimaapi.menu.command
+  mod:
+    description: Met en mod mode.
+    permission: onimaapi.mod.command
+  chat:
+    description: Gère le chat.
+    permission: onimaapi.chat.command
+  mountain:
+    description: Gère les montagnes.
+    permission: onimaapi.mountain.command
+  region:
+    description: Gère les régions.
+    permission: onimaapi.region.command
+  cooldown:
+    description: Gère les cooldowns.
+    permission: onimaapi.cooldown.command
+  message:
+    aliases: [pm, m, msg, w, whisper, tell]
+    description: Envoie un message privé à un joueur.
+    permission: onimaapi.message.command
+  socialspy:
+    aliases: [sspy, scp, sp]
+    description: Espionne les messages privés des joueurs.
+    permission: onimaapi.socialspy.command
+  reply:
+    aliases: [r, respond]
+    description: Permet de répondre à un message privé.
+    permission: onimaapi.reply.command
+  crate:
+    description: Gère les crates.
+    permission: onimaapi.crate.command
+  virtualkeys:
+    description: Gère vos clefs virtuelles.
+    permission: onimaapi.virtualkeys.command
+  condense:
+    description: Stack tous les items de l'inventaire.
+    permission: onimaapi.condense.command
+  freeze:
+    description: Freeze un joueur.
+    permission: onimaapi.freeze.command
+  spawner:
+    description: Donne un spawner.
+    permission: onimaapi.spawner.command
+  crowbar:
+    description: Give une crowbar.
+    permission: onimaapi.crowbar.command
+  lag:
+    description: Affiche des informations sur le serveur.
+    permission: onimaapi.lag.command
+  invsee:
+    description: Inspecte l'inventaire d'un joueur.
+    permission: onimaapi.invsee.command
+  restore:
+    description: Affiche toutes les morts d'un joueur.
+    permission: onimaapi.restore.command
+  invrestored:
+    description: Affiche tous les inventaires en attente.
+    permission: onimaapi.invrestored.command
+  coords:
+    description: Affiche des coordonées importantes.
+    permission: onimaapi.coords.command
+  vanish:
+    description: Vous met en vanish.
+    aliases: [v]
+    permission: onimaapi.vanish.command
+  balance:
+    description: Gère l'argent.
+    permission: onimaapi.balance.command
+  pay:
+    description: Paye un joueur.
+    permission: onimaapi.balance.pay.argument
+  whois:
+    description: Donne des informations sur le joueur.
+    permission: onimaapi.whois.command
+  craft:
+    description: Ouvre une table de craft.
+    permission: onimaapi.craft.command
+  rename:
+    description: Renomme un item.
+    permission: onimaapi.rename.command
+  relore:
+    description: Change le lore d'un item.
+    permission: onimaapi.relore.command
+  enchant:
+    description: Enchante un item.
+    permission: onimaapi.enchant.command
+  worldchanger:
+    description: Gère la téléportation entre mondes.
+    permission: onimaapi.worldchanger.command
+  world:
+    description: Permet de changer de monde.
+    permission: onimaapi.world.command
+  fly:
+    description: Active/désactive le fly.
+    permission: onimaapi.fly.command
+  supplycrate:
+    description: Gère les supply crates.
+    permission: onimaapi.supplycrate.command
+  ban:
+    description: Bannis un joueur.
+    permission: onimaapi.ban.command
+  blacklist:
+    description: Blacklist un joueur.
+    permission: onimaapi.blacklist.command
+  kick:
+    description: Kick un joueur.
+    permission: onimaapi.kick.command
+  mute:
+    description: Mute un joueur.
+    permission: onimaapi.mute.command
+  tempban:
+    description: Bannis temporairement un joueur.
+    permission: onimaapi.tempban.command
+  warn:
+    description: Warn un joueur.
+    permission: onimaapi.warn.command
+  warp:
+    description: Gère les warps.
+    permission: onimaapi.warp.command
+  top:
+    description: Téléporte à la location la plus haute.
+    permission: onimaapi.top.command
+  punishment:
+    description: Permet de gérer/voir les/ses punitions.
+    permission: onimaapi.punishment.command
+  unban:
+    description: Permet de débannir un joueur.
+    permission: onimaapi.unban.command
+  unblacklist:
+    description: Permet de déblacklist un joueur.
+    permission: onimaapi.unblacklist.command
+  unmute:
+    description: Permet de démute un joueur.
+    permission: onimaapi.unmute.command
+  ores:
+    description: Affiche les minerais minés d'un joueur.
+    permission: onimaapi.ores.command
+  sudo:
+    description: Force un joueur à exécuter une commande.
+    permission: onimaapi.sudo.command
+  gmc:
+    description: Vous met en créatif.
+    permission: onimaapi.gmc.command
+  connectionlogs:
+    description: Affiche les logs de connexion.
+    aliases: [clg]
+    permission: onimaapi.connectionlogs.command
+  alts:
+    description: Affiche les alts d'un joueur.
+    permission: onimaapi.alts.command
+  note:
+    description: Commande principale pour les notes.
+    permission: onimaapi.note.command
+  iphistory:
+    description: Affiche l'historique des ip d'un joueur.
+    permission: onimaapi.iphistory.command
+  disguise:
+    description: Vous fait changer de skin et de pseudo.
+    permission: onimaapi.disguise.command
