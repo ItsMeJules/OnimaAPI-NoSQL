@@ -54,6 +54,8 @@ import org.bukkit.util.Vector;
 import com.google.common.collect.Maps;
 
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.onima.onimaapi.mongo.OnimaMongo;
+import net.onima.onimaapi.mongo.OnimaMongo.OnimaCollection;
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.players.OfflineAPIPlayer;
 import net.onima.onimaapi.serialization.ItemSerializator;
@@ -1054,6 +1056,10 @@ public class Methods {
     
     public static void initKills(OfflineAPIPlayer offline) {
     	kills.put(offline.getUUID(), offline.getKills());
+    }
+    
+    public static void initKillsOnStart() {
+    	OnimaMongo.get(OnimaCollection.PLAYERS).find().iterator().forEachRemaining(document -> kills.put(UUID.fromString(document.getString("uuid")), ((Number) document.get("kills")).intValue()));
     }
     
     public static void removeKills(OfflineAPIPlayer offline) {

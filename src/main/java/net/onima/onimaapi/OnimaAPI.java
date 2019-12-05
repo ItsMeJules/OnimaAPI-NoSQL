@@ -6,6 +6,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.SplittableRandom;
 
 import org.bukkit.Bukkit;
@@ -14,6 +15,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import net.minecraft.server.v1_7_R4.CommandDispatcher;
 import net.onima.onimaapi.caching.UUIDCache;
 import net.onima.onimaapi.crates.utils.Crate;
 import net.onima.onimaapi.disguise.PlayerDisplayModifier;
@@ -47,6 +49,7 @@ import net.onima.onimaapi.tasks.RankEntryTask;
 import net.onima.onimaapi.utils.Config;
 import net.onima.onimaapi.utils.ConfigurationService;
 import net.onima.onimaapi.utils.JSONMessage;
+import net.onima.onimaapi.utils.Methods;
 import net.onima.onimaapi.utils.Options;
 import net.onima.onimaapi.utils.Scheduler;
 import net.onima.onimaapi.utils.Warp;
@@ -63,6 +66,7 @@ public class OnimaAPI extends JavaPlugin {
 	private static OnimaAPI instance;
 	private static List<Scheduler> scheduled;
 	private static List<Saver> savers, shutDownSavers;
+	private static List<String> needReplaceCommands;
 	
 	public static String UNKNOWN_COMMAND;
 	
@@ -81,6 +85,7 @@ public class OnimaAPI extends JavaPlugin {
 		scheduled = new ArrayList<>();
 		savers = Collections.synchronizedList(new ArrayList<>());
 		shutDownSavers = new ArrayList<>();
+		needReplaceCommands = new ArrayList<>();
 	}
 	
 	@Override
@@ -102,6 +107,7 @@ public class OnimaAPI extends JavaPlugin {
 		sendConsoleMessage("====================§6[§3ACTIVE EN (" + (System.currentTimeMillis() - started) + "ms)§6]§r====================", ConfigurationService.ONIMAAPI_PREFIX);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void registerManager() {
 		OnimaMongo.connect();
 		ConfigManager.loadConfigs();
@@ -153,6 +159,41 @@ public class OnimaAPI extends JavaPlugin {
 		Options.register(PlayerOption.GlobalOptions.IMPORTANT_NOTE_NOTIFY_CONNECT, false);
 		Options.register(PlayerOption.GlobalOptions.SHOW_PLAYERS_WHEN_IN_SPAWN, true);
 		
+		for (String str : (Set<String>) new CommandDispatcher().a().keySet()) {
+			switch (str) {
+			case "msg":
+			case "tell":
+			case "summon":
+			case "spreadplayers":
+			case "save-on":
+			case "save-off":
+			case "weather":
+			case "scoreboard":
+			case "spawnpoint":
+			case "netstat":
+			case "difficulty":
+			case "stop":
+			case "save-all":
+			case "?":
+			case "testfor":
+			case "seed":
+			case "setidletimeout":
+			case "debug":
+			case "say":
+			case "setblock":
+			case "help":
+			case "pardon-ip":
+			case "gamerule":
+			case "enchant":
+			case "time":
+			case "setworldspawn":
+				break;
+			default:
+				needReplaceCommands.add("/" + str);
+				break;
+			}
+		}
+			
         File file = new File("spigot.yml");
         YamlConfiguration config = new YamlConfiguration();
 
@@ -167,6 +208,7 @@ public class OnimaAPI extends JavaPlugin {
 		
 		Punishment.ID = configuration.getInt("punishments-id");
 		PlayerSaver.ID = configuration.getInt("player_saver-id");
+		Methods.initKillsOnStart();
 	}
 
 	@Override
@@ -184,18 +226,18 @@ public class OnimaAPI extends JavaPlugin {
 			else if (saver instanceof FileSaver)
 				((FileSaver) saver).serialize();
 		});
-		
+			
 		FileConfiguration configuration = ConfigManager.getStuffsSerialConfig().getConfig();
-		
+			
 		configuration.set("punishments-id", Punishment.ID);
 		configuration.set("player_saver-id", PlayerSaver.ID);
-		
+			
 		for (HCFSign hcfSign : HCFSign.getHCFSigns())
 			hcfSign.serialize();
-		
+			
 		Config.getConfigs().forEach(config -> config.saveConfig());
 		OnimaMongo.disconnect();
-		sendConsoleMessage("====================§6[§cDESACTIVATION§6]§r====================", ConfigurationService.ONIMAAPI_PREFIX);
+		sendConsoleMessage("====================§6[§cPLUGIN DESACTIVE§6]§r====================", ConfigurationService.ONIMAAPI_PREFIX);
 	}
 	
 	public static OnimaAPI getInstance() {
@@ -244,6 +286,10 @@ public class OnimaAPI extends JavaPlugin {
 	
 	public PlayerDisplayModifier getDisguiseFactory() {
 		return factory;
+	}
+	
+	public static List<String> getNeedReplaceCommands() {
+		return needReplaceCommands;
 	}
 	
 	public static void broadcast(String message, OnimaPerm permission) {

@@ -37,7 +37,7 @@ public abstract class TaskPerEntry<T> {
 			task.setRunning(true);
 		}
 		
-		task.entries.add(t);
+		task.entries.listIterator().add(t);
 	}
 	
 	public void insert(Collection<T> collection) {
@@ -98,7 +98,7 @@ public abstract class TaskPerEntry<T> {
 		return task;
 	}
 	
-	public abstract void run(List<T> list);
+	public abstract void run(Iterator<T> iterator);
 	
 	public class EntriesTask extends BukkitRunnable {
 		
@@ -107,7 +107,7 @@ public abstract class TaskPerEntry<T> {
 
 		@Override
 		public void run() {
-			TaskPerEntry.this.run(entries);
+			TaskPerEntry.this.run(entries.iterator());
 		}
 		
 		public boolean isRunning() {

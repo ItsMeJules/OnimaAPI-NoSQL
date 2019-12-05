@@ -7,6 +7,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
+import net.onima.onimaapi.OnimaAPI;
 import net.onima.onimaapi.disguise.DisguiseManager;
 import net.onima.onimaapi.event.chat.ChatEvent;
 import net.onima.onimaapi.event.chat.PrivateMessageEvent;
@@ -17,8 +18,12 @@ public class DisguiseListener implements Listener {
 	@EventHandler
 	public void onCommand(PlayerCommandPreprocessEvent event) {
 		StringBuilder newCommand = new StringBuilder();
+		String[] command = event.getMessage().split(" ");
 		
-		for (String word : event.getMessage().split(" ")) {
+		if (!OnimaAPI.getNeedReplaceCommands().contains(command[0]))
+			return;
+		
+		for (String word : command) {
 			if (DisguiseManager.getDisguisedPlayers().containsKey(word))
 				word = DisguiseManager.getDisguisedPlayers().get(word);
 			

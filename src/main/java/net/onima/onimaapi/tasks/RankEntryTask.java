@@ -3,7 +3,6 @@ package net.onima.onimaapi.tasks;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Iterator;
-import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -35,9 +34,7 @@ public class RankEntryTask extends TaskPerEntry<APIPlayer> {
 	}
 
 	@Override
-	public void run(List<APIPlayer> list) {
-		Iterator<APIPlayer> iterator = list.iterator();
-		
+	public void run(Iterator<APIPlayer> iterator) {
 		while (iterator.hasNext()) {
 			APIPlayer player = iterator.next();
 			Rank rank = player.getRank();
@@ -58,7 +55,7 @@ public class RankEntryTask extends TaskPerEntry<APIPlayer> {
 						RANK_LOST_SOUND.play(player);
 					}
 					
-					iterator.remove();
+					iteratorRemove(iterator);
 					continue;
 				}
 				

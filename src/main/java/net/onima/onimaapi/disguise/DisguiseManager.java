@@ -76,7 +76,7 @@ public class DisguiseManager {
 		Bukkit.getPluginManager().callEvent(new PlayerDisguiseEvent(player, disguisedUUID, playerName, name, rankType, skin));
 		OnimaAPI.getInstance().getDisguiseFactory().changeDisplay(playerName, disguisedUUID);
 		OnimaMongo.executeAsync(OnimaCollection.DISGUISE_LOGS, database -> {
-			database.insertOne(new Document("uuid", player.getUniqueId().timestamp())
+			database.insertOne(new Document("uuid", player.getUniqueId().toString())
 					.append("name", name).append("skinUUID", disguisedUUID.toString())
 					.append("rank_type", rankType.name()).append("time", System.currentTimeMillis()));
 		});
@@ -87,6 +87,12 @@ public class DisguiseManager {
 	}
 	
 	public void disguise(DisguiseSkin skin, RankType rankType) {
+		if (this.skin == skin)
+			return;
+		
+		if (this.skin.isInUse())
+			this.skin.setInUse(false);
+		
 		this.skin = skin;
 		
 		disguise(skin.getUUID(), skin.getName(), rankType);

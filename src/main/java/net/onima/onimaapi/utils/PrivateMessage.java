@@ -61,8 +61,8 @@ public class PrivateMessage {
 		Methods.sendJSON(sender, senderBuilder.create());
 	}
 	
-	public static String spyFormat(boolean senderDisguised, boolean receiverDisguised, String message, String senderName, String receiverName, RankType senderRank, RankType receiverRank) {
-		return "§d(" + (senderDisguised ? "§7[Déguisé] " : "") + senderRank.getNameColor() + senderName + " §d-> " + (receiverDisguised ? "§7[Déguisé]" : "") + receiverRank.getNameColor() + receiverName + "§d) " + senderRank.getSpeakingColor() + message;
+	public static String spyFormat(String message, String senderName, String receiverName, RankType senderRank, RankType receiverRank) {
+		return "§d(" + senderRank.getNameColor() + senderName + " §d-> " + receiverRank.getNameColor() + receiverName + "§d) " + senderRank.getSpeakingColor() + message;
 	}
 	
 }

@@ -1,7 +1,6 @@
 package net.onima.onimaapi.tasks;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.bukkit.Bukkit;
 
@@ -19,15 +18,16 @@ public class CooldownEntryTask extends TaskPerEntry<OfflineAPIPlayer> {
 	}
 
 	@Override
-	public void run(List<OfflineAPIPlayer> list) {
-		for (OfflineAPIPlayer offline : list) {
-			Iterator<Cooldown> iterator = offline.getCooldowns().iterator();
+	public void run(Iterator<OfflineAPIPlayer> iterator) {
+		while (iterator.hasNext()) {
+			OfflineAPIPlayer offline = iterator.next();
+			Iterator<Cooldown> cooldownIterator = offline.getCooldowns().iterator();
 			
-			while (iterator.hasNext()) {
-				Cooldown cooldown = iterator.next();
+			while (cooldownIterator.hasNext()) {
+				Cooldown cooldown = cooldownIterator.next();
 				
-				if (cooldown.getTimeLeft(offline.getUUID()) <= 0L) {
-					iterator.remove();
+				if (cooldown.getTimeLeft(offline.getUUID()) <= 50L) { //Milliseconds for a tick, it's done now as I have to resync it to call onExpire.
+					cooldownIterator.remove();
 					Bukkit.getScheduler().runTask(OnimaAPI.getInstance(), () -> cooldown.onExpire(offline));
 				}
 			}

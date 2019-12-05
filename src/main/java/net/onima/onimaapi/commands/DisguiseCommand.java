@@ -20,7 +20,8 @@ import net.onima.onimaapi.rank.OnimaPerm;
 import net.onima.onimaapi.rank.RankType;
 import net.onima.onimaapi.utils.BetterItem;
 
-public class DisguiseCommand implements CommandExecutor {
+public class DisguiseCommand implements CommandExecutor { //TODO vérifier si le joueur se /disguise en combat, si oui annuler et avertir un admin.
+														  //TODO S'il est à < 46 || 32 blocks d'un ennemie simplement avertir un admin.
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -159,11 +160,9 @@ public class DisguiseCommand implements CommandExecutor {
 				public void click(PacketMenu menu, Player clicker, ItemStack current, InventoryClickEvent event) {
 					event.setCancelled(true);
 					
-					APIPlayer apiPlayer = APIPlayer.getPlayer(clicker);
-					
 					apiPlayer.getDisguiseManager().setRankType(rankType);
-					apiPlayer.sendMessage("§d " + apiPlayer.getName() + " §7§lvous a changé de rang de disguise. Vous êtes maintenant " + rankType.getPrefix() + "§7§l.");
-					DisguiseManagerMenu.this.open(apiPlayer);
+					apiPlayer.sendMessage("§d " + apiPlayer.getName() + " §7§lvous a changé de rank de disguise. Vous êtes maintenant " + rankType.getPrefix() + "§7§l.");
+					DisguiseManagerMenu.this.open(APIPlayer.getPlayer(clicker));
 				}
 				
 			}

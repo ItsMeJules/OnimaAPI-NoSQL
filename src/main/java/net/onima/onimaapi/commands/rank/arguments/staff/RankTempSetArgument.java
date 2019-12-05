@@ -85,7 +85,7 @@ public class RankTempSetArgument extends BasicCommandArgument {
 			offlinePlayer.setRank(rank);
 			
 			if (offlinePlayer.isOnline()) {
-				((APIPlayer) offlinePlayer).sendMessage(APIPlayer.getPlayer((Player) sender).getRankName(true) + " §7vous a donné le rank de " + newRank.getName() + " §7pour §a" + format + "§7.");
+				((APIPlayer) offlinePlayer).sendMessage(RankType.getRank(sender).getNameColor() + Methods.getRealName(sender) + " §7vous a donné le rank de " + newRank.getName() + " §7pour §a" + format + "§7.");
 				Bukkit.getPluginManager().callEvent(new RankReceivedEvent(rank, (APIPlayer) offlinePlayer, true, sender));
 			}
 			

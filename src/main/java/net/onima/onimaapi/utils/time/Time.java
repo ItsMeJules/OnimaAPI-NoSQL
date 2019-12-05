@@ -98,7 +98,9 @@ public class Time {
 	  }
 	  
 		public static String setYMDWHMSFormat(long paramLong) {
-			if(paramLong == 0 || paramLong < 1000) return "null";
+			if (paramLong == 0 || paramLong < 1000)
+				return "0 seconde";
+			
 			String s = "";
 			String formatStr = "";
 			

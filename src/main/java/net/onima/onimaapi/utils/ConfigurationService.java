@@ -439,7 +439,7 @@ public class ConfigurationService {
 	/**
 	 * The no faction character: <i>§c*§r</i>
 	 */
-	public static final String NO_FACTION_CHARACTER = "§e[§d*§e]§r";
+	public static final String NO_FACTION_CHARACTER = "§6[§d*§6]§r";
 	
 	/**
 	 * All the debuff effects.
