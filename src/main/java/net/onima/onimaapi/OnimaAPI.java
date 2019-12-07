@@ -215,16 +215,20 @@ public class OnimaAPI extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		savers.forEach(saver -> {
-			if (saver instanceof NoSQLSaver)
-				Bukkit.getPluginManager().callEvent(new DatabasePreUpdateEvent((NoSQLSaver) saver, Action.WRITE, false));
-			else if (saver instanceof FileSaver)
+			if (saver instanceof NoSQLSaver) {
+				NoSQLSaver mongoSaver = (NoSQLSaver) saver;
+				
+				Bukkit.getPluginManager().callEvent(new DatabasePreUpdateEvent(mongoSaver, mongoSaver.shouldDelete() ? Action.DELETE : Action.WRITE, false));
+			} else if (saver instanceof FileSaver)
 				((FileSaver) saver).serialize();
 		});
 		
 		shutDownSavers.forEach(saver -> {
-			if (saver instanceof NoSQLSaver)
-				Bukkit.getPluginManager().callEvent(new DatabasePreUpdateEvent((NoSQLSaver) saver, Action.WRITE, false));
-			else if (saver instanceof FileSaver)
+			if (saver instanceof NoSQLSaver) {
+				NoSQLSaver mongoSaver = (NoSQLSaver) saver;
+				
+				Bukkit.getPluginManager().callEvent(new DatabasePreUpdateEvent(mongoSaver, mongoSaver.shouldDelete() ? Action.DELETE : Action.WRITE, false));
+			} else if (saver instanceof FileSaver)
 				((FileSaver) saver).serialize();
 		});
 			
