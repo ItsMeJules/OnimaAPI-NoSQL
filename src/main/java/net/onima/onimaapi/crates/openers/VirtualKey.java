@@ -3,8 +3,8 @@ package net.onima.onimaapi.crates.openers;
 import org.bson.Document;
 
 import net.onima.onimaapi.crates.booster.KeyBooster;
+import net.onima.onimaapi.mongo.saver.MongoSerializer;
 import net.onima.onimaapi.players.APIPlayer;
-import net.onima.onimaapi.saver.mongo.MongoSerializer;
 
 public class VirtualKey extends Key implements MongoSerializer {
 	

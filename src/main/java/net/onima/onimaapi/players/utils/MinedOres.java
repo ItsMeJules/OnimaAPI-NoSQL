@@ -4,7 +4,7 @@ import org.bson.Document;
 import org.bukkit.Material;
 
 import net.onima.onimaapi.gui.menu.OresMenu;
-import net.onima.onimaapi.saver.mongo.MongoSerializer;
+import net.onima.onimaapi.mongo.saver.MongoSerializer;
 
 public class MinedOres implements MongoSerializer {
 	

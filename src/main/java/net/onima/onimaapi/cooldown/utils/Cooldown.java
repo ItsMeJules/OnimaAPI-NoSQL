@@ -18,9 +18,9 @@ import net.onima.onimaapi.event.CooldownEndEvent;
 import net.onima.onimaapi.event.CooldownExtendEvent;
 import net.onima.onimaapi.event.CooldownStartEvent;
 import net.onima.onimaapi.event.CooldownStopEvent;
+import net.onima.onimaapi.mongo.saver.MongoSerializer;
 import net.onima.onimaapi.players.OfflineAPIPlayer;
 import net.onima.onimaapi.saver.Saver;
-import net.onima.onimaapi.saver.mongo.MongoSerializer;
 
 public abstract class Cooldown implements Saver, MongoSerializer {
 	

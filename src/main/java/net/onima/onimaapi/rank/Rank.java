@@ -5,9 +5,9 @@ import java.time.temporal.ChronoUnit;
 
 import org.bson.Document;
 
+import net.onima.onimaapi.mongo.saver.MongoSerializer;
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.players.OfflineAPIPlayer;
-import net.onima.onimaapi.saver.mongo.MongoSerializer;
 import net.onima.onimaapi.tasks.RankEntryTask;
 
 public class Rank implements MongoSerializer {

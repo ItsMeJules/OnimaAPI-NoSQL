@@ -5,10 +5,10 @@ import java.util.Map;
 
 import org.bson.Document;
 
+import net.onima.onimaapi.mongo.saver.MongoSerializer;
 import net.onima.onimaapi.players.utils.PlayerOption;
 import net.onima.onimaapi.players.utils.PlayerOption.GlobalOptions;
 import net.onima.onimaapi.players.utils.PlayerOption.ModOptions;
-import net.onima.onimaapi.saver.mongo.MongoSerializer;
 
 public class Options implements MongoSerializer {
 	

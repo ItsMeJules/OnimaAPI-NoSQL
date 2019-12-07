@@ -33,6 +33,7 @@ import net.onima.onimaapi.listener.PunishmentListener;
 import net.onima.onimaapi.mongo.OnimaMongo;
 import net.onima.onimaapi.mongo.OnimaMongo.OnimaCollection;
 import net.onima.onimaapi.mongo.api.result.MongoQueryResult;
+import net.onima.onimaapi.mongo.saver.NoSQLSaver;
 import net.onima.onimaapi.players.notes.Note;
 import net.onima.onimaapi.players.notes.NotePriority;
 import net.onima.onimaapi.players.utils.MinedOres;
@@ -46,7 +47,6 @@ import net.onima.onimaapi.punishment.utils.ServerRestricted;
 import net.onima.onimaapi.rank.Rank;
 import net.onima.onimaapi.rank.RankType;
 import net.onima.onimaapi.saver.inventory.PlayerSaver;
-import net.onima.onimaapi.saver.mongo.NoSQLSaver;
 import net.onima.onimaapi.tasks.CooldownEntryTask;
 import net.onima.onimaapi.utils.Balance;
 import net.onima.onimaapi.utils.ConfigurationService;
@@ -489,7 +489,7 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 	@Override
 	public void remove() {
 		offlinePlayers.remove(uuid);
-		CooldownEntryTask.get().remove(this);
+		CooldownEntryTask.get().safeRemove(this);
 		Methods.initKills(this);
 	}
 
@@ -635,6 +635,10 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 	@Deprecated
 	@Override
 	public Document getDocument(Object... objects) {return null;}
+	
+	@Deprecated
+	@Override
+	public boolean shouldDelete() {return false;}
 	
 //	public static void load(UUID uuid) {
 //		if (!offlinePlayers.containsKey(uuid))

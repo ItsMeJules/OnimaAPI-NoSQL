@@ -18,12 +18,12 @@ public class DeathSign {
 	
 	public DeathSign(String killer, String victim) {
 		item = new BetterItem(Material.SIGN, 1, 0, ConfigurationService.DEATH_SIGN_NAME);
-		item.setLore(Methods.replacePlaceholder(ConfigurationService.DEATH_SIGN_LINES, "%killer%", killer, "%victim%", victim, "%date%", Methods.toFormatDate(System.currentTimeMillis(), ConfigurationService.DATE_FORMAT_HOURS)));
+		item.setLore(Methods.replacePlaceholder(ConfigurationService.DEATH_SIGN_LINES, "%killer%", killer, "%victim%", victim, "%date%", Methods.toFormatDate(System.currentTimeMillis(), ConfigurationService.DATE_FORMAT_NO_HOURS)));
 		
 	}
 	
 	public DeathSign(String[] lore) {
-		Preconditions.checkArgument(lore.length <= 4, "Le lore du panneau doit �tre en dessous de 4 lignes.");
+		Preconditions.checkArgument(lore.length <= 4, "Le lore du panneau doit être en dessous de 4 lignes.");
 		item = new BetterItem(Material.SIGN, 1, 0, ConfigurationService.DEATH_SIGN_NAME);
 		item.setLore(lore);
 	}

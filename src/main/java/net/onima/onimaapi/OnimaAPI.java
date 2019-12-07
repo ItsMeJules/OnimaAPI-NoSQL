@@ -20,6 +20,7 @@ import net.onima.onimaapi.caching.UUIDCache;
 import net.onima.onimaapi.crates.utils.Crate;
 import net.onima.onimaapi.disguise.PlayerDisplayModifier;
 import net.onima.onimaapi.event.mongo.DatabasePreUpdateEvent;
+import net.onima.onimaapi.event.mongo.DatabasePreUpdateEvent.Action;
 import net.onima.onimaapi.fakeblock.FakeBlocksFix;
 import net.onima.onimaapi.gui.PacketMenu;
 import net.onima.onimaapi.gui.menu.FreezeMenu;
@@ -34,6 +35,7 @@ import net.onima.onimaapi.manager.ListenerManager;
 import net.onima.onimaapi.manager.TaskManager;
 import net.onima.onimaapi.mod.SilentChest;
 import net.onima.onimaapi.mongo.OnimaMongo;
+import net.onima.onimaapi.mongo.saver.NoSQLSaver;
 import net.onima.onimaapi.mountain.utils.Mountain;
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.players.utils.PlayerOption;
@@ -42,7 +44,6 @@ import net.onima.onimaapi.rank.OnimaPerm;
 import net.onima.onimaapi.saver.FileSaver;
 import net.onima.onimaapi.saver.Saver;
 import net.onima.onimaapi.saver.inventory.PlayerSaver;
-import net.onima.onimaapi.saver.mongo.NoSQLSaver;
 import net.onima.onimaapi.signs.HCFSign;
 import net.onima.onimaapi.tasks.CooldownEntryTask;
 import net.onima.onimaapi.tasks.RankEntryTask;
@@ -215,14 +216,14 @@ public class OnimaAPI extends JavaPlugin {
 	public void onDisable() {
 		savers.forEach(saver -> {
 			if (saver instanceof NoSQLSaver)
-				Bukkit.getPluginManager().callEvent(new DatabasePreUpdateEvent((NoSQLSaver) saver));
+				Bukkit.getPluginManager().callEvent(new DatabasePreUpdateEvent((NoSQLSaver) saver, Action.WRITE, false));
 			else if (saver instanceof FileSaver)
 				((FileSaver) saver).serialize();
 		});
 		
 		shutDownSavers.forEach(saver -> {
 			if (saver instanceof NoSQLSaver)
-				Bukkit.getPluginManager().callEvent(new DatabasePreUpdateEvent((NoSQLSaver) saver));
+				Bukkit.getPluginManager().callEvent(new DatabasePreUpdateEvent((NoSQLSaver) saver, Action.WRITE, false));
 			else if (saver instanceof FileSaver)
 				((FileSaver) saver).serialize();
 		});

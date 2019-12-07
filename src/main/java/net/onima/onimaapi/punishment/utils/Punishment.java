@@ -4,13 +4,13 @@ import java.util.UUID;
 
 import org.bson.Document;
 
+import net.onima.onimaapi.mongo.saver.MongoSerializer;
 import net.onima.onimaapi.punishment.Ban;
 import net.onima.onimaapi.punishment.BlackList;
 import net.onima.onimaapi.punishment.Kick;
 import net.onima.onimaapi.punishment.Mute;
 import net.onima.onimaapi.punishment.TempBan;
 import net.onima.onimaapi.punishment.Warn;
-import net.onima.onimaapi.saver.mongo.MongoSerializer;
 
 public abstract class Punishment implements MongoSerializer {
 

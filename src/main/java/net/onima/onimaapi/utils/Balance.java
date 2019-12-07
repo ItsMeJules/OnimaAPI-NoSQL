@@ -10,7 +10,7 @@ import com.mongodb.client.model.Sorts;
 
 import net.onima.onimaapi.mongo.OnimaMongo;
 import net.onima.onimaapi.mongo.OnimaMongo.OnimaCollection;
-import net.onima.onimaapi.saver.mongo.MongoSerializer;
+import net.onima.onimaapi.mongo.saver.MongoSerializer;
 import net.onima.onimaapi.utils.callbacks.VoidCallback;
 
 public class Balance implements MongoSerializer {

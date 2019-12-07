@@ -58,6 +58,26 @@ public abstract class TaskPerEntry<T> {
 		}
 	}
 	
+	public void safeRemove(T t) {
+		EntriesTask task = getCurrentTask(false);
+		
+		if (task != null) {
+			Iterator<T> iterator = task.entries.iterator();
+			
+			while (iterator.hasNext()) {
+				T element = iterator.next();
+				
+				if (element.equals(t))
+					iterator.remove();
+			}
+			
+			if (task.entries.size() < 1) {
+				task.cancel();
+				tasks.remove(task);
+			}
+		}
+	}
+	
 	public void iteratorRemove(Iterator<T> iterator) {
 		EntriesTask task = getCurrentTask(false);
 		

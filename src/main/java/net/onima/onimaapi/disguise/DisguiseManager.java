@@ -90,7 +90,7 @@ public class DisguiseManager {
 		if (this.skin == skin)
 			return;
 		
-		if (this.skin.isInUse())
+		if (this.skin != null && this.skin.isInUse())
 			this.skin.setInUse(false);
 		
 		this.skin = skin;

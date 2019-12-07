@@ -142,7 +142,7 @@ public class ChatManager implements FileSaver {
 				return true;
 		}
 
-		return this.filteredPhrases.parallelStream().filter(msg::contains).findFirst().isPresent();
+		return filteredPhrases.parallelStream().filter(msg::contains).findFirst().isPresent();
 	}
 
 	@Override

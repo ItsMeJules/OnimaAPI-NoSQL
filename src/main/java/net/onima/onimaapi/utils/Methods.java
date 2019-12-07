@@ -1048,7 +1048,7 @@ public class Methods {
 	}
 	
     public static Integer getKills(UUID uuid) {
-        if (Bukkit.getPlayer(uuid) != null)
+        if (OfflineAPIPlayer.isLoaded(uuid))
             return OfflineAPIPlayer.getOfflineAPIPlayers().get(uuid).getKills();
         else
         	return kills.get(uuid);
