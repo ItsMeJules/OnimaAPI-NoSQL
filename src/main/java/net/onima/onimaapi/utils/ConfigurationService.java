@@ -634,4 +634,8 @@ public class ConfigurationService {
 	public static final double COMBAT_LOGGER_ENEMIES_DISTANCE = 64D;
 
 	public static final String SERVER_NOT_LOADED = "Le serveur est entrain de démarrer.";
+
+	public static final String EOTW_DEATHBANNED = "§cDeathban jusqu'à la fin de la map car"
+			+ "\n§ccar vous êtes mort durant l'EOTW."
+			+ "\n§fRevenez demain pour le SOTW.";
 }
