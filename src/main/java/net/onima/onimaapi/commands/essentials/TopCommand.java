@@ -1,8 +1,6 @@
 package net.onima.onimaapi.commands.essentials;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,10 +28,9 @@ public class TopCommand implements CommandExecutor {
 		
         Location origin = player.getLocation().clone();
         Location highestLocation = origin.getWorld().getHighestBlockAt(origin).getLocation();
-        Block originBlock;
         
-        if (highestLocation != null && !Methods.locationEquals(origin, highestLocation) && (highestLocation.getBlockY() - (originBlock = origin.getBlock()).getY() != 1 || originBlock.getType() != Material.WATER) && originBlock.getType() != Material.STATIONARY_WATER) {
-            player.teleport(highestLocation.add(0.0, 1.0, 0.0));
+        if (highestLocation != null && !Methods.locationEquals(origin, highestLocation) && highestLocation.getBlockY() - origin.getBlock().getY() != 1) {
+            player.teleport(highestLocation.add(0.5, 0, 0.5));
             sender.sendMessage("§eVous avez été téléporté au point le plus haut.");
             return true;
         }

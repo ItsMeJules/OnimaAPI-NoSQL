@@ -40,10 +40,12 @@ public class NoteWriteArgument extends BasicCommandArgument {
 			return false;
 		}
 		
-		OfflineAPIPlayer.getPlayer(uuid, offline -> {
+		OfflineAPIPlayer.getPlayer(uuid, offline -> { //TODO check y'a un pb
 			Note note = new Note(sender instanceof Player ? ((Player) sender).getUniqueId() : ConfigurationService.CONSOLE_UUID, StringUtils.join(args, ' ', 2, args.length));
 			
+			System.out.println(offline.getNotes());
 			offline.getNotes().add(note);
+			System.out.println(offline.getNotes());
 			sender.sendMessage("§eVous §7avez ajouté une note à §e" + Methods.getName(offline, true));
 		});
 		

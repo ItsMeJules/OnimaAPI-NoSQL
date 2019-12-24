@@ -26,7 +26,7 @@ public class VanishCommand implements CommandExecutor {
 		APIPlayer apiPlayer = APIPlayer.getPlayer((Player) sender);
 		
 		apiPlayer.setVanish(!apiPlayer.isVanished());
-		String vanished = apiPlayer.isVanished() ? "§7êtes en §avanish" : "§7plus en §cvanish";
+		String vanished = apiPlayer.isVanished() ? "§7êtes en §avanish" : "§7n'êtes plus en §cvanish";
 		
 		apiPlayer.sendMessage("§eVous " + vanished + "§7.");
 		return false;

@@ -67,7 +67,7 @@ public class NotePriorityArgument extends BasicCommandArgument {
 	
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
-		if (args.length != 4 || args.length != 2 || !OnimaPerm.ONIMAAPI_NOTE_PRIORITY_ARGUMENT.has(sender))
+		if (!OnimaPerm.ONIMAAPI_NOTE_PRIORITY_ARGUMENT.has(sender))
 			return Collections.emptyList();
 		
 		if (args.length == 2)

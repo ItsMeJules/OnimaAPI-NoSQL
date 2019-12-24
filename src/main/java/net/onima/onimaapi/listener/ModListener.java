@@ -1,6 +1,7 @@
 package net.onima.onimaapi.listener;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -46,11 +47,11 @@ public class ModListener implements Listener {
 			if (!player.isInModMode())
 				return;
 			
-			ModItem modItem = ModItem.fromMaterial(hand.getType());
+			ModItem modItem = ModItem.fromStack(hand);
 			
 			if (action.toString().contains("RIGHT") && !entityRightClick)
 				modItem.rightClick(player);
-			else if (action.toString().contains("LEFT"))
+			else if (action.toString().contains("LEFT") && Methods.getEntityTargeting(player.toPlayer(), event.getPlayer().getGameMode() == GameMode.CREATIVE ? 5 : 4) == null)
 				modItem.leftClick(player);
 			
 			entityRightClick = false;
@@ -67,10 +68,10 @@ public class ModListener implements Listener {
 			if (hand != null && hand.getType() != Material.AIR) {
 				APIPlayer apiAttacker = APIPlayer.getPlayer(attacker);
 				
-				if (apiAttacker.isInModMode())
+				if (!apiAttacker.isInModMode())
 					return;
 				
-				ModItem modItem = ModItem.fromMaterial(hand.getType());
+				ModItem modItem = ModItem.fromStack(hand);
 				
 				if (modItem instanceof EntityClickable) {
 					EntityClickable clickable = (EntityClickable) modItem;
@@ -89,10 +90,10 @@ public class ModListener implements Listener {
 		if (hand != null && hand.getType() != Material.AIR) {
 			APIPlayer apiPlayer = APIPlayer.getPlayer(player);
 			
-			if (apiPlayer.isInModMode())
+			if (!apiPlayer.isInModMode())
 				return;
 			
-			ModItem modItem = ModItem.fromMaterial(hand.getType());
+			ModItem modItem = ModItem.fromStack(hand);
 			
 			if (modItem instanceof EntityClickable) {
 				EntityClickable clickable = (EntityClickable) modItem;

@@ -3,7 +3,6 @@ package net.onima.onimaapi.mod;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.inventory.ItemStack;
 
@@ -91,20 +90,12 @@ public abstract class ModItem implements Saver {
 		return modItems;
 	}
 	
-	public static ModItem fromMaterial(Material material) {
-		return modItems.parallelStream().filter(stack -> stack.getItem().getMaterial() == material).findFirst().orElse(null);
-	}
-	
-	/**
-	 * @deprecated use {@link #fromMaterial(Material)}
-	 */
-	@Deprecated
 	public static ModItem fromStack(ItemStack item) {
-		return modItems.parallelStream().filter(stack -> Methods.isSimilar(item, stack.item.toItemStack())).findFirst().orElse(null);
+		return modItems.stream().filter(stack -> Methods.isSimilar(item, stack.item.toItemStack())).findFirst().orElse(null);
 	}
 	
 	public static ModItem fromName(String name) {
-		return modItems.parallelStream().filter(stack -> stack.name.equalsIgnoreCase(name)).findFirst().orElse(null);
+		return modItems.stream().filter(stack -> stack.name.equalsIgnoreCase(name)).findFirst().orElse(null);
 	}
 
 }

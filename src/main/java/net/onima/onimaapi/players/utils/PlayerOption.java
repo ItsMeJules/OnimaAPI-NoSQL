@@ -147,7 +147,12 @@ public interface PlayerOption {
 		/**
 		 * Whether the player can see or not other players in spawn while himself in spawn.
 		 */
-		SHOW_PLAYERS_WHEN_IN_SPAWN(8, null, "§7Montrer les joueurs dans le spawn : %value%");
+		SHOW_PLAYERS_WHEN_IN_SPAWN(8, null, "§7Montrer les joueurs dans le spawn : %value%"),
+		
+		/**
+		 * Whether the player can see or not the invisible players.
+		 */
+		SHOW_INVISIBLE_PLAYERS(9, OnimaPerm.ONIMAAPI_SEE_INVISIBLE, "§7Afficher les joueurs invisible : %value%");
 		
 		private int slot;
 		private OnimaPerm permission;

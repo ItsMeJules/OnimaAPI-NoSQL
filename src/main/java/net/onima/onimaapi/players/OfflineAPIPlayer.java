@@ -151,6 +151,8 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 			virtualKeys = old.virtualKeys;
 			restoreRequests = old.restoreRequests;
 			punishments = old.punishments;
+			notes = old.notes;
+			ipHistory = old.ipHistory;
 			
 			if (rank != old.rank) {
 				rank = old.rank;

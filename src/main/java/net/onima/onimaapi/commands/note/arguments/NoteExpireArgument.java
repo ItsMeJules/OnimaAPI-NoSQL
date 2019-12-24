@@ -62,7 +62,7 @@ public class NoteExpireArgument extends BasicCommandArgument {
 			}
 			
 			offline.getNotes().get(index - 1).setExpire(time);
-			sender.sendMessage("§7La note §e" + index + " §7expirera le §e" + Methods.toFormatDate(time, ConfigurationService.DATE_FORMAT_HOURS) + " §7pour le joueur " + Methods.getName(offline, true) + "§7.");
+			sender.sendMessage("§7La note §e" + index + " §7expirera le §e" + Methods.toFormatDate(time + System.currentTimeMillis(), ConfigurationService.DATE_FORMAT_HOURS) + " §7pour le joueur " + Methods.getName(offline, true) + "§7.");
 		});
 		
 		return false;

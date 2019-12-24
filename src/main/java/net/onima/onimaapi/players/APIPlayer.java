@@ -88,10 +88,12 @@ public class APIPlayer extends OfflineAPIPlayer {
 	private ItemStack freezeHelmet;
 	private ExperienceManager experienceManager;
 	private DisguiseManager disguiseManager;
+	private List<UUID> temporaryHiddenPlayers;
 	
 	{
 		fakeBlocks = new HashSet<>();
 		signsChanged = new ArrayList<>();
+		temporaryHiddenPlayers = new ArrayList<>();
 	}
 	
 	public APIPlayer(Player player) {
@@ -128,13 +130,22 @@ public class APIPlayer extends OfflineAPIPlayer {
 			setVanish(true);
 		
 		if (!notes.isEmpty()) {
-			for (Note note : notes) {
-				if (note.getPriority().getPriority() == 0)
+			for (APIPlayer apiPlayer : getOnlineAPIPlayers()) {
+				if (!apiPlayer.getOptions().getBoolean(PlayerOption.GlobalOptions.IMPORTANT_NOTE_NOTIFY_CONNECT))
 					continue;
+					
+				boolean headerSent = false;
 				
-				for (APIPlayer apiPlayer : getOnlineAPIPlayers()) {
-					if (apiPlayer.getOptions().getBoolean(PlayerOption.GlobalOptions.IMPORTANT_NOTE_NOTIFY_CONNECT))
-						note.display(apiPlayer, this);
+				for (Note note : notes) {
+					if (note.getPriority().getPriority() == 0)
+						continue;
+					
+					if (!headerSent) {
+						headerSent = true;
+						apiPlayer.sendMessage("§7Note(s) importante(s) de §e" + name + "§7:");
+					}
+					
+					apiPlayer.sendMessage(note.getComponNote(-1, name));
 				}
 			}
 		}
@@ -386,6 +397,9 @@ public class APIPlayer extends OfflineAPIPlayer {
 			player.spigot().setViewDistance(Bukkit.getViewDistance());
 			
 			for (ModItem modItem : ModItem.getModItems()) {
+				if (modItem.getName().equalsIgnoreCase("vanish_on") && !vanish)
+					continue;
+				
 				inventory.setItem(modItem.getSlot(), modItem.getItem().toItemStack());
 				modItem.update(this);
 			}
@@ -445,8 +459,17 @@ public class APIPlayer extends OfflineAPIPlayer {
 	}
 	
 	public void hidePlayer(Player target, long time) {
+		temporaryHiddenPlayers.add(target.getUniqueId());
 		player.hidePlayer(target);
-		Bukkit.getScheduler().scheduleSyncDelayedTask(OnimaAPI.getInstance(), () -> player.showPlayer(target), time * 20 / 1000); 
+		
+		Bukkit.getScheduler().scheduleSyncDelayedTask(OnimaAPI.getInstance(), () -> {
+			player.showPlayer(target);
+			temporaryHiddenPlayers.remove(target.getUniqueId());
+		}, time * 20 / 1000); 
+	}
+	
+	public List<UUID> getTemporaryHiddenPlayers() {
+		return temporaryHiddenPlayers;
 	}
 	
 	public void setSafeDisconnect(boolean safeDisconnect) {
@@ -601,12 +624,15 @@ public class APIPlayer extends OfflineAPIPlayer {
 	}
 	
 	public void setVanish(boolean vanish) {
+		super.setVanish(vanish);
+
 		if (vanish) {
 			for (Player online : Bukkit.getOnlinePlayers()) {
 				if (online.getUniqueId().equals(player.getUniqueId()))
 					continue;
 				
-				online.hidePlayer(player);
+				if (!OnimaPerm.VANISH_COMMAND.has(online))
+					online.hidePlayer(player);
 			}
 		} else {
 			for (Player online : Bukkit.getOnlinePlayers()) {
@@ -616,8 +642,6 @@ public class APIPlayer extends OfflineAPIPlayer {
 				online.showPlayer(player);
 			}
 		}
-		
-		super.setVanish(vanish);
 	}
 	
 	public double getHealth() {

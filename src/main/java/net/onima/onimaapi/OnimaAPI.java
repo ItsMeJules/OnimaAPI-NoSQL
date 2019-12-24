@@ -159,6 +159,7 @@ public class OnimaAPI extends JavaPlugin {
 		Options.register(PlayerOption.GlobalOptions.ALTS_CONNECT_MESSAGE, false);
 		Options.register(PlayerOption.GlobalOptions.IMPORTANT_NOTE_NOTIFY_CONNECT, false);
 		Options.register(PlayerOption.GlobalOptions.SHOW_PLAYERS_WHEN_IN_SPAWN, true);
+		Options.register(PlayerOption.GlobalOptions.SHOW_INVISIBLE_PLAYERS, false);
 		
 		for (String str : (Set<String>) new CommandDispatcher().a().keySet()) {
 			switch (str) {

@@ -34,7 +34,7 @@ public class CompassBooster extends ModItem implements EntityClickable { //TODO 
 			return;
 		}
 		
-		Methods.boost(target, player.getOptions().<Double>get(PlayerOption.ModOptions.ENTITY_BOOSTER), player.getOptions().<Float>get(PlayerOption.ModOptions.ENTITY_BOOSTER), player.getOptions().<Float>get(PlayerOption.ModOptions.ENTITY_BOOSTER));
+		Methods.boost(target, player.getOptions().<Double>get(PlayerOption.ModOptions.ENTITY_BOOSTER), player.getOptions().<Double>get(PlayerOption.ModOptions.ENTITY_BOOSTER), player.getOptions().<Float>get(PlayerOption.ModOptions.ENTITY_BOOSTER));
 		
 		player.sendMessage(MOD_PREFIX + " §fWOOOOOOOSSSSHHH !!!!");
 		boostSound.play(player);
@@ -57,7 +57,7 @@ public class CompassBooster extends ModItem implements EntityClickable { //TODO 
 		if (!(entity instanceof LivingEntity))
 			return;
 		
-		Methods.boost((LivingEntity) entity, player.getOptions().<Float>get(PlayerOption.ModOptions.ENTITY_BOOSTER));
+		Methods.boost((LivingEntity) entity, player.getOptions().<Double>get(PlayerOption.ModOptions.ENTITY_BOOSTER));
 		
 		player.sendMessage(MOD_PREFIX + " §fWOOOOOOOSSSSHHH !!!!");
 		boostSound.play(player);

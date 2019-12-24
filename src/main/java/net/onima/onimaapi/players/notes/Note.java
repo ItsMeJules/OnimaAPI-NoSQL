@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.onima.onimaapi.mongo.saver.MongoSerializer;
-import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.utils.ConfigurationService;
 import net.onima.onimaapi.utils.JSONMessage;
 import net.onima.onimaapi.utils.Methods;
@@ -42,19 +41,13 @@ public class Note implements MongoSerializer {
 		this(sender, note, NotePriority.INFORMATIVE);
 	}
 	
-	public void display(APIPlayer apiPlayer, APIPlayer target) {
-		apiPlayer.sendMessage("§e[]§6" + ConfigurationService.STAIGHT_LINE + "§e[]");
-		apiPlayer.sendMessage(getComponNote(-1, null));
-	}
-	
 	public BaseComponent[] getComponNote(int pos, String targetName) {
 		JSONMessage json = new JSONMessage(
-				(pos == -1 ? "" : "§e" + pos + ". ") + priority.getColor() + note,
+				(pos == -1 ? "" : " §e" + pos + ". ") + priority.getColor() + note,
 						"§eÉcrite par : §6" + (sender.equals(ConfigurationService.CONSOLE_UUID) ? "Console" : Methods.getRealName(Bukkit.getOfflinePlayer(sender)))
 						+ "\n§ePriorité : " + priority.getColor() + priority.name()
 						+ "\n§eÉcrite le : §6" + Methods.toFormatDate(time, ConfigurationService.DATE_FORMAT_HOURS)
-						+ (expire == -1 ? "" : "\n§eExpire le : §6" + Methods.toFormatDate(expire, ConfigurationService.DATE_FORMAT_HOURS))
-							+ (isExpired() ? "§7(§oexpirera à la prochaine sauvegarde.§7)" : ""));
+						+ (expire == -1 ? "" : "\n§eExpire le : §6" + Methods.toFormatDate(expire, ConfigurationService.DATE_FORMAT_HOURS)));
 
 		if (targetName != null) {
 			json.setClickAction(ClickEvent.Action.SUGGEST_COMMAND);
@@ -104,7 +97,7 @@ public class Note implements MongoSerializer {
 	}
 
 	public void setExpire(long expire) {
-		this.expire = expire;
+		this.expire = expire == -1 ? expire : System.currentTimeMillis() + expire;
 	}
 	
 	@Override

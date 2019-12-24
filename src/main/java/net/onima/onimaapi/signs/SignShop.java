@@ -94,7 +94,7 @@ public class SignShop extends HCFSign { //TODO Custom buy : avec un item dans la
 	}
 	
 	public void updateLines() {
-		sign.setLine(0, buySign ? ConfigurationService.SHOP_SIGN_BUY_LINE : ConfigurationService.SHOP_SIGN_SELL_LINE);
+		sign.setLine(0, buySign ? ConfigurationService.SHOP_SIGN_SELL_LINE : ConfigurationService.SHOP_SIGN_BUY_LINE);
 		sign.setLine(1, matID == Crowbar.getID() ? "Crowbar" : Methods.getItemName(item));
 		sign.setLine(2, String.valueOf(stackSize));
 		sign.setLine(3, String.valueOf(price) + ConfigurationService.MONEY_SYMBOL);

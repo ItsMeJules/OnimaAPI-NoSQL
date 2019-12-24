@@ -804,7 +804,9 @@ public enum OnimaPerm {
 	
 	ONIMAAPI_DISGUISE_COMMAND_LIST("onimaapi.disguise.command.list", "Permet de gérer les disguise d'autres joueurs."),
 	
-	ONIMAFACTION_DTR_COOLDOWN_ARGUMENT("onimafaction.dtr.cooldown.argument", "Permet de supprimer le dtr freeze d'une faction.");
+	ONIMAFACTION_DTR_COOLDOWN_ARGUMENT("onimafaction.dtr.cooldown.argument", "Permet de supprimer le dtr freeze d'une faction."), 
+	
+	ONIMAAPI_SEE_INVISIBLE("onimaapi.see.invisible", "Permet de voir les joueurs invisibles");
 	
 	private String permission, description;
 	

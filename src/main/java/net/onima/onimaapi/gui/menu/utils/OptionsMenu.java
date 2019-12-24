@@ -1,5 +1,6 @@
 package net.onima.onimaapi.gui.menu.utils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -7,6 +8,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Dye;
 
+import net.onima.onimaapi.event.PlayerShowInvisibleEvent;
 import net.onima.onimaapi.gui.PacketMenu;
 import net.onima.onimaapi.gui.buttons.utils.Button;
 import net.onima.onimaapi.gui.buttons.utils.NamedButton;
@@ -83,14 +85,17 @@ public abstract class OptionsMenu extends PacketMenu {
 		public void click(PacketMenu menu, Player clicker, ItemStack current, InventoryClickEvent event) {
 			event.setCancelled(true);
 			
+			if (option.permission() != null && !option.permission().has(clicker))
+				return;
+			
 			if (object instanceof Boolean) {
 				boolean result = options.reverseBoolean(option);
 				object = result;
 				
-				if (option == PlayerOption.ModOptions.PICKUP_ITEM) {
-					System.out.println(clicker.getCanPickupItems());
+				if (option == PlayerOption.ModOptions.PICKUP_ITEM)
 					clicker.setCanPickupItems(!result);
-				}
+				else if (option == PlayerOption.GlobalOptions.SHOW_INVISIBLE_PLAYERS)
+					Bukkit.getPluginManager().callEvent(new PlayerShowInvisibleEvent(result, clicker));
 			}
 			
 			update(menu);
@@ -99,7 +104,7 @@ public abstract class OptionsMenu extends PacketMenu {
 		@Override
 		public void update(PacketMenu menu) {
 			if (object instanceof Boolean) {
-				menu.getInventory().setItem(slot(), getButtonItem(null).toItemStack());
+				menu.getInventory().setItem(slot(), getButtonItem(apiPlayer.toPlayer()).toItemStack());
 				return;
 			}
 				
@@ -115,7 +120,7 @@ public abstract class OptionsMenu extends PacketMenu {
 					else 
 						options.getSettings().put(option, object = (((Number) options.get(option)).floatValue() + value.floatValue()));
 					
-					updater.getInventory().setItem(updater.toUpdateSlot, getButtonItem(null).toItemStack());
+					updater.getInventory().setItem(updater.toUpdateSlot, getButtonItem(apiPlayer.toPlayer()).toItemStack());
 					return true;
 				}
 			};

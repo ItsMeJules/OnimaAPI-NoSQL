@@ -15,7 +15,7 @@ import net.onima.onimaapi.utils.time.Time;
 public class VanishOFF extends ModItem implements EntityClickable {
 
 	public VanishOFF() {
-		super("vanish_off", 2, new BetterItem(Material.INK_SACK, 1, 7, MOD_PREFIX + " §cVanish §8(§c§lOFF§8) (§7R&L§8)", "§7Click droit pour switcher de vanish.", "§7Click gauche sur un joueur pour lui switch de vanish."));
+		super("vanish_off", 2, new BetterItem(Material.INK_SACK, 1, 7, MOD_PREFIX + " §cVanish §8(§c§lOFF§8) (§7R&L§8)", "§7Click dans le vide pour switcher de vanish.", "§7Click sur un joueur pour le faire disparaitre."));
 	}
 	
 	@Override

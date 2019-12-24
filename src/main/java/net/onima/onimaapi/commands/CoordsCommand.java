@@ -12,7 +12,7 @@ public class CoordsCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		if (OnimaPerm.ONIMAAPI_COORDS_COMMAND.has(sender)) {
+		if (!OnimaPerm.ONIMAAPI_COORDS_COMMAND.has(sender)) {
 			sender.sendMessage(OnimaAPI.UNKNOWN_COMMAND);
 			return false;
 		}

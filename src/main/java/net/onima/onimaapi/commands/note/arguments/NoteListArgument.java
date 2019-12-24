@@ -42,7 +42,7 @@ public class NoteListArgument extends BasicCommandArgument {
 		NotePriority priority = args.length > 2 ? NotePriority.fromName(args[2]) : null;
 		
 		OfflineAPIPlayer.getPlayer(uuid, offline -> {
-			List<Note> notes = offline.getNotes().stream().filter(note -> priority == null ? true : priority.getPriority() == note.getPriority().getPriority()).collect(Collectors.toList());
+			List<Note> notes = offline.getNotes().stream().filter(note -> !note.isExpired()).filter(note -> priority == null ? true : priority.getPriority() == note.getPriority().getPriority()).collect(Collectors.toList());
 			int size = notes.size(), index = 1;
 			
 			sender.sendMessage("§e" + Methods.getName(offline, true) + " §7a §e" + size + " §7note" + (size > 1 ? "s" : "") + (priority == null ? "" : " de type " + priority.getColor() + priority.name()) + " §7:");
