@@ -806,7 +806,15 @@ public enum OnimaPerm {
 	
 	ONIMAFACTION_DTR_COOLDOWN_ARGUMENT("onimafaction.dtr.cooldown.argument", "Permet de supprimer le dtr freeze d'une faction."), 
 	
-	ONIMAAPI_SEE_INVISIBLE("onimaapi.see.invisible", "Permet de voir les joueurs invisibles");
+	ONIMAAPI_SEE_INVISIBLE("onimaapi.see.invisible", "Permet de voir les joueurs invisibles"),
+	
+	ONIMAAPI_TPHERE_COMMAND("onimaapi.tphere.command", "Permet de téléporter un joueur à votre position."),
+	
+	ONIMAAPI_TPALL_COMMAND("onimaapi.tpall.command", "Permet de téléporter tous les joueurs à votre position."),
+	
+	ONIMAAPI_SKULL_COMMAND("onimaapi.skull.command", "Permet de donner un type de tête/la tête d'un joueur."),
+	
+	ONIMAAPI_CLEAR_COMMAND("onimaapi.clear.command", "Permet de clear l'inventaire d'un joueur.");
 	
 	private String permission, description;
 	

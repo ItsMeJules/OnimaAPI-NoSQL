@@ -483,7 +483,6 @@ public enum RankType { //TODO Classification rank en json. Liste de permission p
 	private int value;
 	private long time;
 	private ChatColor speakingColor, nameColor;
-	
 
 	private RankType(String name, String prefix, int value, long time, ChatColor nameColor, ChatColor speakingColor) {
 		this.name = name;

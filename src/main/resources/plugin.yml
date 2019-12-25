@@ -174,3 +174,13 @@ commands:
   disguise:
     description: Vous fait changer de skin et de pseudo.
     permission: onimaapi.disguise.command
+  tphere:
+    description: Téléporte un joueur à votre location.
+    aliases: [tph, s]
+    permission: onimaapi.tphere.command
+  tpall:
+    description: Téléporte tous les joueurs à votre location.
+    permission: onimaapi.tpall.command
+  skull:
+    description: Donne un type de tête/la tête d'un joueur.
+    permission: onimaapi.skull.command

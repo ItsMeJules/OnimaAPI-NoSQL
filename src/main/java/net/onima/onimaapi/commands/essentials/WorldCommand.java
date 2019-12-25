@@ -73,7 +73,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter {
 			if (args.length >= 3 && args[2].equalsIgnoreCase("spawn"))
 				tpLocation = world.getSpawnLocation();
 			else
-				tpLocation = new Location(world, location.getX(), world.getHighestBlockYAt(location), location.getZ());
+				tpLocation = new Location(world, location.getX(), world.getHighestBlockYAt(location), location.getZ(), location.getYaw(), location.getPitch());
 			
 			player.teleport(tpLocation);
 			sender.sendMessage("§dVous §7avez été téléporté dans le monde §d" + world.getName());

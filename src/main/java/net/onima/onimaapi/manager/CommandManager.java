@@ -30,13 +30,17 @@ import net.onima.onimaapi.commands.balance.BalanceExecutor;
 import net.onima.onimaapi.commands.chat.ChatExecutor;
 import net.onima.onimaapi.commands.cooldown.CooldownExecutor;
 import net.onima.onimaapi.commands.crate.CrateExecutor;
+import net.onima.onimaapi.commands.essentials.ClearCommand;
 import net.onima.onimaapi.commands.essentials.CraftCommand;
 import net.onima.onimaapi.commands.essentials.EnchantCommand;
 import net.onima.onimaapi.commands.essentials.FlyCommand;
 import net.onima.onimaapi.commands.essentials.GmcCommand;
 import net.onima.onimaapi.commands.essentials.ReloreCommand;
 import net.onima.onimaapi.commands.essentials.RenameCommand;
+import net.onima.onimaapi.commands.essentials.SkullCommand;
 import net.onima.onimaapi.commands.essentials.SudoCommand;
+import net.onima.onimaapi.commands.essentials.TeleportAllCommand;
+import net.onima.onimaapi.commands.essentials.TeleportHereCommand;
 import net.onima.onimaapi.commands.essentials.TopCommand;
 import net.onima.onimaapi.commands.essentials.WhoisCommand;
 import net.onima.onimaapi.commands.essentials.WorldCommand;
@@ -121,6 +125,10 @@ public class CommandManager {
 		plugin.getCommand("note").setExecutor(new NoteExecutor());
 		plugin.getCommand("iphistory").setExecutor(new IpHistoryCommand());
 		plugin.getCommand("disguise").setExecutor(new DisguiseCommand());
+		plugin.getCommand("tphere").setExecutor(new TeleportHereCommand());
+		plugin.getCommand("tpall").setExecutor(new TeleportAllCommand());
+		plugin.getCommand("skull").setExecutor(new SkullCommand());
+		plugin.getCommand("clear").setExecutor(new ClearCommand());
 	}
 
 
