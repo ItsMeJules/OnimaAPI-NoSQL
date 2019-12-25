@@ -27,6 +27,34 @@ public class DisguiseSkin {
 		skins.add(new DisguiseSkin("17658ef1-2ec4-4bc7-9af3-426359aee86f", "Deguisement2Noel"));
 		skins.add(new DisguiseSkin("21d841ad-8743-4815-818d-15c8ac005052", "Ralc"));
 		skins.add(new DisguiseSkin("d61ed00f-5712-424d-ae01-e92cfba3c109", "Masteru"));
+		skins.add(new DisguiseSkin("3a3db619-9709-46d9-b5f5-5e05da40d8b6", "JohnRambo"));
+		skins.add(new DisguiseSkin("20ef4ae0-7c64-4469-b9dd-54ef9a33c74c", "Berserk"));
+		skins.add(new DisguiseSkin("7561808d-ed1b-4f6a-9777-53fbfba6ba1f", "Sinulab"));
+		skins.add(new DisguiseSkin("e0be18f9-6b43-45ec-92fa-049734c3d57e", "BruitDeGoule"));
+		skins.add(new DisguiseSkin("797570d5-63e8-42c4-b692-be3f818df3e8", "EvilCam"));
+		skins.add(new DisguiseSkin("2d6c937b-fa5f-4a3a-8127-45bb868e1fc4", "LinkEnFille"));
+		skins.add(new DisguiseSkin("6e2119b7-2ac3-46d9-9614-2a20a0617e5a", "BlyatMan"));
+		skins.add(new DisguiseSkin("bf19f507-bcbd-43e4-8e4e-4e23dc9343c9", "DragonZNeo"));
+		skins.add(new DisguiseSkin("5ef42388-36e1-462e-8f67-b62187341524", "EnderNoel"));
+		skins.add(new DisguiseSkin("7f4d50b1-37d2-482f-b981-c21619b8d628", "CYKAChu"));
+		skins.add(new DisguiseSkin("e144089c-4631-4b88-8748-4926ab6dac53", "MoNoCl3"));
+		skins.add(new DisguiseSkin("dda6ea83-75bc-4f9f-b2bd-eb5f2e6c297a", "SpiderProut"));
+		skins.add(new DisguiseSkin("91da284d-b051-488c-a027-0e7452b3fdbb", "LeVraiBatman"));
+		skins.add(new DisguiseSkin("b0bdbd01-ca31-40cb-8f3a-f3ea938f99db", "OMENGU"));
+		skins.add(new DisguiseSkin("ad0024f9-fcd9-4bec-b918-c26fb6625b38", "Incognito"));
+		skins.add(new DisguiseSkin("f225131e-6101-44a4-b812-2b5c9f197850", "MonPtitPote"));
+		skins.add(new DisguiseSkin("e05fe213-f9e2-4403-b7b3-f0c00a56601a", "_Donald45_"));
+		skins.add(new DisguiseSkin("597254e8-b539-4da3-9825-1230265823b1", "ISEGRIN"));
+		skins.add(new DisguiseSkin("84cef0dd-d3df-411a-8ec5-51275caea92f", "Ajejeje"));
+		skins.add(new DisguiseSkin("137526de-6074-4b35-bc1e-3c542564d116", "ChocoPur"));
+		skins.add(new DisguiseSkin("afc5ca68-c515-4f94-8c02-d0b4a8870b14", "Yutano"));
+		skins.add(new DisguiseSkin("65a560d2-a40b-4f52-89fe-86f0be635492", "Kamio"));
+		skins.add(new DisguiseSkin("6a9dad1b-8d04-4e23-9ecd-729fe9539064", "Souhed"));
+		skins.add(new DisguiseSkin("d590fcc6-1798-402c-8072-a3067fc8b98b", "SocialmentGentil"));
+		skins.add(new DisguiseSkin("82ca8bce-424c-4a74-ae0f-86b242c3f734", "PlzKillMe"));
+		skins.add(new DisguiseSkin("53498d59-0b92-4bea-9007-7a95f39dacca", "Mongart"));
+		skins.add(new DisguiseSkin("44f36d83-d7f1-4946-889b-2d50f8b2763a", "Polympon"));
+		skins.add(new DisguiseSkin("f9d6dd7a-0e7a-4bc8-8c7c-82d341820efe", "Error113"));
 	}
 	
 	private UUID uuid;
