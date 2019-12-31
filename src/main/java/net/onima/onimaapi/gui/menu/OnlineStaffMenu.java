@@ -22,7 +22,7 @@ public class OnlineStaffMenu extends PacketMenu implements PacketStaticMenu {
 		APIPlayer.getOnlineAPIPlayers().parallelStream()
 				.filter(online -> OnimaPerm.STAFF_COUNTER_COUNT.has(online.toPlayer()))
 				.sorted((x, y) -> -Integer.compare(x.getRank().getRankType().getValue(), y.getRank().getRankType().getValue()))
-				.forEach(staff -> buttons.put(buttons.size(), new TeleportHeadButton(staff)));
+				.forEach(staff -> buttons.put(buttons.size(), new StaffHeadButton(staff)));
 	}
 
 	@Override
@@ -30,6 +30,22 @@ public class OnlineStaffMenu extends PacketMenu implements PacketStaticMenu {
 		inventory.clear();
 		for (Entry<Integer, Button> entry : buttons.entrySet())
 			inventory.setItem(entry.getKey(), createItemStack(null, entry.getValue()));
+	}
+	
+	public class StaffHeadButton extends TeleportHeadButton {
+
+		public StaffHeadButton(APIPlayer owner) {
+			super(owner);
+		}
+		
+		@Override
+		protected void lore() {
+			lore.add("§eMod-mode : " + (owner.isInModMode() ? "§a" : "§c") + owner.isInModMode());
+			lore.add("§eVanish : " + (owner.isVanished() ? "§a" : "§c") + owner.isVanished());
+			lore.add("");
+			super.lore();
+		}
+		
 	}
 
 }

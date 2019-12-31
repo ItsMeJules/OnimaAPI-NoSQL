@@ -184,3 +184,9 @@ commands:
   skull:
     description: Donne un type de tête/la tête d'un joueur.
     permission: onimaapi.skull.command
+  clear:
+    description: Clear l'inventaire d'un joueur.
+    permission: onimaapi.clear.command
+  ignore:
+    description: Commande principale pour ignorer.
+    permission: onimaapi.ignore.command

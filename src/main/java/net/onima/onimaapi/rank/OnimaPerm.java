@@ -814,7 +814,17 @@ public enum OnimaPerm {
 	
 	ONIMAAPI_SKULL_COMMAND("onimaapi.skull.command", "Permet de donner un type de tête/la tête d'un joueur."),
 	
-	ONIMAAPI_CLEAR_COMMAND("onimaapi.clear.command", "Permet de clear l'inventaire d'un joueur.");
+	ONIMAAPI_CLEAR_COMMAND("onimaapi.clear.command", "Permet de clear l'inventaire d'un joueur."),
+	
+	ONIMAAPI_IGNORE_COMMAND("onimaapi.ignore.command", "Commande principale pour ignorer des joueurs."),
+	
+	ONIMAAPI_IGNORE_ADD_ARGUMENT("onimaapi.ignore.add.argument", "Ajoute un joueur à la liste des joueurs ignorés."),
+	
+	ONIMAAPI_IGNORE_EXEMPT("onimaapi.ignore.exempt", "Empêche un joueur d'être ignoré."),
+	
+	ONIMAAPI_IGNORE_REMOVE_ARGUMENT("onimaapi.ignore.remove.argument", "Supprime un joueur de la liste des joueurs ignorés."),
+	
+	ONIMAAPI_IGNORE_LIST_ARGUMENT("onimaapi.ignore.list.argument", "Affiche la liste des joueurs ignorés.");
 	
 	private String permission, description;
 	

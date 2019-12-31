@@ -44,6 +44,7 @@ import net.onima.onimaapi.commands.essentials.TeleportHereCommand;
 import net.onima.onimaapi.commands.essentials.TopCommand;
 import net.onima.onimaapi.commands.essentials.WhoisCommand;
 import net.onima.onimaapi.commands.essentials.WorldCommand;
+import net.onima.onimaapi.commands.ignore.IgnoreExecutor;
 import net.onima.onimaapi.commands.mountain.MountainExecutor;
 import net.onima.onimaapi.commands.note.NoteExecutor;
 import net.onima.onimaapi.commands.punishment.BanCommand;
@@ -129,6 +130,7 @@ public class CommandManager {
 		plugin.getCommand("tpall").setExecutor(new TeleportAllCommand());
 		plugin.getCommand("skull").setExecutor(new SkullCommand());
 		plugin.getCommand("clear").setExecutor(new ClearCommand());
+		plugin.getCommand("ignore").setExecutor(new IgnoreExecutor());
 	}
 
 

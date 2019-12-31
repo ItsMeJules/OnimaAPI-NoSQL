@@ -65,7 +65,7 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 	protected OfflinePlayer offlinePlayer;
 	protected UUID uuid;
 	protected String name, ip;
-	protected List<UUID> alts;
+	protected List<UUID> alts, ignored;
 	protected int kills, deaths;
 	protected Balance balance;
 	protected List<PacketMenu> menus;
@@ -84,6 +84,7 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 	
 	{
 		alts = new ArrayList<>();
+		ignored = new ArrayList<>();
 		balance = new Balance(ConfigurationService.DEFAULT_BALANCE);
 		menus = new ArrayList<>();
 		options = new Options();
@@ -137,6 +138,7 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 			
 			ip = old.ip;
 			alts = old.alts;
+			ignored = old.ignored;
 			kills = old.kills;
 			deaths = old.deaths;
 			balance = old.balance;
@@ -202,6 +204,15 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 	 */
 	public List<UUID> getAlts() {
 		return alts;
+	}
+	
+	/**
+	 * This method is getting all this OfflineAPIPlayer's ignored players.
+	 * 
+	 * @return A list with the ignored players' uuid.
+	 */
+	public List<UUID> getIgnored() {
+		return ignored;
 	}
 	
 	/**
@@ -632,6 +643,9 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 			
 			notes.add(note);
 		}
+		
+		for (String ignored : result.valueToList("ignored", String.class))
+			this.ignored.add(UUID.fromString(ignored));
 	}
 
 	@Deprecated
