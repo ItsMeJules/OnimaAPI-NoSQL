@@ -824,7 +824,11 @@ public enum OnimaPerm {
 	
 	ONIMAAPI_IGNORE_REMOVE_ARGUMENT("onimaapi.ignore.remove.argument", "Supprime un joueur de la liste des joueurs ignorés."),
 	
-	ONIMAAPI_IGNORE_LIST_ARGUMENT("onimaapi.ignore.list.argument", "Affiche la liste des joueurs ignorés.");
+	ONIMAAPI_IGNORE_LIST_ARGUMENT("onimaapi.ignore.list.argument", "Affiche la liste des joueurs ignorés."),
+	
+	KILL_COMMAND("onimaapi.kill.command", "Tue un joueur."),
+	
+	GMS_COMMAND("onimaapi.gms.command", "Permet de se mettre en survie.");
 	
 	private String permission, description;
 	

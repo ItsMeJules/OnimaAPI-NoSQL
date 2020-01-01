@@ -35,6 +35,8 @@ import net.onima.onimaapi.commands.essentials.CraftCommand;
 import net.onima.onimaapi.commands.essentials.EnchantCommand;
 import net.onima.onimaapi.commands.essentials.FlyCommand;
 import net.onima.onimaapi.commands.essentials.GmcCommand;
+import net.onima.onimaapi.commands.essentials.GmsCommand;
+import net.onima.onimaapi.commands.essentials.KillCommand;
 import net.onima.onimaapi.commands.essentials.ReloreCommand;
 import net.onima.onimaapi.commands.essentials.RenameCommand;
 import net.onima.onimaapi.commands.essentials.SkullCommand;
@@ -131,6 +133,8 @@ public class CommandManager {
 		plugin.getCommand("skull").setExecutor(new SkullCommand());
 		plugin.getCommand("clear").setExecutor(new ClearCommand());
 		plugin.getCommand("ignore").setExecutor(new IgnoreExecutor());
+		plugin.getCommand("kill").setExecutor(new KillCommand());
+		plugin.getCommand("gms").setExecutor(new GmsCommand());
 	}
 
 

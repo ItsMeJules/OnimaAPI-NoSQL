@@ -25,6 +25,8 @@ public class RankMenu extends PacketMenu implements PacketStaticMenu {
 		BetterItem komonoRank = new BetterItem(Material.WOOL, 1, 13, RankType.KOMONO.getName());
 		BetterItem kachiRank = new BetterItem(Material.WOOL, 1, 1, RankType.KACHI.getName());
 		BetterItem shogunRank = new BetterItem(Material.WOOL, 1, 10, RankType.SHOGUN.getName());
+		BetterItem youtubeRank = new BetterItem(Material.WOOL, 1, 14, RankType.YOUTUBE.getName());
+		BetterItem famousRank = new BetterItem(Material.WOOL, 1, 6, RankType.FAMOUS.getName());
 		
 		buttons.put(1, new DisplayButton(defaultRank));
 		buttons.put(4, new DisplayButton(ninjaRank));
@@ -32,6 +34,8 @@ public class RankMenu extends PacketMenu implements PacketStaticMenu {
 		buttons.put(19, new DisplayButton(komonoRank));
 		buttons.put(22, new DisplayButton(kachiRank));
 		buttons.put(25, new DisplayButton(shogunRank));
+		buttons.put(39, new DisplayButton(youtubeRank));
+		buttons.put(41, new DisplayButton(famousRank));
 	}
 
 	@Override

@@ -190,3 +190,9 @@ commands:
   ignore:
     description: Commande principale pour ignorer.
     permission: onimaapi.ignore.command
+  kill:
+    description: Tue un joueur.
+    permission: onimaapi.kill.command
+  gms:
+    description: Permet de se mettre en survie.
+    permission: onimaapi.gms.command
