@@ -14,7 +14,7 @@ import net.onima.onimaapi.utils.BetterItem;
 public class RankMenu extends PacketMenu implements PacketStaticMenu {
 
 	public RankMenu() {
-		super("ranks", "§6Ranks du serveur.", MAX_SIZE, true);
+		super("ranks", "§6Ranks du serveur.", MAX_SIZE - 9, true);
 	}
 
 	@Override

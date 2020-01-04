@@ -12,10 +12,6 @@ import net.onima.onimaapi.utils.time.Time.LongTime;
 
 public class TeleportHeadButton extends HeadButton implements UpdatableButton {
 
-	{
-		lore();
-	}
-	
 	public TeleportHeadButton(APIPlayer owner) {
 		super(owner);
 	}

@@ -196,3 +196,6 @@ commands:
   gms:
     description: Permet de se mettre en survie.
     permission: onimaapi.gms.command
+  speed:
+    description: Permet de définir sa vitesse.
+    permission: onimaapi.speed.command

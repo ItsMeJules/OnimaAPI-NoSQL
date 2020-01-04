@@ -17,6 +17,7 @@ import net.onima.onimaapi.listener.FastTileEntityListener;
 import net.onima.onimaapi.listener.FreezeListener;
 import net.onima.onimaapi.listener.GlobalOptionsListener;
 import net.onima.onimaapi.listener.HorseProtectListener;
+import net.onima.onimaapi.listener.IgnoreListener;
 import net.onima.onimaapi.listener.InvseeListener;
 import net.onima.onimaapi.listener.LimitersListener;
 import net.onima.onimaapi.listener.MenuListener;
@@ -82,6 +83,7 @@ public class ListenerManager {
 		pm.registerEvents(new BlockHitFixListener(), plugin);
 		pm.registerEvents(new SignColorsListener(), plugin);
 		pm.registerEvents(new DisguiseListener(), plugin);
+		pm.registerEvents(new IgnoreListener(), plugin);
 	}
 
 	public WorldBorderListener getWorldBorderListener() {

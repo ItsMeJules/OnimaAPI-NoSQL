@@ -1,14 +1,14 @@
 package net.onima.onimaapi.zone.type.utils;
 
 import net.onima.onimaapi.players.APIPlayer;
-import net.onima.onimaapi.zone.type.Region;
+import net.onima.onimaapi.zone.Cuboid;
 
 public interface Capable {
 	
 	public long getCapTime();
 	public void setCapTime(long capTime);
-	public Region getCapZone();
-	public void setCapZone(Region capZone);
+	public Cuboid getCapZone();
+	public void setCapZone(Cuboid capZone);
 	public long getCapTimeLeft();
 	public void setCapTimeLeft(long capTimeLeft);
 	public long getTimeAtCap();

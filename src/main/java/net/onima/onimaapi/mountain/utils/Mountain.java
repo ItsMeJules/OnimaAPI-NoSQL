@@ -430,7 +430,6 @@ public abstract class Mountain implements FileSaver, MinecraftCuboid, Scheduler 
 						mountain.creator = nameSection.getString(name + ".creator");
 						mountain.created = nameSection.getLong(name + ".created");
 						mountain.cuboid = new Cuboid(Methods.deserializeLocation(nameSection.getString(name + ".loc1"), false), Methods.deserializeLocation(nameSection.getString(name + ".loc2"), false), true);
-						mountain.schedulerEnabled = nameSection.getBoolean(name + ".scheduler-enabled");
 
 						if (resetTime != null && nextStart != null) {
 							
@@ -445,7 +444,7 @@ public abstract class Mountain implements FileSaver, MinecraftCuboid, Scheduler 
 							mountain.scheduleEvery(resetTime);
 						}
 						
-						mountain.generate();
+						mountain.setSchedulerEnabled(nameSection.getBoolean(name + ".scheduler-enabled"));
 						mountain.save();
 					}
 				}

@@ -42,7 +42,7 @@ public class KillCommand implements CommandExecutor {
 		}
 		
 
-        if (target == null || (sender instanceof Player && ((Player) sender).canSee(target))) {
+        if (target == null || (sender instanceof Player && !((Player) sender).canSee(target))) {
             sender.sendMessage("§c" + args[0] + " n'est pas connecté !");
             return false;
         }

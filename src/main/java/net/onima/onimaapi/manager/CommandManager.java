@@ -40,6 +40,7 @@ import net.onima.onimaapi.commands.essentials.KillCommand;
 import net.onima.onimaapi.commands.essentials.ReloreCommand;
 import net.onima.onimaapi.commands.essentials.RenameCommand;
 import net.onima.onimaapi.commands.essentials.SkullCommand;
+import net.onima.onimaapi.commands.essentials.SpeedCommand;
 import net.onima.onimaapi.commands.essentials.SudoCommand;
 import net.onima.onimaapi.commands.essentials.TeleportAllCommand;
 import net.onima.onimaapi.commands.essentials.TeleportHereCommand;
@@ -135,6 +136,7 @@ public class CommandManager {
 		plugin.getCommand("ignore").setExecutor(new IgnoreExecutor());
 		plugin.getCommand("kill").setExecutor(new KillCommand());
 		plugin.getCommand("gms").setExecutor(new GmsCommand());
+		plugin.getCommand("speed").setExecutor(new SpeedCommand());
 	}
 
 

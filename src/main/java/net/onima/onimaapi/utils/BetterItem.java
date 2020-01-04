@@ -156,7 +156,7 @@ public class BetterItem implements Cloneable {
 	public ItemStack toItemStack() {
 		ItemMeta meta = null;
 		
-		if (material == null && offlinePlayer != null && offlinePlayer.hasPlayedBefore()) {
+		if (material == null && offlinePlayer != null && (offlinePlayer.hasPlayedBefore() || offlinePlayer.isOnline())) {
 			material = Material.SKULL_ITEM;
 			damage = 3;
 			SkullMeta sMeta = (SkullMeta) Bukkit.getItemFactory().getItemMeta(material);

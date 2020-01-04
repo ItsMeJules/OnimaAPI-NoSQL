@@ -828,7 +828,9 @@ public enum OnimaPerm {
 	
 	KILL_COMMAND("onimaapi.kill.command", "Tue un joueur."),
 	
-	GMS_COMMAND("onimaapi.gms.command", "Permet de se mettre en survie.");
+	GMS_COMMAND("onimaapi.gms.command", "Permet de se mettre en survie."),
+	
+	SPEED_COMMAND("onimaapi.speed.command", "Permet de définir sa vitesse.");
 	
 	private String permission, description;
 	

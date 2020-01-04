@@ -144,7 +144,7 @@ public class ModListener implements Listener {
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onJoin(PlayerJoinEvent event) {
 		if (OnimaPerm.STAFF_COUNTER_COUNT.has(event.getPlayer())) {
 			ModItem.fromName("staff_counter").update(Methods.getPlayersInModMode().toArray(new APIPlayer[Methods.getPlayersInModMode().size()]));

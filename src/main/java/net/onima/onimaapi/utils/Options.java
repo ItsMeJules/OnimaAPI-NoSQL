@@ -70,7 +70,8 @@ public class Options implements MongoSerializer {
 				.append("private_message", getBoolean(GlobalOptions.PRIVATE_MESSAGE)).append("social_spy", getBoolean(GlobalOptions.SOCIAL_SPY))
 				.append("sounds", getBoolean(GlobalOptions.SOUNDS)).append("cobble_drop", getBoolean(GlobalOptions.COBBLE_DROP))
 				.append("death_messages", getBoolean(GlobalOptions.DEATH_MESSAGES)).append("found_diamond", getBoolean(GlobalOptions.FOUND_DIAMONDS))
-				.append("note_notify_connect", getBoolean(GlobalOptions.IMPORTANT_NOTE_NOTIFY_CONNECT)).append("show_players_spawn", GlobalOptions.SHOW_PLAYERS_WHEN_IN_SPAWN)
+				.append("note_notify_connect", getBoolean(GlobalOptions.IMPORTANT_NOTE_NOTIFY_CONNECT))
+				.append("show_players_spawn", getBoolean(GlobalOptions.SHOW_PLAYERS_WHEN_IN_SPAWN))
 				.append("show_invisible_players", getBoolean(GlobalOptions.SHOW_INVISIBLE_PLAYERS));
 	}
 	

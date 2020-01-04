@@ -89,9 +89,12 @@ public class OreMountain extends Mountain {
 		
 		while (iterator.hasNext()) {
 			Block block = iterator.next();
+			Material type = block.getType();
 			
-			if (block.getType().name().endsWith("_ORE"))
-				toSet.put(block.getLocation(), block.getType());
+			if (type == Material.STONE)
+				toSet.put(block.getLocation(), type);
+			else if (type.name().endsWith("_ORE"))
+				toSet.put(block.getLocation(), type);
 		}
 		
 		blocksRegistered = true;

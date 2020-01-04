@@ -18,8 +18,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.StringUtil;
 
-import com.google.common.collect.ImmutableList;
-
 import net.minecraft.util.com.google.common.base.Enums;
 import net.minecraft.util.com.google.common.base.Optional;
 import net.onima.onimaapi.OnimaAPI;
@@ -27,17 +25,6 @@ import net.onima.onimaapi.rank.OnimaPerm;
 
 public class SkullCommand implements CommandExecutor, TabCompleter {
 	
-    private static final ImmutableList<String> SKULL_NAMES;
-
-    static {
-        ImmutableList.Builder<String> builder = new ImmutableList.Builder<String>();
-        
-        for (SkullType skullType : SkullType.values())
-            builder.add(skullType.name());
-        
-        SKULL_NAMES = builder.build();
-    }
-
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (!OnimaPerm.ONIMAAPI_SKULL_COMMAND.has(sender)) {
@@ -69,11 +56,17 @@ public class SkullCommand implements CommandExecutor, TabCompleter {
 	}
 	
     @Override
-    public List<String> onTabComplete(final CommandSender sender, final Command command, final String label, final String[] args) {
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length != 1 || !(sender instanceof Player))
             return Collections.emptyList();
         
-        ArrayList<String> completions = new ArrayList<>(SkullCommand.SKULL_NAMES);
+        ArrayList<String> completions = new ArrayList<>();
+        
+        for (SkullType type : SkullType.values()) {
+        	if (StringUtil.startsWithIgnoreCase(type.name(), args[0]))
+        		completions.add(type.name());
+        }
+        	
         
         for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
         	if (StringUtil.startsWithIgnoreCase(sender.getName(), args[0]))

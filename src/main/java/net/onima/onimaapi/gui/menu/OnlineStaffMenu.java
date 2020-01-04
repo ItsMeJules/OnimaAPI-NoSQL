@@ -33,6 +33,10 @@ public class OnlineStaffMenu extends PacketMenu implements PacketStaticMenu {
 	}
 	
 	public class StaffHeadButton extends TeleportHeadButton {
+		
+		{
+			lore();
+		}
 
 		public StaffHeadButton(APIPlayer owner) {
 			super(owner);
