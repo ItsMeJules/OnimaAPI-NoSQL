@@ -33,9 +33,11 @@ import net.onima.onimaapi.commands.crate.CrateExecutor;
 import net.onima.onimaapi.commands.essentials.ClearCommand;
 import net.onima.onimaapi.commands.essentials.CraftCommand;
 import net.onima.onimaapi.commands.essentials.EnchantCommand;
+import net.onima.onimaapi.commands.essentials.FeedCommand;
 import net.onima.onimaapi.commands.essentials.FlyCommand;
 import net.onima.onimaapi.commands.essentials.GmcCommand;
 import net.onima.onimaapi.commands.essentials.GmsCommand;
+import net.onima.onimaapi.commands.essentials.HealCommand;
 import net.onima.onimaapi.commands.essentials.KillCommand;
 import net.onima.onimaapi.commands.essentials.ReloreCommand;
 import net.onima.onimaapi.commands.essentials.RenameCommand;
@@ -137,6 +139,8 @@ public class CommandManager {
 		plugin.getCommand("kill").setExecutor(new KillCommand());
 		plugin.getCommand("gms").setExecutor(new GmsCommand());
 		plugin.getCommand("speed").setExecutor(new SpeedCommand());
+		plugin.getCommand("heal").setExecutor(new HealCommand());
+		plugin.getCommand("feed").setExecutor(new FeedCommand());
 	}
 
 

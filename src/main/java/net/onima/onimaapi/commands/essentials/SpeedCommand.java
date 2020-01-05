@@ -1,24 +1,37 @@
 package net.onima.onimaapi.commands.essentials;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 
+import net.onima.onimaapi.OnimaAPI;
 import net.onima.onimaapi.caching.UUIDCache;
 import net.onima.onimaapi.rank.OnimaPerm;
 import net.onima.onimaapi.utils.JSONMessage;
 import net.onima.onimaapi.utils.Methods;
 
-public class SpeedCommand implements CommandExecutor {
+public class SpeedCommand implements CommandExecutor, TabCompleter {
 	
 	private JSONMessage usage = new JSONMessage("§7/speed <speed> (player) (type)", "§d§oDéfinit la vitesse.");
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		if (!OnimaPerm.SPEED_COMMAND.has(sender)) {
+			sender.sendMessage(OnimaAPI.UNKNOWN_COMMAND);
+			return false;
+		}
+		
 		Player target;
 		
 		if (args.length < 1) {
@@ -26,7 +39,7 @@ public class SpeedCommand implements CommandExecutor {
 			return false;
 		}
 		
-		if (args.length > 1 && OnimaPerm.SPEED_COMMAND.has(sender)) {
+		if (args.length > 1) {
 			UUID uuid = UUIDCache.getUUID(args[1]);
 			
 			if (uuid == null) {
@@ -83,9 +96,30 @@ public class SpeedCommand implements CommandExecutor {
             return true;
         }
         
-        sender.sendMessage("§7Vous avez défini la vitesse de §e" + (fly ? "vol" : "marche") + " §7de §e" + target.getName() + " §7sur §e" + speed * 10 + "§7.");
-		target.sendMessage("§e" + sender.getName() + "§7a défini votre vitesse de §e" + (fly ? "vol" : "marche") + " §7sur §e" + speed * 10 + "§7.");
+        sender.sendMessage("§7Vous avez défini la vitesse de §e" + (fly ? "vol" : "marche") + " §7de §e" + Methods.getRealName((OfflinePlayer) target) + " §7sur §e" + speed * 10 + "§7.");
+		target.sendMessage("§e" + Methods.getRealName((OfflinePlayer) target) + "§7a défini votre vitesse de §e" + (fly ? "vol" : "marche") + " §7sur §e" + speed * 10 + "§7.");
         return true;
+	}
+	
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+		if (args.length < 1 || !OnimaPerm.SPEED_COMMAND.has(sender))
+			return Collections.emptyList();
+		
+		if (args.length == 2)
+			return Bukkit.getOnlinePlayers().stream().filter(player -> StringUtil.startsWithIgnoreCase(player.getName(), args[1])).map(Player::getName).collect(Collectors.toList());
+		else if (args.length == 3) {
+			List<String> completions = new ArrayList<>();
+			
+			if (StringUtil.startsWithIgnoreCase("fly", args[2]))
+				completions.add("fly");
+			
+			if (StringUtil.startsWithIgnoreCase("walk", args[2]))
+				completions.add("walk");
+			
+			return completions;
+		} else 
+			return Collections.emptyList();
 	}
 
 }

@@ -830,7 +830,11 @@ public enum OnimaPerm {
 	
 	GMS_COMMAND("onimaapi.gms.command", "Permet de se mettre en survie."),
 	
-	SPEED_COMMAND("onimaapi.speed.command", "Permet de définir sa vitesse.");
+	SPEED_COMMAND("onimaapi.speed.command", "Permet de définir sa vitesse."),
+	
+	HEAL_COMMAND("onimaapi.heal.command", "Permet de se heal."),
+	
+	FEED_COMMAND("onimaapi.feed.command", "Permet de se nourrir.");
 	
 	private String permission, description;
 	

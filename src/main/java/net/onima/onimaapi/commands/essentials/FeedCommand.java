@@ -7,23 +7,25 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.bukkit.event.entity.EntityDamageEvent;
 
+import net.onima.onimaapi.OnimaAPI;
 import net.onima.onimaapi.caching.UUIDCache;
 import net.onima.onimaapi.rank.OnimaPerm;
 import net.onima.onimaapi.utils.Methods;
 
-public class KillCommand implements CommandExecutor {
+public class FeedCommand implements CommandExecutor {
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		if (!OnimaPerm.FEED_COMMAND.has(sender)) {
+			sender.sendMessage(OnimaAPI.UNKNOWN_COMMAND);
+			return false;
+		}
+		
 		Player target;
 		
-		if (args.length > 0 && OnimaPerm.KILL_COMMAND.has(sender)) {
+		if (args.length > 0) {
 			UUID uuid = UUIDCache.getUUID(args[0]);
 			
 			if (uuid == null) {
@@ -40,7 +42,6 @@ public class KillCommand implements CommandExecutor {
 			
 			target = (Player) sender;
 		}
-		
 
         if (target == null || (sender instanceof Player && !((Player) sender).canSee(target))) {
             sender.sendMessage("§c" + args[0] + " n'est pas connecté !");
@@ -48,27 +49,20 @@ public class KillCommand implements CommandExecutor {
         }
         
         if (target.isDead()) {
-            sender.sendMessage("§c" + Methods.getRealName((OfflinePlayer) target) + " est déjà mort.");
+            sender.sendMessage("§c" + Methods.getRealName((OfflinePlayer) target) + " est mort. Il ne peut pas être nourrit.");
             return false;
         }
         
-        final EntityDamageEvent event = new EntityDamageEvent((Entity) target, EntityDamageEvent.DamageCause.SUICIDE, 10000);
-        Bukkit.getPluginManager().callEvent((Event) event);
-        
-        if (event.isCancelled()) {
-            sender.sendMessage("§cVous ne pouvez pas kill " + Methods.getRealName((OfflinePlayer) target) + '.');
-            return false;
-        }
-        
-        target.setLastDamageCause(event);
-        target.setHealth(0.0);
+        target.setFoodLevel(20);
+        target.setSaturation(20F);
         
         if (sender.equals(target)) {
-            sender.sendMessage("§eVous vous êtes kill.");
+            sender.sendMessage("§eVous vous êtes nourrit.");
             return true;
         }
-		
-        Bukkit.broadcastMessage("§7" + Methods.getRealName(sender) + " a kill §e" + Methods.getRealName((OfflinePlayer) target));
+        
+        sender.sendMessage("§7Vous avez nourrit §e" + Methods.getRealName((OfflinePlayer) target));
+        target.sendMessage("§e" + Methods.getRealName(sender) + " §7vous a nourrit.");
 		return true;
 	}
 

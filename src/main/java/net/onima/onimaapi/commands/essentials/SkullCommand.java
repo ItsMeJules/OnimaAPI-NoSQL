@@ -60,14 +60,13 @@ public class SkullCommand implements CommandExecutor, TabCompleter {
         if (args.length != 1 || !(sender instanceof Player))
             return Collections.emptyList();
         
-        ArrayList<String> completions = new ArrayList<>();
+        List<String> completions = new ArrayList<>();
         
         for (SkullType type : SkullType.values()) {
         	if (StringUtil.startsWithIgnoreCase(type.name(), args[0]))
         		completions.add(type.name());
         }
         	
-        
         for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
         	if (StringUtil.startsWithIgnoreCase(sender.getName(), args[0]))
         		completions.add(player.getName());

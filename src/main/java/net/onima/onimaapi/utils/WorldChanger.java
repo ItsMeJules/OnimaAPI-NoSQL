@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import net.onima.onimaapi.OnimaAPI;
 import net.onima.onimaapi.manager.ConfigManager;
 import net.onima.onimaapi.saver.FileSaver;
 
@@ -66,11 +67,13 @@ public class WorldChanger implements FileSaver {
 	@Override
 	public void save() {
 		worlds.add(this);
+		OnimaAPI.getShutdownSavers().add(this);
 	}
 
 	@Override
 	public void remove() {
 		worlds.remove(this);
+		OnimaAPI.getShutdownSavers().remove(this);
 	}
 
 	@Override

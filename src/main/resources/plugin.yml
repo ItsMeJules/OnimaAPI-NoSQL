@@ -199,3 +199,9 @@ commands:
   speed:
     description: Permet de définir sa vitesse.
     permission: onimaapi.speed.command
+  heal:
+    description: Permet de regagner toute sa vie.
+    permission: onimaapi.heal.command
+  feed:
+    description: Permet de regagner toute sa barre de bouffe.
+    permission: onimaapi.feed.command

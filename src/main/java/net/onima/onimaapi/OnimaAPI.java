@@ -54,6 +54,7 @@ import net.onima.onimaapi.utils.Methods;
 import net.onima.onimaapi.utils.Options;
 import net.onima.onimaapi.utils.Scheduler;
 import net.onima.onimaapi.utils.Warp;
+import net.onima.onimaapi.utils.WorldChanger;
 import net.onima.onimaapi.zone.type.Region;
 
 /**
@@ -121,6 +122,7 @@ public class OnimaAPI extends JavaPlugin {
 		HCFSign.deserialize();
 		Warp.deserialize();
 		Region.deserialize();
+		WorldChanger.deserialize();
 		
 		enchantLimiter = new EnchantLimiter();
 		potionLimiter = new PotionLimiter();
