@@ -14,9 +14,9 @@ import net.onima.onimaapi.gui.buttons.utils.Button;
 import net.onima.onimaapi.gui.buttons.utils.NamedButton;
 import net.onima.onimaapi.gui.buttons.utils.UpdatableButton;
 import net.onima.onimaapi.players.APIPlayer;
+import net.onima.onimaapi.players.utils.Options;
 import net.onima.onimaapi.players.utils.PlayerOption;
 import net.onima.onimaapi.utils.BetterItem;
-import net.onima.onimaapi.utils.Options;
 import net.onima.onimaapi.utils.callbacks.APICallback;
 
 public abstract class OptionsMenu extends PacketMenu {

@@ -1,17 +1,20 @@
 package net.onima.onimaapi.listener;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import net.onima.onimaapi.crates.PhysicalCrate;
 import net.onima.onimaapi.crates.RoomCrate;
+import net.onima.onimaapi.crates.SupplyCrate;
 import net.onima.onimaapi.crates.VirtualCrate;
 import net.onima.onimaapi.crates.openers.PhysicalKey;
 import net.onima.onimaapi.crates.prizes.Prize;
@@ -69,6 +72,19 @@ public class CrateListener implements Listener {
 			} else if (action == Action.LEFT_CLICK_BLOCK)
 				crate.preview(apiPlayer);
 		}
+	}
+	
+	@EventHandler
+	public void onSupplyBreak(BlockBreakEvent event) {
+		Block block = event.getBlock();
+
+		if (block.getType() != Material.CHEST)
+			return;
+		
+		SupplyCrate crate = null;
+		
+		if ((crate = SupplyCrate.getDroppedByLocation(block.getLocation())) != null)
+			crate.destroy();
 	}
 	
 	@EventHandler

@@ -13,6 +13,7 @@ import java.util.UUID;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,6 +21,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
+import com.google.common.collect.Lists;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 
@@ -46,7 +48,7 @@ public class ConnectionLogsCommand implements CommandExecutor, TabCompleter {
 	
 	{
 		usagePlayer = new JSONMessage("§7/clg player <player>", "§d§oAffiche tous les logs de connexion pour ce joueur.");
-		usageIp = new JSONMessage("§7/clg ip <player>", "§d§oAffiche tous les logs de connexion pour cette ip.");
+		usageIp = new JSONMessage("§7/clg ip <ip>", "§d§oAffiche tous les logs de connexion pour cette ip.");
 		usageBetween = new JSONMessage("§7/clg date <dd-MM-yyyy:HH-mm> <dd-MM-yyyy:HH-mm>", "§d§oAffiche tous les logs de connexion dans cette tranche de date.");
 	}
 
@@ -100,6 +102,7 @@ public class ConnectionLogsCommand implements CommandExecutor, TabCompleter {
 			return false;
 		}
 		
+		sender.sendMessage("§aDonnées en cours de récupération...");
 		OnimaMongo.executeAsync(OnimaCollection.CONNECTION_LOGS, callback, true);
 		return true;
 			
@@ -107,19 +110,30 @@ public class ConnectionLogsCommand implements CommandExecutor, TabCompleter {
 	
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
-		if (!OnimaPerm.CONNECTION_LOGS_COMMAND.has(sender) && args.length != 1)
+		if (!OnimaPerm.CONNECTION_LOGS_COMMAND.has(sender) && args.length <= 1 || args.length >= 2)
 			return Collections.emptyList();
 		
 		List<String> completions = new ArrayList<>();
 		
-		if (StringUtil.startsWithIgnoreCase("ip", args[0]))
-			completions.add("ip");
-		
-		if (StringUtil.startsWithIgnoreCase("player", args[0]))
-			completions.add("player");
-		
-		if (StringUtil.startsWithIgnoreCase("date", args[0]))
-			completions.add("date");
+		if (args.length == 1) {
+			if (StringUtil.startsWithIgnoreCase("ip", args[0]))
+				completions.add("ip");
+			
+			if (StringUtil.startsWithIgnoreCase("player", args[0]))
+				completions.add("player");
+			
+			if (StringUtil.startsWithIgnoreCase("date", args[0]))
+				completions.add("date");
+		} else if (args.length == 2 && args[0].equalsIgnoreCase("player")) {
+			List<OfflinePlayer> all = Lists.newArrayList(Bukkit.getOfflinePlayers());
+			
+			all.addAll(Methods.getOnlinePlayers(null));
+			
+			for (OfflinePlayer offline : all) {
+				if (StringUtil.startsWithIgnoreCase(offline.getName(), args[1]))
+					completions.add(offline.getName());
+			}
+		}
 		
 		return completions;
 	}
@@ -175,35 +189,9 @@ public class ConnectionLogsCommand implements CommandExecutor, TabCompleter {
 
 		@Override
 		public int getMaxItemsPerPage() {
-			return 52;
+			return 53;
 		}
 
-		@Override
-		public PageMenu getPage(int page) {
-			ConnectionLogMenu menu = new ConnectionLogMenu(iterable);
-			menu.currentPage = page;
-			
-			return menu;
-		}
-
-		@Override
-		public boolean changePage(APIPlayer apiPlayer, int toAdd) {
-			ConnectionLogMenu menu = new ConnectionLogMenu(iterable);
-			menu.currentPage += currentPage;
-			
-			menu.open(apiPlayer);
-			return true;
-		}
-
-		@Override
-		public boolean openPage(APIPlayer apiPlayer, int page) {
-			ConnectionLogMenu menu = new ConnectionLogMenu(iterable);
-			menu.currentPage = currentPage;
-			
-			menu.open(apiPlayer);
-			return true;
-		}
-		
 	}
 
 }

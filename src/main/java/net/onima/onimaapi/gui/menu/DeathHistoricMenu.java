@@ -80,32 +80,6 @@ public class DeathHistoricMenu extends PageMenu {
 		return 51;
 	}
 
-	@Override
-	public PageMenu getPage(int page) {
-		DeathHistoricMenu menu = new DeathHistoricMenu(offline);
-		menu.currentPage = page;
-		
-		return menu;
-	}
-
-	@Override
-	public boolean changePage(APIPlayer apiPlayer, int toAdd) {
-		DeathHistoricMenu menu = new DeathHistoricMenu(apiPlayer);
-		menu.currentPage += currentPage;
-		
-		menu.open(apiPlayer);
-		return true;
-	}
-
-	@Override
-	public boolean openPage(APIPlayer apiPlayer, int page) {
-		DeathHistoricMenu menu = new DeathHistoricMenu(apiPlayer);
-		menu.currentPage = currentPage;
-		
-		menu.open(apiPlayer);
-		return true;
-	}
-	
 	private class DeathHistoricButton implements Button {
 
 		private PlayerSaver saver;

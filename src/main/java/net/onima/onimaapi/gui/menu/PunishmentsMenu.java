@@ -120,33 +120,6 @@ public class PunishmentsMenu extends PacketMenu {
 		public int getMaxItemsPerPage() {
 			return 54;
 		}
-
-		@Override
-		public PageMenu getPage(int page) {
-			PunishmentTypeMenu menu = new PunishmentTypeMenu(title, punishmentType);
-			menu.setCurrentPage(page);
-			
-			return menu;
-		}
-
-		@Override
-		public boolean changePage(APIPlayer apiPlayer, int toAdd) {
-			PunishmentTypeMenu menu = new PunishmentTypeMenu(title, punishmentType);
-			menu.setCurrentPage(menu.getCurrentPage() + toAdd);
-			
-			menu.open(apiPlayer);
-			return true;
-		}
-
-		@Override
-		public boolean openPage(APIPlayer apiPlayer, int page) {
-			PunishmentTypeMenu menu = new PunishmentTypeMenu(title, punishmentType);
-			menu.setCurrentPage(page);
-			
-			menu.open(apiPlayer);
-			return true;
-		}
-
 		
 	}
 	

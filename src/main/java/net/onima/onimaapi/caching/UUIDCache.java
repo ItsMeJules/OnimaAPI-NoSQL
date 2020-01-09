@@ -32,7 +32,7 @@ public class UUIDCache {
 		for (OfflinePlayer offline : Bukkit.getOfflinePlayers()) {
 			String name = offline.getName();
 			
-			if (offline.isOnline())
+			if (offline.isOnline() && APIPlayer.getAPIPlayers().get(offline.getUniqueId()) != null)
 				name = APIPlayer.getPlayer(offline.getUniqueId()).getName();
 			
 			if (name == null)

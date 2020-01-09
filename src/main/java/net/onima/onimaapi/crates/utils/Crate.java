@@ -246,7 +246,7 @@ public abstract class Crate implements FileSaver {
 	public static Crate getByName(String name) {
 		for (Crate crate : crates) {
 			if (crate.name.equalsIgnoreCase(name) 
-					|| crate.displayName.equalsIgnoreCase(name)
+					|| name.equalsIgnoreCase(crate.displayName)
 					|| ChatColor.stripColor(new String(crate.displayName)).equalsIgnoreCase(name))
 				return crate;
 		}

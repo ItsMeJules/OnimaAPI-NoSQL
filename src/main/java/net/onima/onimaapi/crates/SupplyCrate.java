@@ -116,7 +116,7 @@ public class SupplyCrate extends Crate implements Scheduler {
 	public void sendShow(CommandSender sender) {
 		sender.sendMessage(ConfigurationService.STAIGHT_LINE);
 		sender.sendMessage("§7Crate : §d§o" + type.name() + " §f- " + (displayName == null ? name : displayName));
-		sender.sendMessage("§7Nombre total de prix : §d" + prizes.size());
+		sender.sendMessage("§7Nombre total de prix : §d" + super.prizes.size());
 		
 		if (OnimaPerm.ONIMAAPI_CRATE_INFO_ARGUMENT.has(sender)) {
 			sender.sendMessage("§7Nombre de prix à drop : §d" + prizeAmount);
@@ -124,8 +124,8 @@ public class SupplyCrate extends Crate implements Scheduler {
 			sender.sendMessage("§7Prochain drop dans : §d" + LongTime.setHMSFormat(getStartTimeLeft()));
 			sender.sendMessage("§7En cours de drop : " + (dropped.contains(this) ? "§aoui" : "§cnon"));
 			
-			if (prizes != null)
-				sender.sendMessage("§7Prix dans ce drop : §d" + Crate.constructMultiPrize(prizes));
+			if (super.prizes != null)
+				sender.sendMessage("§7Prix dans ce drop : §d" + Crate.constructMultiPrize(super.prizes));
 			
 			if (sender instanceof Player && location != null) {
 				Location location = this.location.getWorld().getHighestBlockAt(this.location).getLocation();
@@ -165,12 +165,15 @@ public class SupplyCrate extends Crate implements Scheduler {
 					fallingBlock = world.spawnFallingBlock(location, Material.CHEST, (byte) 0);
 					state = SupplyCrateState.DROPPING;
 					track();
-				}, 10 * 20 * 60);
+				}, 10 * 20);
 		
 		state = SupplyCrateState.WAITING;
 	}
 	
 	public void land(Location location) {
+		if (location.getBlock().getType() != Material.CHEST)
+			location.getBlock().setType(Material.CHEST);
+		
 		hologram = HologramsAPI.createHologram(OnimaAPI.getInstance(), location.clone().add(0, 1, 0));
 		
 		Bukkit.broadcastMessage("§eUn coffre de ravitaillement a atteri en §c" + location.getBlockX() + ", " + location.getBlockZ() + " §edans §fl'Overworld §e.");
@@ -264,7 +267,7 @@ public class SupplyCrate extends Crate implements Scheduler {
 				i++;
 			}
 			
-			drop(new Location(Bukkit.getWorld("world"), Methods.getRandomWithExclusion(OnimaAPI.RANDOM, -300, 300, exclusion), 250, Methods.getRandomWithExclusion(-300, 300, exclusion)));
+			drop(new Location(Bukkit.getWorld("world"), Methods.getRandomWithExclusion(OnimaAPI.RANDOM, -500, 500, exclusion), 250, Methods.getRandomWithExclusion(-500, 500, exclusion)));
 		}
 	}
 	
@@ -275,9 +278,16 @@ public class SupplyCrate extends Crate implements Scheduler {
 	
 	@Override
 	public void setSchedulerEnabled(boolean schedulerEnabled) {
-		if (schedulerEnabled)
+		if (schedulerEnabled) {
+			long nextDrop = getWhenItStarts();
+			
+			while (nextDrop <= System.currentTimeMillis())
+				nextDrop += timeRestart;
+			
+			temporal = ZonedDateTime.ofInstant(Instant.ofEpochMilli(nextDrop), OnimaAPI.TIME_ZONE);
+			
 			OnimaAPI.getScheduled().add(this);
-		else
+		} else
 			OnimaAPI.getScheduled().remove(this);
 		
 		this.schedulerEnabled = schedulerEnabled;

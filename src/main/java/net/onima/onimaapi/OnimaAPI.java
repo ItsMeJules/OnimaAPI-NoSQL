@@ -38,6 +38,7 @@ import net.onima.onimaapi.mongo.OnimaMongo;
 import net.onima.onimaapi.mongo.saver.NoSQLSaver;
 import net.onima.onimaapi.mountain.utils.Mountain;
 import net.onima.onimaapi.players.APIPlayer;
+import net.onima.onimaapi.players.utils.Options;
 import net.onima.onimaapi.players.utils.PlayerOption;
 import net.onima.onimaapi.punishment.utils.Punishment;
 import net.onima.onimaapi.rank.OnimaPerm;
@@ -51,10 +52,10 @@ import net.onima.onimaapi.utils.Config;
 import net.onima.onimaapi.utils.ConfigurationService;
 import net.onima.onimaapi.utils.JSONMessage;
 import net.onima.onimaapi.utils.Methods;
-import net.onima.onimaapi.utils.Options;
 import net.onima.onimaapi.utils.Scheduler;
 import net.onima.onimaapi.utils.Warp;
 import net.onima.onimaapi.utils.WorldChanger;
+import net.onima.onimaapi.zone.Cuboid;
 import net.onima.onimaapi.zone.type.Region;
 
 /**
@@ -162,6 +163,7 @@ public class OnimaAPI extends JavaPlugin {
 		Options.register(PlayerOption.GlobalOptions.IMPORTANT_NOTE_NOTIFY_CONNECT, false);
 		Options.register(PlayerOption.GlobalOptions.SHOW_PLAYERS_WHEN_IN_SPAWN, true);
 		Options.register(PlayerOption.GlobalOptions.SHOW_INVISIBLE_PLAYERS, false);
+		Options.register(PlayerOption.GlobalOptions.CAPZONE_MESSAGES, true);
 		
 		for (String str : (Set<String>) new CommandDispatcher().a().keySet()) {
 			switch (str) {
@@ -242,6 +244,13 @@ public class OnimaAPI extends JavaPlugin {
 			
 		for (HCFSign hcfSign : HCFSign.getHCFSigns())
 			hcfSign.serialize();
+		
+		if (WorldChanger.getEndExit() != null) {
+			Cuboid exit = WorldChanger.getEndExit();
+			
+			ConfigManager.getStuffsSerialConfig().getConfig().set("end-exit.loc1", Methods.serializeLocation(exit.getMinimumLocation(), false));
+			ConfigManager.getStuffsSerialConfig().getConfig().set("end-exit.loc2", Methods.serializeLocation(exit.getMaximumLocation(), false));
+		}
 			
 		Config.getConfigs().forEach(config -> config.saveConfig());
 		OnimaMongo.disconnect();

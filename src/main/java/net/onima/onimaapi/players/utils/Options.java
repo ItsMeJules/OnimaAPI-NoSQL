@@ -1,4 +1,4 @@
-package net.onima.onimaapi.utils;
+package net.onima.onimaapi.players.utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,6 @@ import java.util.Map;
 import org.bson.Document;
 
 import net.onima.onimaapi.mongo.saver.MongoSerializer;
-import net.onima.onimaapi.players.utils.PlayerOption;
 import net.onima.onimaapi.players.utils.PlayerOption.GlobalOptions;
 import net.onima.onimaapi.players.utils.PlayerOption.ModOptions;
 
@@ -72,7 +71,8 @@ public class Options implements MongoSerializer {
 				.append("death_messages", getBoolean(GlobalOptions.DEATH_MESSAGES)).append("found_diamond", getBoolean(GlobalOptions.FOUND_DIAMONDS))
 				.append("note_notify_connect", getBoolean(GlobalOptions.IMPORTANT_NOTE_NOTIFY_CONNECT))
 				.append("show_players_spawn", getBoolean(GlobalOptions.SHOW_PLAYERS_WHEN_IN_SPAWN))
-				.append("show_invisible_players", getBoolean(GlobalOptions.SHOW_INVISIBLE_PLAYERS));
+				.append("show_invisible_players", getBoolean(GlobalOptions.SHOW_INVISIBLE_PLAYERS))
+				.append("capzone_messages", getBoolean(GlobalOptions.CAPZONE_MESSAGES));
 	}
 	
 }

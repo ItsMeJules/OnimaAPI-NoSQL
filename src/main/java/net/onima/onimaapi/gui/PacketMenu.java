@@ -163,9 +163,8 @@ public abstract class PacketMenu {
 		
 		registerItems();
 		
-		for (Entry<Integer, Button> entry : buttons.entrySet()) {
+		for (Entry<Integer, Button> entry : buttons.entrySet())
 			inventory.setItem(entry.getKey(), createItemStack(player, entry.getValue()));
-		}
 	}
 	
 	public void updateLocalized(Player player, int slot) {

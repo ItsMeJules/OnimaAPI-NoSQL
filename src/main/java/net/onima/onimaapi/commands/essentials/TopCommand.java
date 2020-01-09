@@ -29,7 +29,7 @@ public class TopCommand implements CommandExecutor {
         Location origin = player.getLocation().clone();
         Location highestLocation = origin.getWorld().getHighestBlockAt(origin).getLocation();
         
-        if (highestLocation != null && !Methods.locationEquals(origin, highestLocation) && highestLocation.getBlockY() - origin.getBlock().getY() != 1) {
+        if (highestLocation != null && !Methods.locationEquals(origin, highestLocation) && highestLocation.getBlockY() - origin.getBlock().getY() != 0) {
             player.teleport(highestLocation.add(0.5, 0, 0.5));
             sender.sendMessage("§eVous avez été téléporté au point le plus haut.");
             return true;

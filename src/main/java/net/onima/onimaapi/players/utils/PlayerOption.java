@@ -152,7 +152,12 @@ public interface PlayerOption {
 		/**
 		 * Whether the player can see or not the invisible players.
 		 */
-		SHOW_INVISIBLE_PLAYERS(9, OnimaPerm.ONIMAAPI_SEE_INVISIBLE, "§7Afficher les joueurs invisible : %value%");
+		SHOW_INVISIBLE_PLAYERS(9, OnimaPerm.ONIMAAPI_SEE_INVISIBLE, "§7Afficher les joueurs invisible : %value%"),
+		
+		/**
+		 * Whether or not the player can see capzone messages.
+		 */
+		CAPZONE_MESSAGES(10, null, "§7Afficher les messages d'entrées/knock d'un event : %value%");
 		
 		private int slot;
 		private OnimaPerm permission;

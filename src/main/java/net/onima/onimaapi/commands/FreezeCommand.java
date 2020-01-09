@@ -3,7 +3,6 @@ package net.onima.onimaapi.commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import net.onima.onimaapi.OnimaAPI;
 import net.onima.onimaapi.mod.ModItem;
@@ -45,7 +44,7 @@ public class FreezeCommand implements CommandExecutor {
 				APIPlayer player = (APIPlayer) offline;
 				
 				player.setFrozen(!offline.isFrozen());
-				player.sendMessage(APIPlayer.getPlayer((Player) sender).getColoredName(true) + " §fvous a " + frozen + " §f!");
+				player.sendMessage(Methods.getName(sender) + " §fvous a " + frozen + " §f!");
 
 				if (!offline.isFrozen())
 					player.closeMenu();

@@ -7,6 +7,7 @@ import net.onima.onimaapi.commands.ConnectionLogsCommand;
 import net.onima.onimaapi.commands.CoordsCommand;
 import net.onima.onimaapi.commands.CrowbarCommand;
 import net.onima.onimaapi.commands.DisguiseCommand;
+import net.onima.onimaapi.commands.EndExitCommand;
 import net.onima.onimaapi.commands.FreezeCommand;
 import net.onima.onimaapi.commands.InvrestoredCommand;
 import net.onima.onimaapi.commands.InvseeCommand;
@@ -41,6 +42,7 @@ import net.onima.onimaapi.commands.essentials.HealCommand;
 import net.onima.onimaapi.commands.essentials.KillCommand;
 import net.onima.onimaapi.commands.essentials.ReloreCommand;
 import net.onima.onimaapi.commands.essentials.RenameCommand;
+import net.onima.onimaapi.commands.essentials.RepairCommand;
 import net.onima.onimaapi.commands.essentials.SkullCommand;
 import net.onima.onimaapi.commands.essentials.SpeedCommand;
 import net.onima.onimaapi.commands.essentials.SudoCommand;
@@ -96,7 +98,7 @@ public class CommandManager {
 		plugin.getCommand("crowbar").setExecutor(new CrowbarCommand());
 		plugin.getCommand("lag").setExecutor(new LagCommand());
 		plugin.getCommand("invsee").setExecutor(new InvseeCommand());
-		plugin.getCommand("restore").setExecutor(new RestoreCommand());
+		plugin.getCommand("restoreinv").setExecutor(new RestoreCommand());
 		plugin.getCommand("invrestored").setExecutor(new InvrestoredCommand());
 		plugin.getCommand("coords").setExecutor(new CoordsCommand());
 		plugin.getCommand("vanish").setExecutor(new VanishCommand());
@@ -141,6 +143,8 @@ public class CommandManager {
 		plugin.getCommand("speed").setExecutor(new SpeedCommand());
 		plugin.getCommand("heal").setExecutor(new HealCommand());
 		plugin.getCommand("feed").setExecutor(new FeedCommand());
+		plugin.getCommand("endexit").setExecutor(new EndExitCommand());
+		plugin.getCommand("repair").setExecutor(new RepairCommand());
 	}
 
 

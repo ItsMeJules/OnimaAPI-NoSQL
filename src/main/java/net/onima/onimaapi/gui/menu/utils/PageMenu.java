@@ -1,5 +1,6 @@
 package net.onima.onimaapi.gui.menu.utils;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -11,6 +12,11 @@ import net.onima.onimaapi.players.APIPlayer;
 public abstract class PageMenu extends PacketMenu {
 	
 	protected int currentPage = 1;
+	protected Map<Integer, Button> allItems;
+	
+	{
+		allItems = new HashMap<>();
+	}
 	
 	public PageMenu(String id, String title, int size, boolean createInventory) {
 		super(id, title, size, createInventory);
@@ -21,11 +27,14 @@ public abstract class PageMenu extends PacketMenu {
 		int minIndex = (currentPage - 1) * getMaxItemsPerPage(); //(2 - 1) * 18 = 18
 		int maxIndex = currentPage * getMaxItemsPerPage(); // 2 * 18 = 36
 		
-		for (Entry<Integer, Button> entry : getAllPagesItems().entrySet()) {
+		if (allItems.isEmpty())
+			allItems = getAllPagesItems();
+		
+		for (Entry<Integer, Button> entry : allItems.entrySet()) {
 			int index = entry.getKey();
-			
+				
 			if (index >= minIndex && index < maxIndex)
-				buttons.put((index -= getMaxItemsPerPage() * (currentPage - 1)), entry.getValue());
+				buttons.put(index -= minIndex, entry.getValue());
 		}
 		
 		Map<Integer, Button> global = getGlobalButtons();
@@ -40,17 +49,37 @@ public abstract class PageMenu extends PacketMenu {
 	
 	public abstract Map<Integer, Button> getAllPagesItems();
 	public abstract int getMaxItemsPerPage();
-	public abstract PageMenu getPage(int page);
-	public abstract boolean changePage(APIPlayer apiPlayer, int toAdd);
-	public abstract boolean openPage(APIPlayer apiPlayer, int page);
+	
+	public PageMenu getPage(int page) {
+		this.currentPage = page;
+		
+		return this;
+	}
+
+	public boolean changePage(APIPlayer apiPlayer, int toAdd) {
+		this.currentPage += toAdd;
+		this.updateItems(apiPlayer.toPlayer());
+		
+		return true;
+	}
+
+	public boolean openPage(APIPlayer apiPlayer, int page) {
+		this.currentPage = page;
+		this.updateItems(apiPlayer.toPlayer());
+		
+		return true;
+	}
 	
 	public int getPages() {
-		int buttonsSize = getAllPagesItems().size() + 1;
+		if (allItems.isEmpty())
+			allItems = getAllPagesItems();
+		
+		int buttonsSize = allItems.size() + 1;
 		
 		if (buttonsSize == 0)
 			return 1;
 		
-		return (int) Math.ceil(buttonsSize / size);
+		return (int) Math.ceil(buttonsSize / (double) size);
 	}
 	
 	public Map<Integer, Button> getGlobalButtons() {

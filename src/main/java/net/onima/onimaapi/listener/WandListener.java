@@ -23,14 +23,21 @@ public class WandListener implements Listener {
 		if (!OnimaPerm.ONIMAAPI_WAND.has(player)) return;
 		
 		Action action = event.getAction();
-		
-		if (!action.toString().endsWith("BLOCK")) return;
-		
 		ItemStack hand = event.getItem();
 		
 		if (Wand.isZoneWand(hand)) {
 			APIPlayer apiPlayer = APIPlayer.getPlayer(player);
 			Wand wand = apiPlayer.getWand();
+			
+			if (player.isSneaking() && action.toString().endsWith("AIR")) {
+				wand.setLocation1(null);
+				wand.setLocation2(null);
+				player.sendMessage("§d§lLocations réinitialisées !");
+				return;
+			}
+			
+			if (!action.toString().endsWith("BLOCK")) return;
+			
 			Location location = event.getClickedBlock().getLocation();
 			
 			event.setCancelled(true);

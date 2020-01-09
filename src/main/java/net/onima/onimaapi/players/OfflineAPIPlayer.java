@@ -37,6 +37,7 @@ import net.onima.onimaapi.mongo.saver.NoSQLSaver;
 import net.onima.onimaapi.players.notes.Note;
 import net.onima.onimaapi.players.notes.NotePriority;
 import net.onima.onimaapi.players.utils.MinedOres;
+import net.onima.onimaapi.players.utils.Options;
 import net.onima.onimaapi.players.utils.PlayTime;
 import net.onima.onimaapi.players.utils.PlayerOption;
 import net.onima.onimaapi.players.utils.RestoreRequest;
@@ -51,7 +52,6 @@ import net.onima.onimaapi.tasks.CooldownEntryTask;
 import net.onima.onimaapi.utils.Balance;
 import net.onima.onimaapi.utils.ConfigurationService;
 import net.onima.onimaapi.utils.Methods;
-import net.onima.onimaapi.utils.Options;
 import net.onima.onimaapi.utils.callbacks.VoidCallback;
 
 public class OfflineAPIPlayer implements NoSQLSaver {
@@ -557,6 +557,10 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 		options.getSettings().put(PlayerOption.GlobalOptions.COBBLE_DROP, optionsDoc.getBoolean("cobble_drop"));
 		options.getSettings().put(PlayerOption.GlobalOptions.DEATH_MESSAGES, optionsDoc.getBoolean("death_messages"));
 		options.getSettings().put(PlayerOption.GlobalOptions.FOUND_DIAMONDS, optionsDoc.getBoolean("found_diamond"));
+		options.getSettings().put(PlayerOption.GlobalOptions.IMPORTANT_NOTE_NOTIFY_CONNECT, optionsDoc.getBoolean("note_notify_connect"));
+		options.getSettings().put(PlayerOption.GlobalOptions.SHOW_PLAYERS_WHEN_IN_SPAWN, optionsDoc.getBoolean("show_players_spawn"));
+		options.getSettings().put(PlayerOption.GlobalOptions.SHOW_INVISIBLE_PLAYERS, optionsDoc.getBoolean("show_invisible_players"));
+		options.getSettings().put(PlayerOption.GlobalOptions.CAPZONE_MESSAGES, optionsDoc.getBoolean("capzone_messages"));
 		
 		for (Document doc : result.valueToList("player_data", Document.class)) {
 			playerDataSaved.add(PlayerSaver.fromDB(doc.getInteger("id"),
@@ -581,9 +585,8 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 			long time = doc.getLong("time_left");
 			
 			Cooldown cooldown = Cooldown.getCooldown((byte) id);
-			CooldownData data = new CooldownData(cooldown, uuid);
-				
-			data.setTimeLeft(id == 5 ? time : time - now);
+			CooldownData data = new CooldownData(cooldown, uuid, id == 5 ? time : time - now);
+			
 			cooldown.getDatas().put(uuid, data);
 			cooldowns.add((byte) id);
 		}

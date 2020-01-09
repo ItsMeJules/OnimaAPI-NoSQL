@@ -149,7 +149,7 @@ public abstract class Cooldown implements Saver, MongoSerializer {
 	
 	@Override
 	public Document getDocument(Object... objects) {
-		return new Document("id", id).append("time_left", (id != 5 ? System.currentTimeMillis() : 0)  + getTimeLeft((UUID) objects[0]));
+		return new Document("id", id).append("time_left", (id != 5 ? System.currentTimeMillis() : 0) + getTimeLeft((UUID) objects[0]));
 	}
 	
 	public static void register(Cooldown cooldown) {

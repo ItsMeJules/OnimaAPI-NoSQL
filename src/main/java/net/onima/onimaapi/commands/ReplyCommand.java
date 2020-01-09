@@ -11,11 +11,11 @@ import org.bukkit.entity.Player;
 import net.onima.onimaapi.OnimaAPI;
 import net.onima.onimaapi.event.chat.PrivateMessageEvent;
 import net.onima.onimaapi.players.APIPlayer;
+import net.onima.onimaapi.players.utils.Options;
 import net.onima.onimaapi.players.utils.PlayerOption;
 import net.onima.onimaapi.rank.OnimaPerm;
 import net.onima.onimaapi.utils.ConfigurationService;
 import net.onima.onimaapi.utils.Methods;
-import net.onima.onimaapi.utils.Options;
 import net.onima.onimaapi.utils.PrivateMessage;
 
 public class ReplyCommand implements CommandExecutor {

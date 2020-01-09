@@ -11,12 +11,14 @@ import org.bukkit.configuration.file.FileConfiguration;
 import net.onima.onimaapi.OnimaAPI;
 import net.onima.onimaapi.manager.ConfigManager;
 import net.onima.onimaapi.saver.FileSaver;
+import net.onima.onimaapi.zone.Cuboid;
 
 public class WorldChanger implements FileSaver {
 	
 	private static List<WorldChanger> worlds;
 	private static Config stuffsSerialConfig;
 	private static FileConfiguration config;
+	private static Cuboid endExit;
 	
 	private String toWorldName, fromWorldName;
 	private Location spawnLocation;
@@ -131,6 +133,19 @@ public class WorldChanger implements FileSaver {
 			String[] world = worlds.split("/");
 			WorldChanger.worlds.add(new WorldChanger(world[1], world[0], Methods.deserializeLocation(config.getString("world-changer."+worlds+".location"), true), config.getBoolean("world-changer."+worlds+".useTravelAgent")));
 		}
+		
+		String exit1 = config.getString("end-exit.loc1");
+		
+		if (exit1 != null)
+			endExit = new Cuboid(Methods.deserializeLocation(exit1, false), Methods.deserializeLocation(config.getString("end-exit.loc2"), false), true);
+	}
+
+	public static void setEndExit(Cuboid endExit) {
+		WorldChanger.endExit = endExit;
+	}
+	
+	public static Cuboid getEndExit() {
+		return endExit;
 	}
 	
 }

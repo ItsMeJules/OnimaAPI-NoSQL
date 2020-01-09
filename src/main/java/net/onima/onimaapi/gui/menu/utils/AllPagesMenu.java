@@ -29,18 +29,16 @@ public class AllPagesMenu extends PacketMenu {
 		buttons.put(0, new BackButton(menu));
 	
 		for (int i = 0; i < menu.getPages(); i++)
-			buttons.put(buttons.size(), new JumpToPageButton(i + 1, menu.getPage(i), menu.getCurrentPage() == i));
+			buttons.put(buttons.size(), new JumpToPageButton(i + 1, menu.getCurrentPage() - 1 == i));
 	}
 	
 	public class JumpToPageButton implements Button {
 
 		private int page;
-		private PageMenu menu;
 		private boolean current;
 		
-		public JumpToPageButton(int page, PageMenu menu, boolean current) {
+		public JumpToPageButton(int page, boolean current) {
 			this.page = page;
-			this.menu = menu;
 			this.current = current;
 		}
 		
@@ -58,8 +56,9 @@ public class AllPagesMenu extends PacketMenu {
 
 		@Override
 		public void click(PacketMenu menu, Player clicker, ItemStack current, InventoryClickEvent event) {
+			event.setCancelled(true);
 			new OSound(Sound.CLICK, 1F, 1F).play(clicker);
-			this.menu.open(APIPlayer.getPlayer(clicker));
+			AllPagesMenu.this.menu.getPage(page).open(APIPlayer.getPlayer(clicker));
 		}
 		
 	}

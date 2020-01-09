@@ -67,8 +67,9 @@ commands:
   invsee:
     description: Inspecte l'inventaire d'un joueur.
     permission: onimaapi.invsee.command
-  restore:
+  restoreinv:
     description: Affiche toutes les morts d'un joueur.
+    aliases: ri
     permission: onimaapi.restore.command
   invrestored:
     description: Affiche tous les inventaires en attente.
@@ -205,3 +206,9 @@ commands:
   feed:
     description: Permet de regagner toute sa barre de bouffe.
     permission: onimaapi.feed.command
+  endexit:
+    description: Permet de définir le point de téléportation de l'end.
+    permission: onimaapi.endexit.command
+  repair:
+    description: Permet de réparer des items.
+    permission: onimaapi.repair.command

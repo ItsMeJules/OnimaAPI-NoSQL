@@ -56,6 +56,10 @@ public class CooldownData {
 		this.timePaused = timePaused;
 	}
 	
+	public void setExpireTime(long expireTime) {
+		this.expireTime = expireTime;
+	}
+	
 	public void pause(boolean pause) {
 		if (pause) {
 			OfflineAPIPlayer.getPlayer(uuid, offline -> {

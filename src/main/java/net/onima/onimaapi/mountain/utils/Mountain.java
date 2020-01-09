@@ -217,6 +217,7 @@ public abstract class Mountain implements FileSaver, MinecraftCuboid, Scheduler 
 	@Override
 	public void remove() {
 		mountains.remove(this);
+		OnimaAPI.getScheduled().remove(this);
 		OnimaAPI.getShutdownSavers().remove(this);
 	}
 	
@@ -312,9 +313,16 @@ public abstract class Mountain implements FileSaver, MinecraftCuboid, Scheduler 
 	
 	@Override
 	public void setSchedulerEnabled(boolean schedulerEnabled) {
-		if (schedulerEnabled)
+		if (schedulerEnabled) {
+			long nextStart = getWhenItStarts();
+			
+			while (nextStart <= System.currentTimeMillis())
+				nextStart += timeRestart;
+			
+			temporal = ZonedDateTime.ofInstant(Instant.ofEpochMilli(nextStart), OnimaAPI.TIME_ZONE);
+			
 			OnimaAPI.getScheduled().add(this);
-		else
+		} else
 			OnimaAPI.getScheduled().remove(this);
 		
 		this.schedulerEnabled = schedulerEnabled;

@@ -27,7 +27,7 @@ public class TeleportAllCommand implements CommandExecutor {
 		
         Player player = (Player) sender;
         
-        Bukkit.broadcastMessage("§e" + Methods.getRealName(sender) + " §a a téléporté tous les joueurs à lui !");
+        Bukkit.broadcastMessage("§e" + Methods.getRealName(sender) + " §aa téléporté tous les joueurs à lui !");
         for (Player target : Bukkit.getOnlinePlayers()) {
             if (!target.getUniqueId().equals(player.getUniqueId()))
                 target.teleport(player, PlayerTeleportEvent.TeleportCause.COMMAND);

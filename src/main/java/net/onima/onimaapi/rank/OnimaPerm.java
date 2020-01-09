@@ -834,7 +834,11 @@ public enum OnimaPerm {
 	
 	HEAL_COMMAND("onimaapi.heal.command", "Permet de se heal."),
 	
-	FEED_COMMAND("onimaapi.feed.command", "Permet de se nourrir.");
+	FEED_COMMAND("onimaapi.feed.command", "Permet de se nourrir."),
+	
+	ENDEXIT_COMMAND("onimaapi.endexit.command", "Permet de définir la zone de sortie de l'end."),
+	
+	REPAIR_COMMAND("onimaapi.repair.command", "Permet de réparer n'importe quel item.");
 	
 	private String permission, description;
 	

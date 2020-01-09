@@ -61,32 +61,6 @@ public class PendingRestoresMenu extends PageMenu {
 		return 53;
 	}
 
-	@Override
-	public PageMenu getPage(int page) {
-		PendingRestoresMenu menu = new PendingRestoresMenu(offline);
-		menu.currentPage = page;
-		
-		return menu;
-	}
-
-	@Override
-	public boolean changePage(APIPlayer apiPlayer, int toAdd) {
-		PendingRestoresMenu menu = new PendingRestoresMenu(apiPlayer);
-		menu.currentPage += currentPage;
-		
-		menu.open(apiPlayer);
-		return true;
-	}
-
-	@Override
-	public boolean openPage(APIPlayer apiPlayer, int page) {
-		PendingRestoresMenu menu = new PendingRestoresMenu(apiPlayer);
-		menu.currentPage = currentPage;
-		
-		menu.open(apiPlayer);
-		return true;
-	}
-	
 	public class RestoreButton implements Button {
 
 		private RestoreRequest request;

@@ -245,7 +245,7 @@ public class ConfigurationService {
 	 * &nbsp; - <i>§7Clique gauche pour sélectionner la première location.</i><br>
 	 * &nbsp; - <i>§7Clique droit pour sélectionner la seconde location.</i><br>
 	 */
-	public static final List<String> WAND_LORE = ImmutableList.of("§7Clique gauche pour sélectionner la première location.", "§7Clique droit pour sélectionner la seconde location.");
+	public static final List<String> WAND_LORE = ImmutableList.of("§7Click gauche pour sélectionner la première location.", "§7Click droit pour sélectionner la seconde location.", "§7Shift click gauche dans l'air pour réinitialiser les locations.");
 
 	/**
 	 * The logger health: <i>40.0D</i>

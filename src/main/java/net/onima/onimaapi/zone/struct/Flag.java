@@ -20,7 +20,8 @@ public enum Flag {
 	ITEM_DROP("item-drop"),
 	PICKUP_ITEM("pickup-item"),
 	NO_INTERACT("no-interact"),
-	NATURAL_PROTECT("natural-protect");
+	NATURAL_PROTECT("natural-protect"),
+	LIQUID_FLOW("liquid-flow");
 //	NEED_PERMISSION_TO_LEAVE("need-permission-to-leave");
 	
 	private String name;

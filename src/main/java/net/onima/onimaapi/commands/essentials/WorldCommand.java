@@ -18,6 +18,7 @@ import net.onima.onimaapi.OnimaAPI;
 import net.onima.onimaapi.rank.OnimaPerm;
 import net.onima.onimaapi.utils.ConfigurationService;
 import net.onima.onimaapi.utils.JSONMessage;
+import net.onima.onimaapi.utils.WorldChanger;
 
 public class WorldCommand implements CommandExecutor, TabCompleter {
 	
@@ -70,9 +71,10 @@ public class WorldCommand implements CommandExecutor, TabCompleter {
 			
 			Location tpLocation = null;
 			
-			if (args.length >= 3 && args[2].equalsIgnoreCase("spawn"))
-				tpLocation = world.getSpawnLocation();
-			else
+			if (args.length >= 3 && args[2].equalsIgnoreCase("spawn")) {
+				WorldChanger changer = WorldChanger.getChanger(location.getWorld().getName(), world.getName());
+				tpLocation = changer != null ? changer.getSpawnLocation() : world.getSpawnLocation();
+			} else
 				tpLocation = new Location(world, location.getX(), world.getHighestBlockYAt(location), location.getZ(), location.getYaw(), location.getPitch());
 			
 			player.teleport(tpLocation);
