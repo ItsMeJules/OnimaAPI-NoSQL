@@ -91,7 +91,14 @@ public abstract class ModItem implements Saver {
 	}
 	
 	public static ModItem fromStack(ItemStack item) {
-		return modItems.stream().filter(stack -> Methods.isSimilar(item, stack.item.toItemStack())).findFirst().orElse(null);
+		return modItems.stream().filter(stack -> { 
+			if (stack instanceof StaffCounter)
+				return stack.item.getMaterial() == item.getType() && stack.item.getLore().equals(item.getItemMeta().getLore());
+			else if (stack instanceof RandomTeleport)
+				return stack.item.getMaterial() == item.getType() && stack.item.getName().equalsIgnoreCase(item.getItemMeta().getDisplayName());
+			
+			return Methods.isSimilar(item, stack.item.toItemStack());
+		}).findFirst().orElse(null);
 	}
 	
 	public static ModItem fromName(String name) {

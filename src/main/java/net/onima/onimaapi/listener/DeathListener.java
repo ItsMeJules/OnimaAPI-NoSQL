@@ -19,6 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import net.minecraft.util.com.google.common.collect.Sets;
 import net.onima.onimaapi.OnimaAPI;
+import net.onima.onimaapi.commands.essentials.KillCommand.EntityDamageCommandEvent;
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.players.utils.PlayerOption;
 import net.onima.onimaapi.saver.inventory.PlayerSaver;
@@ -126,25 +127,28 @@ public class DeathListener implements Listener { //TODO faire un deathmessage qu
 			message = "§9" + apiPlayer.getDisplayName() + "§f[§e" + apiPlayer.getKills() + "§f] §7a cramé.";
 		else if (cause == DamageCause.LAVA)
 			message = "§9" + apiPlayer.getDisplayName() + "§f[§e" + apiPlayer.getKills() + "§f] §7a essayé de nager dans la lave.";
-		else if(cause == DamageCause.LIGHTNING)
+		else if (cause == DamageCause.LIGHTNING)
 			message = "§9" + apiPlayer.getDisplayName() + "§f[§e" + apiPlayer.getKills() + "§f] §7s'est fait foudroyer.";
-		else if(cause == DamageCause.MAGIC)
+		else if (cause == DamageCause.MAGIC)
 			message = "§9" + apiPlayer.getDisplayName() + "§f[§e" + apiPlayer.getKills() + "§f] §7est mort à cause d'une potion.";
-		else if(cause == DamageCause.MELTING)
+		else if (cause == DamageCause.MELTING)
 			message = "§9" + apiPlayer.getDisplayName() + "§f[§e" + apiPlayer.getKills() + "§f] §7est mort à cause d'une bonhomme de neige... PTDRRRR.";
-		else if(cause == DamageCause.POISON)
+		else if (cause == DamageCause.POISON)
 			message = "§9" + apiPlayer.getDisplayName() + "§f[§e" + apiPlayer.getKills() + "§f] §7s'est fait empoisonner.";
-		else if(cause == DamageCause.STARVATION)
+		else if (cause == DamageCause.STARVATION)
 			message = "§9" + apiPlayer.getDisplayName() + "§f[§e" + apiPlayer.getKills() + "§f] §7est mort de faim.";
-		else if(cause == DamageCause.SUFFOCATION)
+		else if (cause == DamageCause.SUFFOCATION)
 			message = "§9" + apiPlayer.getDisplayName() + "§f[§e" + apiPlayer.getKills() + "§f] §7a suffoqué.";
-		else if(cause == DamageCause.SUICIDE)
-			message = "§9" + apiPlayer.getDisplayName() + "§f[§e" + apiPlayer.getKills() + "§f] §7s'est suicidé.";
-		else if(cause == DamageCause.THORNS)
+		else if (cause == DamageCause.SUICIDE) {
+			if (entityDamage instanceof EntityDamageCommandEvent && !((EntityDamageCommandEvent) entityDamage).isSelf())
+				message = ((EntityDamageCommandEvent) entityDamage).getMessage();
+			else
+				message = "§9" + apiPlayer.getDisplayName() + "§f[§e" + apiPlayer.getKills() + "§f] §7s'est suicidé.";
+		} else if (cause == DamageCause.THORNS)
 			message = "§9" + apiPlayer.getDisplayName() + "§f[§e" + apiPlayer.getKills() + "§f] §7est mort à cause de thorns.";
-		else if(cause == DamageCause.VOID)
+		else if (cause == DamageCause.VOID)
 			message = "§9" + apiPlayer.getDisplayName() + "§f[§e" + apiPlayer.getKills() + "§f] §7a sauté dans le vide.";
-		else if(cause == DamageCause.WITHER)
+		else if (cause == DamageCause.WITHER)
 			message = "§9" + apiPlayer.getDisplayName() + "§f[§e" + apiPlayer.getKills() + "§f] §7s'est fait empoisonner à mort par un wither.";
 		
 		for (APIPlayer online : APIPlayer.getOnlineAPIPlayers()) {

@@ -45,7 +45,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter {
 		if (args[0].equalsIgnoreCase("list")) {
 			sender.sendMessage("§7Liste des mondes :");
 			for (World world : Bukkit.getWorlds())
-				new JSONMessage("  §7- §e" + world.getName(), "§o/world tp " + world.getName(), true, "/world tp " + world.getName()).send(sender);
+				new JSONMessage("  §7- §e" + world.getName(), "§o/world tp " + world.getName() + " spawn", true, "/world tp " + world.getName() + " spawn").send(sender);
 
 			return true;
 		} else if (args[0].equalsIgnoreCase("tp")) {

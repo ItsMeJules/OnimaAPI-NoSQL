@@ -49,6 +49,7 @@ import net.onima.onimaapi.utils.OEffect;
 import net.onima.onimaapi.utils.OSound;
 import net.onima.onimaapi.utils.Scheduler;
 import net.onima.onimaapi.utils.time.Time.LongTime;
+import net.onima.onimaapi.workload.type.SchedulerWorkload;
 
 public class SupplyCrate extends Crate implements Scheduler {
 
@@ -231,6 +232,12 @@ public class SupplyCrate extends Crate implements Scheduler {
 	}
 	
 	@Override
+	public void remove() {
+		super.remove();
+		OnimaAPI.getScheduled().remove(this);
+	}
+	
+	@Override
 	public Temporal getTemporal() {
 		return temporal;
 	}
@@ -287,6 +294,7 @@ public class SupplyCrate extends Crate implements Scheduler {
 			temporal = ZonedDateTime.ofInstant(Instant.ofEpochMilli(nextDrop), OnimaAPI.TIME_ZONE);
 			
 			OnimaAPI.getScheduled().add(this);
+			OnimaAPI.getDistributor().get(OnimaAPI.getInstance().getWorkloadManager().getSchedulerId()).addWorkload(new SchedulerWorkload(this));
 		} else
 			OnimaAPI.getScheduled().remove(this);
 		

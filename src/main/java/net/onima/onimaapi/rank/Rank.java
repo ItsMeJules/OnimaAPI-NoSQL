@@ -5,10 +5,11 @@ import java.time.temporal.ChronoUnit;
 
 import org.bson.Document;
 
+import net.onima.onimaapi.OnimaAPI;
 import net.onima.onimaapi.mongo.saver.MongoSerializer;
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.players.OfflineAPIPlayer;
-import net.onima.onimaapi.tasks.RankEntryTask;
+import net.onima.onimaapi.workload.type.RankWorkload;
 
 public class Rank implements MongoSerializer {
 
@@ -22,7 +23,7 @@ public class Rank implements MongoSerializer {
 		this.expireTime = expireTime != null ? Instant.now().plusMillis(expireTime) : null;
 		
 		if (expireTime != null && offlineAPIPlayer.isOnline())
-			RankEntryTask.get().insert((APIPlayer) offlineAPIPlayer);
+			OnimaAPI.getDistributor().get(OnimaAPI.getInstance().getWorkloadManager().getRanksId()).addWorkload(new RankWorkload((APIPlayer) offlineAPIPlayer));
 	}
 	
 	public Rank(OfflineAPIPlayer offlineAPIPlayer, RankType rankType) {

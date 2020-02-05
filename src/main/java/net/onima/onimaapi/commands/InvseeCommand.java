@@ -45,7 +45,7 @@ public class InvseeCommand implements CommandExecutor {
 		
 		player.openInventory(SpecialPlayerInventory.createInventory(offline, offline.isOnline()).getBukkitInventory());
 		APIPlayer.getPlayer(player).setExaminating(offline.getUniqueId());
-		return false;
+		return true;
 	}
 
 }

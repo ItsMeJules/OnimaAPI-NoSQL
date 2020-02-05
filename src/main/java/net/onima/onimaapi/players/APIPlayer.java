@@ -60,6 +60,7 @@ import net.onima.onimaapi.saver.inventory.InventorySaver;
 import net.onima.onimaapi.saver.inventory.PlayerSaver;
 import net.onima.onimaapi.saver.inventory.PlayerSaver.SaveType;
 import net.onima.onimaapi.signs.SignChange;
+import net.onima.onimaapi.tasks.CooldownEntryTask;
 import net.onima.onimaapi.utils.ConfigurationService;
 import net.onima.onimaapi.utils.ExperienceManager;
 import net.onima.onimaapi.utils.JSONMessage;
@@ -152,6 +153,8 @@ public class APIPlayer extends OfflineAPIPlayer {
 		
 		if (!ipHistory.contains(ip))
 			ipHistory.add(ip);
+		
+		CooldownEntryTask.get().insert(this);
 	}
 	
 	public void setLoaded(boolean loaded) {
@@ -379,6 +382,7 @@ public class APIPlayer extends OfflineAPIPlayer {
 	
 	public void setModMode(boolean modMode) {
 		super.modMode = modMode;
+		PacketMenu.getMenu("online_staff").updateItems(player);
 		
 		if (modMode) {
 			PlayerInventory inventory = player.getInventory();
@@ -625,6 +629,7 @@ public class APIPlayer extends OfflineAPIPlayer {
 	
 	public void setVanish(boolean vanish) {
 		super.setVanish(vanish);
+		PacketMenu.getMenu("online_staff").updateItems(player);
 
 		if (vanish) {
 			for (Player online : Bukkit.getOnlinePlayers()) {

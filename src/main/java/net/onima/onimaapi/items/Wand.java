@@ -62,7 +62,7 @@ public class Wand {
 	
 	@SuppressWarnings("deprecation")
 	public static boolean isZoneWand(ItemStack item) {
-		return (item != null && item.getType() == wandItem.getMaterial() && item.getData().getData() == wandItem.getDamage() && item.getItemMeta().getDisplayName().equalsIgnoreCase(ConfigurationService.WAND_NAME));
+		return (item != null && item.getType() == wandItem.getMaterial() && item.getData().getData() == wandItem.getDamage() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().equalsIgnoreCase(ConfigurationService.WAND_NAME));
 	}
 	
 	public static boolean validWorlds(Player player, Location loc1, Location loc2) {

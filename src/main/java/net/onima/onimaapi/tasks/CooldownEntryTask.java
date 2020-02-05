@@ -21,6 +21,10 @@ public class CooldownEntryTask extends TaskPerEntry<OfflineAPIPlayer> {
 	public void run(Iterator<OfflineAPIPlayer> iterator) {
 		while (iterator.hasNext()) {
 			OfflineAPIPlayer offline = iterator.next();
+			
+			if (offline.getCooldownsById().isEmpty())
+				continue;
+			
 			Iterator<Cooldown> cooldownIterator = offline.getCooldowns().iterator();
 			
 			while (cooldownIterator.hasNext()) {

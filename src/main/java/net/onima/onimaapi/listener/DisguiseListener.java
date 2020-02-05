@@ -56,5 +56,5 @@ public class DisguiseListener implements Listener {
 				event.setRankType(apiPlayer.getDisguiseManager().getRankType());
 		}
 	}
-
+	
 }

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bukkit.entity.Player;
+
 import net.onima.onimaapi.gui.PacketMenu;
 import net.onima.onimaapi.gui.buttons.PageButton;
 import net.onima.onimaapi.gui.buttons.utils.Button;
@@ -45,6 +47,18 @@ public abstract class PageMenu extends PacketMenu {
 		}
 		
 		buttons.put(size - 1, new PageButton(this));
+	}
+	
+	@Override
+	public void updateItems(Player player) {
+		buttons.clear();
+		inventory.clear();
+		allItems.clear();
+		
+		registerItems();
+		
+		for (Entry<Integer, Button> entry : buttons.entrySet())
+			inventory.setItem(entry.getKey(), createItemStack(player, entry.getValue()));
 	}
 	
 	public abstract Map<Integer, Button> getAllPagesItems();

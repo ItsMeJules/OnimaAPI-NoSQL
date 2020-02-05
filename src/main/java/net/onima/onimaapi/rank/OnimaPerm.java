@@ -838,7 +838,31 @@ public enum OnimaPerm {
 	
 	ENDEXIT_COMMAND("onimaapi.endexit.command", "Permet de définir la zone de sortie de l'end."),
 	
-	REPAIR_COMMAND("onimaapi.repair.command", "Permet de réparer n'importe quel item.");
+	REPAIR_COMMAND("onimaapi.repair.command", "Permet de réparer n'importe quel item."),
+	
+	HAT_COMMAND("onimaapi.hat.command", "Permet de mettre n'importe quel item sur sa tête."),
+	
+	STOPLAG_COMMAND("onimaapi.stoplag.command", "Permet d'arrêter toutes les activitées qui font lagger le serveur."),
+	
+	ENDERCHEST_COMMAND("onimaapi.enderchest.command", "Permet d'ouvrir un enderchest."),
+	
+	ONIMAFACTION_FASTPLANT_COMMAND("onimafaction.fastplant.command", "Commande principale pour les fast plant."),
+	
+	ONIMAFACTION_FASTPLANT_CHECK_COMMAND("onimafaction.fastplant.check.argument", "Affiche l'état du fast plant visé."),
+	
+	BROADCAST_COMMAND("onimaapi.broadcast.command", "Broadcast un message dans tout le serveur."),
+	
+	SETTINGS_COMMAND("onimaapi.settings.command", "Gère ses options."),
+	
+	REPORT_COMMAND("onimaapi.report.command", "Report un joueur."),
+	
+	REPORTS_COMMAND("onimaapi.reports.command", "Commande principale pour gérer les reports."),
+	
+	REPORT_EXEMPT("onimaapi.report.exempt", "Permet de ne pas se faire report."),
+	
+	BUG_REPORT_COMMAND("onimaapi.bugreport.command", "Signale un bug."),
+	
+	BUG_REPORTS_COMMAND("onimaapi.bugreports.command", "Commande principale pour gérer les signalement de bugs.");
 	
 	private String permission, description;
 	

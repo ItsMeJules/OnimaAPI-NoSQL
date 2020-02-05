@@ -5,11 +5,11 @@ import org.bukkit.Location;
 import net.onima.onimaapi.tasks.FastTileTask;
 
 public interface FastTile {
-
-    public Location getLocation();
-    public boolean action();
+	
+    Location getLocation();
+    boolean action();
     
-    public default void register() {
+    default void register() {
     	FastTileTask.getFastTiles().add(this);
     }
 

@@ -1,9 +1,14 @@
 package net.onima.onimaapi.commands;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -20,9 +25,8 @@ import net.onima.onimaapi.rank.OnimaPerm;
 import net.onima.onimaapi.rank.RankType;
 import net.onima.onimaapi.utils.BetterItem;
 
-public class DisguiseCommand implements CommandExecutor { //TODO vérifier si le joueur se /disguise en combat, si oui annuler et avertir un admin.
-														  //TODO S'il est à < 46 || 32 blocks d'un ennemie simplement avertir un admin.
-
+public class DisguiseCommand implements CommandExecutor, TabCompleter {
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (!OnimaPerm.ONIMAAPI_DISGUISE_COMMAND.has(sender)) {
@@ -46,6 +50,14 @@ public class DisguiseCommand implements CommandExecutor { //TODO vérifier si le
 		}
 		
 		return false;
+	}
+	
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+		if (!OnimaPerm.ONIMAAPI_DISGUISE_COMMAND_LIST.has(sender) || args.length != 1)
+			return Collections.emptyList();
+		
+		return Arrays.asList("list");
 	}
 	
 	private class DisguiseManagerMenu extends PacketMenu {

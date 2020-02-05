@@ -864,7 +864,7 @@ public class Methods {
 		return null;
 	}
 	
-	public static void removeOneItem(Player player) {
+	public static void removeOneHandItem(Player player) {
 		if (player.getItemInHand().getAmount() == 1)
 			player.setItemInHand(null);
 		else

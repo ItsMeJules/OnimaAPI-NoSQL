@@ -17,7 +17,7 @@ import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.utils.ExperienceManager;
 import net.onima.onimaapi.utils.Methods;
 
-public class PlayerSaver extends InventorySaver implements MongoSerializer {
+public class PlayerSaver extends InventorySaver implements MongoSerializer { //TODO Rajouter + d'infos comme la location, le claim etc.
 	
 	public static Integer ID;
 	

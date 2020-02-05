@@ -60,7 +60,7 @@ public class CrateListener implements Listener {
 				PhysicalKey key = PhysicalKey.fromItem(player.getItemInHand());
 					
 				if (key != null && key.match(crate)) {
-					Methods.removeOneItem(player);
+					Methods.removeOneHandItem(player);
 					crate.open(apiPlayer, key.getBooster());
 				} else {
 					new OSound(Sound.VILLAGER_NO, 1F, 1F).play(player);

@@ -157,7 +157,17 @@ public interface PlayerOption {
 		/**
 		 * Whether or not the player can see capzone messages.
 		 */
-		CAPZONE_MESSAGES(10, null, "§7Afficher les messages d'entrées/knock d'un event : %value%");
+		CAPZONE_MESSAGES(10, null, "§7Afficher les messages d'entrées/knock d'un event : %value%"),
+		
+		/**
+		 * Whether or not the player can see disguise warn messages.
+		 */
+		DISGUISE_MESSAGES_WARN(11, OnimaPerm.ONIMAAPI_DISGUISE_COMMAND_LIST, "§7Afficher les messages de prévention quand\n§7un joueur se /disguise proche d'ennemies : %value%"),
+		
+		/**
+		 * Whether or not the player receives reports messages.
+		 */
+		REPORT_NOTIFY(12, OnimaPerm.REPORTS_COMMAND, "§7Reçoit des notifications quand un joueur est report : %value%");
 		
 		private int slot;
 		private OnimaPerm permission;

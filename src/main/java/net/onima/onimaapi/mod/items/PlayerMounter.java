@@ -11,6 +11,12 @@ import net.onima.onimaapi.utils.BetterItem;
 import net.onima.onimaapi.utils.Methods;
 
 public class PlayerMounter extends ModItem implements EntityClickable {
+	
+	public static final double DAMAGE;
+	
+	static {
+		DAMAGE = 10000D;
+	}
 
 	public PlayerMounter() {
 		super("player_mounter", 8, new BetterItem(Material.BLAZE_ROD, 1, 0, MOD_PREFIX + " §cChevaucher §f& §cTuer", "§7Click gauche pour tuer une entité", "§7Click droit pour chevaucher une entité"));
@@ -54,12 +60,11 @@ public class PlayerMounter extends ModItem implements EntityClickable {
 		useSucces.play(player);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void entityAttack(APIPlayer player, Entity entity) {
 		if (!(entity instanceof LivingEntity)) return;
 		
-		((LivingEntity) entity).damage(Integer.MAX_VALUE, player.toPlayer());
+		((LivingEntity) entity).damage(DAMAGE, player.toPlayer());
 		useSucces.play(player);
 	}
 

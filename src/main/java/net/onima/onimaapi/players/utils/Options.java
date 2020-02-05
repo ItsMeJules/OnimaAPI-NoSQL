@@ -72,7 +72,8 @@ public class Options implements MongoSerializer {
 				.append("note_notify_connect", getBoolean(GlobalOptions.IMPORTANT_NOTE_NOTIFY_CONNECT))
 				.append("show_players_spawn", getBoolean(GlobalOptions.SHOW_PLAYERS_WHEN_IN_SPAWN))
 				.append("show_invisible_players", getBoolean(GlobalOptions.SHOW_INVISIBLE_PLAYERS))
-				.append("capzone_messages", getBoolean(GlobalOptions.CAPZONE_MESSAGES));
+				.append("capzone_messages", getBoolean(GlobalOptions.CAPZONE_MESSAGES))
+				.append("disguise_warn", getBoolean(GlobalOptions.DISGUISE_MESSAGES_WARN)).append("report_messages", getBoolean(GlobalOptions.REPORT_NOTIFY));
 	}
 	
 }

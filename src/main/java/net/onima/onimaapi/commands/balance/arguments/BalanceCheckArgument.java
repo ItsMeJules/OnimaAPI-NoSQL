@@ -26,13 +26,14 @@ public class BalanceCheckArgument extends BasicCommandArgument {
 			return false;
 		
 		VoidCallback<OfflineAPIPlayer> callback = player -> {
+			String name = args.length > 1 ? args[1] : Methods.getName(player);
+			
 			if (player == null) {
-				sender.sendMessage("§c" + args[1] + " ne s'est jamais connecté !");
+				sender.sendMessage("§c" + name + " ne s'est jamais connecté !");
 				return;
 			}
 			
-			String name = Methods.getName(player);
-			String msg = Methods.getNameFromArg(sender, args[1]).equalsIgnoreCase(name) ? "§dVous §7avez" : "§d" + name + " §7a";
+			String msg = Methods.getNameFromArg(sender, name).equalsIgnoreCase(name) ? "§dVous §7avez" : "§d" + name + " §7a";
 			
 			sender.sendMessage(msg + " §c" + player.getBalance().getAmount() + ConfigurationService.MONEY_SYMBOL + "§7.");
 		};

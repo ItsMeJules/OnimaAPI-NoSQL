@@ -212,3 +212,31 @@ commands:
   repair:
     description: Permet de réparer des items.
     permission: onimaapi.repair.command
+  hat:
+    description: Permet de se mettre un chapeau.
+    permission: onimaapi.hat.command
+  stoplag:
+    description: Arrête toutes les activitées intensives du serveur.
+    permission: onimaapi.stoplag.command
+  enderchest:
+    description: Permet d'ouvrir un enderchest.
+    aliases: ec
+    permission: onimaapi.enderchest.command
+  broadcast:
+    description: Ecrit un message général.
+    permission: onimaapi.broadcast.command
+  settings:
+    description: Gère ses options.
+    permission: onimaapi.settings.command
+  report:
+    description: Report un joueur.
+    permission: onimaapi.report.command
+#  reports:
+#    description: Commande principale pour gérer les reports.
+#    permission: onimaapi.reports.command
+  bugreport:
+    description: Signale un bug.
+    permission: onimaapi.bugreport.command
+#  bugreports:
+#    description: Commande principale pour gérer les signalement de bugs.
+#    permission: onimaapi.bugreports.command

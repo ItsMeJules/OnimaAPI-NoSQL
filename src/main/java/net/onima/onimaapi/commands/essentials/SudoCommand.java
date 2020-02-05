@@ -42,7 +42,7 @@ public class SudoCommand implements CommandExecutor {
 		Player target = Bukkit.getPlayer(uuid);
 		
 		target.performCommand(executingCommand);
-		sender.sendMessage("§6Vous §7avez forcé §6" + Methods.getName(target, true) + "§7à exécuter la commande §6" + executingCommand + "§7.");
+		sender.sendMessage("§6Vous §7avez forcé §6" + Methods.getName(target, true) + " §7à exécuter la commande §6" + executingCommand + "§7.");
 		return true;
 	}
 

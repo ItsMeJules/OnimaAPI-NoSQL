@@ -29,7 +29,10 @@ public class StaffCounter extends ModItem {
 
 	@Override
 	public void rightClick(APIPlayer player) {
-		PacketMenu.getMenu("online_staff").open(player);
+		PacketMenu menu = PacketMenu.getMenu("online_staff");
+		
+		menu.updateItems(player.toPlayer());
+		menu.open(player);
 		useSucces.play(player);
 	}
 

@@ -25,7 +25,7 @@ public class OnimaMongo {
 	private static Map<OnimaCollection, MongoCollection<Document>> collections;
 	
 	public static void connect() {
-		client = MongoClients.create("mongodb+srv://Jules:WBxLEMpzzn4i6oj6@onimacluster-7wakg.gcp.mongodb.net/test?retryWrites=true&w=majority");
+		client = MongoClients.create("mongodb://Jules:WBxLEMpzzn4i6oj6@onimacluster-shard-00-00-7wakg.gcp.mongodb.net:27017,onimacluster-shard-00-01-7wakg.gcp.mongodb.net:27017,onimacluster-shard-00-02-7wakg.gcp.mongodb.net:27017/test?ssl=true&replicaSet=OnimaCluster-shard-0&authSource=admin&w=majority");
 		database = client.getDatabase("onima");
 
 		collections = new HashMap<>();

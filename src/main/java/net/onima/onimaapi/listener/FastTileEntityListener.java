@@ -45,6 +45,6 @@ public class FastTileEntityListener implements Listener {
                 iterator.remove();
         }
     }
-	
+    
 }
 

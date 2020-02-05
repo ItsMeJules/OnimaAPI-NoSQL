@@ -18,7 +18,6 @@ import net.onima.onimaapi.utils.Methods;
 
 public class KillCommand implements CommandExecutor {
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		Player target;
@@ -52,7 +51,7 @@ public class KillCommand implements CommandExecutor {
             return false;
         }
         
-        final EntityDamageEvent event = new EntityDamageEvent((Entity) target, EntityDamageEvent.DamageCause.SUICIDE, 10000);
+        final EntityDamageCommandEvent event = new EntityDamageCommandEvent((Entity) target, EntityDamageEvent.DamageCause.SUICIDE, Integer.MAX_VALUE, sender.equals(target));
         Bukkit.getPluginManager().callEvent((Event) event);
         
         if (event.isCancelled()) {
@@ -60,16 +59,39 @@ public class KillCommand implements CommandExecutor {
             return false;
         }
         
+        if (!event.isSelf())
+        	event.setMessage("§7" + Methods.getRealName(sender) + " a kill §e" + Methods.getRealName((OfflinePlayer) target));
+        
         target.setLastDamageCause(event);
         target.setHealth(0.0);
         
-        if (sender.equals(target)) {
-            sender.sendMessage("§eVous vous êtes kill.");
-            return true;
-        }
-		
-        Bukkit.broadcastMessage("§7" + Methods.getRealName(sender) + " a kill §e" + Methods.getRealName((OfflinePlayer) target));
 		return true;
+	}
+	
+	public class EntityDamageCommandEvent extends EntityDamageEvent {
+
+		private boolean self;
+		private String message;
+
+		@SuppressWarnings("deprecation")
+		public EntityDamageCommandEvent(Entity damagee, DamageCause cause, int damage, boolean self) {
+			super(damagee, cause, damage);
+			
+			this.self = self;
+		}
+		
+		public boolean isSelf() {
+			return self;
+		}
+		
+		public void setMessage(String message) {
+			this.message = message;
+		}
+		
+		public String getMessage() {
+			return message;
+		}
+		
 	}
 
 }

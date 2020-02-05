@@ -2,9 +2,12 @@ package net.onima.onimaapi.players;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -47,6 +50,7 @@ import net.onima.onimaapi.punishment.utils.PunishmentType;
 import net.onima.onimaapi.punishment.utils.ServerRestricted;
 import net.onima.onimaapi.rank.Rank;
 import net.onima.onimaapi.rank.RankType;
+import net.onima.onimaapi.report.Report;
 import net.onima.onimaapi.saver.inventory.PlayerSaver;
 import net.onima.onimaapi.tasks.CooldownEntryTask;
 import net.onima.onimaapi.utils.Balance;
@@ -81,6 +85,7 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 	protected List<Punishment> punishments;
 	protected List<Note> notes;
 	protected List<String> ipHistory;
+	protected Set<Report> reports;
 	
 	{
 		alts = new ArrayList<>();
@@ -97,6 +102,17 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 		punishments = new ArrayList<>();
 		notes = new ArrayList<>();
 		ipHistory = new ArrayList<>();
+		reports = new TreeSet<Report>(new Comparator<Report>() {
+			@Override
+			public int compare(Report r1, Report r2) {
+				if (r1.getTime() > r2.getTime())
+					return -1;
+				else if (r1.getTime() < r2.getTime())
+					return 1;
+				else
+					return 0;
+			}
+		});
 	}
 
 	public OfflineAPIPlayer(OfflinePlayer offlinePlayer) {
@@ -111,8 +127,6 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 		menus.add(new VirtualKeysMenu(this));
 		menus.add(new DeathHistoricMenu(this));
 		menus.add(new PendingRestoresMenu(this));
-		
-		CooldownEntryTask.get().insert(this);
 		
 		(minedOres = new MinedOres()).setMenu(new OresMenu(this));
 		
@@ -155,6 +169,7 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 			punishments = old.punishments;
 			notes = old.notes;
 			ipHistory = old.ipHistory;
+			reports = old.reports;
 			
 			if (rank != old.rank) {
 				rank = old.rank;
@@ -371,7 +386,7 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 	}
 	
 	public void startCooldown(Cooldown cooldown) {
-		startCooldown(cooldown, cooldown.getDuration());
+		cooldown.onStart(this);
 	}
 	
 	public void startCooldown(Cooldown cooldown, long time) {
@@ -494,6 +509,10 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 		return ipHistory;
 	}
 	
+	public Set<Report> getReports() {
+		return reports;
+	}
+	
 	@Override
 	public void save() {
 		offlinePlayers.put(uuid, this);
@@ -561,6 +580,8 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 		options.getSettings().put(PlayerOption.GlobalOptions.SHOW_PLAYERS_WHEN_IN_SPAWN, optionsDoc.getBoolean("show_players_spawn"));
 		options.getSettings().put(PlayerOption.GlobalOptions.SHOW_INVISIBLE_PLAYERS, optionsDoc.getBoolean("show_invisible_players"));
 		options.getSettings().put(PlayerOption.GlobalOptions.CAPZONE_MESSAGES, optionsDoc.getBoolean("capzone_messages"));
+		options.getSettings().put(PlayerOption.GlobalOptions.DISGUISE_MESSAGES_WARN, optionsDoc.getBoolean("disguise_warn"));
+		options.getSettings().put(PlayerOption.GlobalOptions.REPORT_NOTIFY, optionsDoc.getBoolean("report_messages"));
 		
 		for (Document doc : result.valueToList("player_data", Document.class)) {
 			playerDataSaved.add(PlayerSaver.fromDB(doc.getInteger("id"),
@@ -701,5 +722,5 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 	public static boolean isLoaded(UUID uuid) {
 		return offlinePlayers.containsKey(uuid);
 	}
-	
+
 }

@@ -85,17 +85,15 @@ public abstract class OptionsMenu extends PacketMenu {
 		public void click(PacketMenu menu, Player clicker, ItemStack current, InventoryClickEvent event) {
 			event.setCancelled(true);
 			
-			if (option.permission() != null && !option.permission().has(clicker))
+			if (option.permission() != null && !option.permission().has(apiPlayer.toPlayer()))
 				return;
 			
 			if (object instanceof Boolean) {
 				boolean result = options.reverseBoolean(option);
 				object = result;
 				
-				if (option == PlayerOption.ModOptions.PICKUP_ITEM)
-					clicker.setCanPickupItems(!result);
-				else if (option == PlayerOption.GlobalOptions.SHOW_INVISIBLE_PLAYERS)
-					Bukkit.getPluginManager().callEvent(new PlayerShowInvisibleEvent(result, clicker));
+				if (option == PlayerOption.GlobalOptions.SHOW_INVISIBLE_PLAYERS)
+					Bukkit.getPluginManager().callEvent(new PlayerShowInvisibleEvent(result, apiPlayer.toPlayer()));
 			}
 			
 			update(menu);
@@ -118,7 +116,7 @@ public abstract class OptionsMenu extends PacketMenu {
 					if (value instanceof Integer)
 						options.getSettings().put(option, object = (((Number) options.get(option)).intValue() + value.intValue()));
 					else 
-						options.getSettings().put(option, object = (((Number) options.get(option)).floatValue() + value.floatValue()));
+						options.getSettings().put(option, object = (((Number) options.get(option)).doubleValue() + value.doubleValue()));
 					
 					updater.getInventory().setItem(updater.toUpdateSlot, getButtonItem(apiPlayer.toPlayer()).toItemStack());
 					return true;

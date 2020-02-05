@@ -75,6 +75,7 @@ public class DisguiseManager {
 		
 		Bukkit.getPluginManager().callEvent(new PlayerDisguiseEvent(player, disguisedUUID, playerName, name, rankType, skin));
 		OnimaAPI.getInstance().getDisguiseFactory().changeDisplay(playerName, disguisedUUID);
+		
 		OnimaMongo.executeAsync(OnimaCollection.DISGUISE_LOGS, database -> {
 			database.insertOne(new Document("uuid", player.getUniqueId().toString())
 					.append("name", name).append("skinUUID", disguisedUUID.toString())

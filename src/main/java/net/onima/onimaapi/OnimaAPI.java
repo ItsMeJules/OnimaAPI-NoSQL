@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.SplittableRandom;
@@ -19,8 +20,6 @@ import net.minecraft.server.v1_7_R4.CommandDispatcher;
 import net.onima.onimaapi.caching.UUIDCache;
 import net.onima.onimaapi.crates.utils.Crate;
 import net.onima.onimaapi.disguise.PlayerDisplayModifier;
-import net.onima.onimaapi.event.mongo.DatabasePreUpdateEvent;
-import net.onima.onimaapi.event.mongo.DatabasePreUpdateEvent.Action;
 import net.onima.onimaapi.fakeblock.FakeBlocksFix;
 import net.onima.onimaapi.gui.PacketMenu;
 import net.onima.onimaapi.gui.menu.FreezeMenu;
@@ -35,19 +34,17 @@ import net.onima.onimaapi.manager.ListenerManager;
 import net.onima.onimaapi.manager.TaskManager;
 import net.onima.onimaapi.mod.SilentChest;
 import net.onima.onimaapi.mongo.OnimaMongo;
-import net.onima.onimaapi.mongo.saver.NoSQLSaver;
 import net.onima.onimaapi.mountain.utils.Mountain;
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.players.utils.Options;
 import net.onima.onimaapi.players.utils.PlayerOption;
 import net.onima.onimaapi.punishment.utils.Punishment;
 import net.onima.onimaapi.rank.OnimaPerm;
-import net.onima.onimaapi.saver.FileSaver;
+import net.onima.onimaapi.report.Report;
 import net.onima.onimaapi.saver.Saver;
 import net.onima.onimaapi.saver.inventory.PlayerSaver;
 import net.onima.onimaapi.signs.HCFSign;
 import net.onima.onimaapi.tasks.CooldownEntryTask;
-import net.onima.onimaapi.tasks.RankEntryTask;
 import net.onima.onimaapi.utils.Config;
 import net.onima.onimaapi.utils.ConfigurationService;
 import net.onima.onimaapi.utils.JSONMessage;
@@ -55,6 +52,8 @@ import net.onima.onimaapi.utils.Methods;
 import net.onima.onimaapi.utils.Scheduler;
 import net.onima.onimaapi.utils.Warp;
 import net.onima.onimaapi.utils.WorldChanger;
+import net.onima.onimaapi.workload.manager.WorkloadDistributor;
+import net.onima.onimaapi.workload.manager.WorkloadManager;
 import net.onima.onimaapi.zone.Cuboid;
 import net.onima.onimaapi.zone.type.Region;
 
@@ -66,18 +65,21 @@ public class OnimaAPI extends JavaPlugin {
 	public static final SplittableRandom RANDOM;
 	public static final ZoneId TIME_ZONE;
 	
+	public static String UNKNOWN_COMMAND;
+	
 	private static OnimaAPI instance;
 	private static List<Scheduler> scheduled;
-	private static List<Saver> savers, shutDownSavers;
+	private static Set<Saver> savers, shutDownSavers;
 	private static List<String> needReplaceCommands;
-	
-	public static String UNKNOWN_COMMAND;
+	private static boolean stopLag;
+	private static WorkloadDistributor workloadDistributor;
 	
 	private ListenerManager listenerManager;
 	private EnchantLimiter enchantLimiter;
 	private PotionLimiter potionLimiter;
 	private ChatManager chatManager;
 	private CommandManager commandManager;
+	private WorkloadManager workloadManager;
 	private boolean loaded;
 	private PlayerDisplayModifier factory;
 	
@@ -86,9 +88,10 @@ public class OnimaAPI extends JavaPlugin {
 		TIME_ZONE = ZoneId.of("Europe/Paris");
 		
 		scheduled = new ArrayList<>();
-		savers = Collections.synchronizedList(new ArrayList<>());
-		shutDownSavers = new ArrayList<>();
+		savers = Collections.synchronizedSet(new HashSet<>());
+		shutDownSavers = new HashSet<>();
 		needReplaceCommands = new ArrayList<>();
+		workloadDistributor = new WorkloadDistributor();
 	}
 	
 	@Override
@@ -130,12 +133,12 @@ public class OnimaAPI extends JavaPlugin {
 		
 		(listenerManager = new ListenerManager(this)).registerListener();
 		(commandManager = new CommandManager(this)).registerCommands();
+		(workloadManager = new WorkloadManager(workloadDistributor)).registerWorkloads();
 		new TaskManager(this).registerTasks();
 		chatManager = new ChatManager();
 		factory = new PlayerDisplayModifier(this);
 		
 		CooldownEntryTask.init(this);
-		RankEntryTask.init(this);
 		
 		PacketMenu.getStaticMenus().add(new OnlineStaffMenu());
 		PacketMenu.getStaticMenus().add(new FreezeMenu());
@@ -164,6 +167,7 @@ public class OnimaAPI extends JavaPlugin {
 		Options.register(PlayerOption.GlobalOptions.SHOW_PLAYERS_WHEN_IN_SPAWN, true);
 		Options.register(PlayerOption.GlobalOptions.SHOW_INVISIBLE_PLAYERS, false);
 		Options.register(PlayerOption.GlobalOptions.CAPZONE_MESSAGES, true);
+		Options.register(PlayerOption.GlobalOptions.DISGUISE_MESSAGES_WARN, false);
 		
 		for (String str : (Set<String>) new CommandDispatcher().a().keySet()) {
 			switch (str) {
@@ -214,33 +218,17 @@ public class OnimaAPI extends JavaPlugin {
 		
 		Punishment.ID = configuration.getInt("punishments-id");
 		PlayerSaver.ID = configuration.getInt("player_saver-id");
+		Report.ID = configuration.getInt("report-id");
 		Methods.initKillsOnStart();
 	}
 
 	@Override
 	public void onDisable() {
-		savers.forEach(saver -> {
-			if (saver instanceof NoSQLSaver) {
-				NoSQLSaver mongoSaver = (NoSQLSaver) saver;
-				
-				Bukkit.getPluginManager().callEvent(new DatabasePreUpdateEvent(mongoSaver, mongoSaver.shouldDelete() ? Action.DELETE : Action.WRITE, false));
-			} else if (saver instanceof FileSaver)
-				((FileSaver) saver).serialize();
-		});
-		
-		shutDownSavers.forEach(saver -> {
-			if (saver instanceof NoSQLSaver) {
-				NoSQLSaver mongoSaver = (NoSQLSaver) saver;
-				
-				Bukkit.getPluginManager().callEvent(new DatabasePreUpdateEvent(mongoSaver, mongoSaver.shouldDelete() ? Action.DELETE : Action.WRITE, false));
-			} else if (saver instanceof FileSaver)
-				((FileSaver) saver).serialize();
-		});
-			
 		FileConfiguration configuration = ConfigManager.getStuffsSerialConfig().getConfig();
 			
 		configuration.set("punishments-id", Punishment.ID);
 		configuration.set("player_saver-id", PlayerSaver.ID);
+		configuration.set("report-id", Report.ID);
 			
 		for (HCFSign hcfSign : HCFSign.getHCFSigns())
 			hcfSign.serialize();
@@ -269,11 +257,11 @@ public class OnimaAPI extends JavaPlugin {
 		return scheduled;
 	}
 	
-	public static List<Saver> getSavers() {
+	public static Set<Saver> getSavers() {
 		return savers;
 	}
 	
-	public static List<Saver> getShutdownSavers() {
+	public static Set<Saver> getShutdownSavers() {
 		return shutDownSavers;
 	}
 	
@@ -295,6 +283,10 @@ public class OnimaAPI extends JavaPlugin {
 
 	public CommandManager getCommandManager() {
 		return commandManager;
+	}
+	
+	public WorkloadManager getWorkloadManager() {
+		return workloadManager;
 	}
 	
 	public boolean isLoaded() {
@@ -323,6 +315,18 @@ public class OnimaAPI extends JavaPlugin {
 			if (permission.has(apiPlayer.toPlayer()))
 				apiPlayer.sendMessage(message);
 		}
+	}
+
+	public static void setStopLag(boolean stopLag) {
+		OnimaAPI.stopLag = stopLag;
+	}
+	
+	public static boolean hasStopLag() {
+		return stopLag;
+	}
+	
+	public static WorkloadDistributor getDistributor() {
+		return workloadDistributor;
 	}
 	
 }

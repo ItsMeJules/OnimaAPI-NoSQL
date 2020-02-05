@@ -31,13 +31,16 @@ import net.onima.onimaapi.commands.balance.BalanceExecutor;
 import net.onima.onimaapi.commands.chat.ChatExecutor;
 import net.onima.onimaapi.commands.cooldown.CooldownExecutor;
 import net.onima.onimaapi.commands.crate.CrateExecutor;
+import net.onima.onimaapi.commands.essentials.BroadcastCommand;
 import net.onima.onimaapi.commands.essentials.ClearCommand;
 import net.onima.onimaapi.commands.essentials.CraftCommand;
 import net.onima.onimaapi.commands.essentials.EnchantCommand;
+import net.onima.onimaapi.commands.essentials.EnderchestCommand;
 import net.onima.onimaapi.commands.essentials.FeedCommand;
 import net.onima.onimaapi.commands.essentials.FlyCommand;
 import net.onima.onimaapi.commands.essentials.GmcCommand;
 import net.onima.onimaapi.commands.essentials.GmsCommand;
+import net.onima.onimaapi.commands.essentials.HatCommand;
 import net.onima.onimaapi.commands.essentials.HealCommand;
 import net.onima.onimaapi.commands.essentials.KillCommand;
 import net.onima.onimaapi.commands.essentials.ReloreCommand;
@@ -45,6 +48,7 @@ import net.onima.onimaapi.commands.essentials.RenameCommand;
 import net.onima.onimaapi.commands.essentials.RepairCommand;
 import net.onima.onimaapi.commands.essentials.SkullCommand;
 import net.onima.onimaapi.commands.essentials.SpeedCommand;
+import net.onima.onimaapi.commands.essentials.StopLagCommand;
 import net.onima.onimaapi.commands.essentials.SudoCommand;
 import net.onima.onimaapi.commands.essentials.TeleportAllCommand;
 import net.onima.onimaapi.commands.essentials.TeleportHereCommand;
@@ -65,6 +69,7 @@ import net.onima.onimaapi.commands.punishment.remover.UnblacklistCommand;
 import net.onima.onimaapi.commands.punishment.remover.UnmuteCommand;
 import net.onima.onimaapi.commands.rank.RankExecutor;
 import net.onima.onimaapi.commands.region.RegionExecutor;
+import net.onima.onimaapi.commands.reports.ReportCommand;
 import net.onima.onimaapi.commands.supplycrate.SupplyCrateExecutor;
 import net.onima.onimaapi.commands.warp.WarpExecutor;
 
@@ -145,6 +150,11 @@ public class CommandManager {
 		plugin.getCommand("feed").setExecutor(new FeedCommand());
 		plugin.getCommand("endexit").setExecutor(new EndExitCommand());
 		plugin.getCommand("repair").setExecutor(new RepairCommand());
+		plugin.getCommand("hat").setExecutor(new HatCommand());
+		plugin.getCommand("stoplag").setExecutor(new StopLagCommand());
+		plugin.getCommand("enderchest").setExecutor(new EnderchestCommand());
+		plugin.getCommand("broadcast").setExecutor(new BroadcastCommand());
+		plugin.getCommand("report").setExecutor(new ReportCommand());
 	}
 
 

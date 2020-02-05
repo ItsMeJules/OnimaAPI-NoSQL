@@ -596,7 +596,7 @@ public class ConfigurationService {
 
 	public static final double EXP_MULTIPLIER_SMELTING = 2.0D;
 
-	public static final List<EntityType> NOT_STACKABLE_MOBS = ImmutableList.of(EntityType.CREEPER, EntityType.ENDERMAN, EntityType.HORSE, EntityType.SLIME, EntityType.VILLAGER, EntityType.BAT);
+	public static final List<EntityType> NOT_STACKABLE_MOBS = ImmutableList.of(EntityType.CREEPER, EntityType.ENDERMAN, EntityType.HORSE, EntityType.SLIME, EntityType.VILLAGER, EntityType.BAT, EntityType.SILVERFISH);
 	
 	public static final double ENTITY_STACK_RADIUS = 15.0D;
 
@@ -638,4 +638,6 @@ public class ConfigurationService {
 	public static final String EOTW_DEATHBANNED = "§cDeathban jusqu'à la fin de la map car"
 			+ "\n§ccar vous êtes mort durant l'EOTW."
 			+ "\n§fRevenez demain pour le SOTW.";
+
+	public static final double DISGUISE_WARN_RADIUS = 46D;
 }

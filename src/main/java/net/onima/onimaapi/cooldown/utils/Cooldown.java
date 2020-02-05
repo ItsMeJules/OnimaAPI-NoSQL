@@ -33,7 +33,7 @@ public abstract class Cooldown implements Saver, MongoSerializer {
 	}
 	
 	protected String name;
-	protected byte id; //Last id = 16 -> InsideStormCooldown
+	protected byte id; //Last id = 17 -> BugReportCooldown
 	protected long duration;
 	protected Map<UUID, CooldownData> datas;
 	

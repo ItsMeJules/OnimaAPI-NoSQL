@@ -56,7 +56,7 @@ public class DeathHistoricMenu extends PageMenu {
 		int index = 0;
 		
 		for (PlayerSaver saver : offline.getPlayerDataSaved()) {
-			if (saver.getSaveType() != PlayerSaver.SaveType.DEATH && !saver.isInRestoreRequest())
+			if (saver.getSaveType() != PlayerSaver.SaveType.DEATH || saver.isInRestoreRequest())
 				continue;
 		
 			map.put(index, new DeathHistoricButton(saver));
@@ -77,7 +77,7 @@ public class DeathHistoricMenu extends PageMenu {
 
 	@Override
 	public int getMaxItemsPerPage() {
-		return 51;
+		return 52;
 	}
 
 	private class DeathHistoricButton implements Button {

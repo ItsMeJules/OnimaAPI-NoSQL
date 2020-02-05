@@ -1,5 +1,6 @@
 package net.onima.onimaapi.gui.menu;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -7,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 
 import net.onima.onimaapi.disguise.DisguiseManager;
 import net.onima.onimaapi.disguise.DisguiseSkin;
+import net.onima.onimaapi.event.disguise.PlayerPreDisguiseEvent;
 import net.onima.onimaapi.gui.PacketMenu;
 import net.onima.onimaapi.gui.PacketMenuType;
 import net.onima.onimaapi.gui.buttons.CallbackButton;
@@ -50,6 +52,12 @@ public class DisguiseMenu extends PacketMenu {
 				button.getEvent().setCancelled(true);
 				
 				DisguiseSkin skin = DisguiseSkin.getRandomNotInUse();
+				
+				PlayerPreDisguiseEvent event = new PlayerPreDisguiseEvent(apiPlayer, skin, disguise);
+				Bukkit.getPluginManager().callEvent(event);
+				
+				if (event.isCancelled())
+					return false;
 				
 				if (skin == null) {
 					DisguiseMenu.this.close(apiPlayer, true);

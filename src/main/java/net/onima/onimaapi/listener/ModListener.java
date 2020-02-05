@@ -20,6 +20,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,6 +28,7 @@ import net.onima.onimaapi.OnimaAPI;
 import net.onima.onimaapi.gui.PacketMenu;
 import net.onima.onimaapi.mod.EntityClickable;
 import net.onima.onimaapi.mod.ModItem;
+import net.onima.onimaapi.mod.items.PlayerMounter;
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.players.utils.PlayerOption;
 import net.onima.onimaapi.rank.OnimaPerm;
@@ -71,6 +73,9 @@ public class ModListener implements Listener {
 				if (!apiAttacker.isInModMode())
 					return;
 				
+				if (event.getDamage() == PlayerMounter.DAMAGE)
+					return;
+				
 				ModItem modItem = ModItem.fromStack(hand);
 				
 				if (modItem instanceof EntityClickable) {
@@ -105,11 +110,25 @@ public class ModListener implements Listener {
 	}
 	
 	@EventHandler
+	public void onPickupItem(PlayerPickupItemEvent event) {
+		APIPlayer player = APIPlayer.getPlayer(event.getPlayer());
+		
+		if (player.isInModMode() && player.getOptions().getBoolean(PlayerOption.ModOptions.PICKUP_ITEM))
+			event.setCancelled(true);
+	}
+	
+	@EventHandler
 	public void onDropItem(PlayerDropItemEvent event) {
 		APIPlayer player = APIPlayer.getPlayer(event.getPlayer());
 		
-		if (player.isInModMode() && player.getOptions().getBoolean(PlayerOption.ModOptions.DROP_ITEM))
-			event.setCancelled(true);
+		if (player.isInModMode()) {
+			if (player.getOptions().getBoolean(PlayerOption.ModOptions.DROP_ITEM))
+				event.setCancelled(true);
+			else {
+				if (ModItem.fromStack(event.getItemDrop().getItemStack()) != null)
+					event.setCancelled(true);
+			}
+		}
 	}
 	
 	@EventHandler

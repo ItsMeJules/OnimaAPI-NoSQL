@@ -37,6 +37,7 @@ import net.onima.onimaapi.utils.ConfigurationService;
 import net.onima.onimaapi.utils.Methods;
 import net.onima.onimaapi.utils.Scheduler;
 import net.onima.onimaapi.utils.time.Time.LongTime;
+import net.onima.onimaapi.workload.type.SchedulerWorkload;
 import net.onima.onimaapi.zone.Cuboid;
 import net.onima.onimaapi.zone.type.utils.MinecraftCuboid;
 
@@ -286,7 +287,7 @@ public abstract class Mountain implements FileSaver, MinecraftCuboid, Scheduler 
 	
 	@Override
 	public void startTime(Month month, int day, int hour, int minute) {
-		temporal = ZonedDateTime.now().withMonth(month.getValue()).withDayOfMonth(day).withHour(hour).withMinute(minute);
+		temporal = ZonedDateTime.now().withMonth(month.getValue()).withDayOfMonth(day).withHour(hour).withMinute(minute).withSecond(0);
 	}
 	
 	@Override
@@ -322,6 +323,7 @@ public abstract class Mountain implements FileSaver, MinecraftCuboid, Scheduler 
 			temporal = ZonedDateTime.ofInstant(Instant.ofEpochMilli(nextStart), OnimaAPI.TIME_ZONE);
 			
 			OnimaAPI.getScheduled().add(this);
+			OnimaAPI.getDistributor().get(OnimaAPI.getInstance().getWorkloadManager().getSchedulerId()).addWorkload(new SchedulerWorkload(this));
 		} else
 			OnimaAPI.getScheduled().remove(this);
 		

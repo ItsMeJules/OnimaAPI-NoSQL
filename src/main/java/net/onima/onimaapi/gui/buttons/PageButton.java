@@ -25,7 +25,6 @@ public class PageButton implements Button {
 	
 	@Override
 	public BetterItem getButtonItem(Player player) {
-		System.out.println("Page carpet = " + menu.getCurrentPage());
 		BetterItem item = new BetterItem(Material.CARPET, 1, 0, "§aPage §f" + menu.getCurrentPage() + "/" + menu.getPages() + "§a.");
 		
 		if (hasPage(1))
@@ -74,8 +73,6 @@ public class PageButton implements Button {
 
 	public boolean hasPage(int mod) {
 		int page = menu.getCurrentPage() + mod;
-		
-		System.out.println(page + " > 0 && " + page + " <= " + menu.getPages());
 		
 		return page > 0 && page <= menu.getPages();
 	}

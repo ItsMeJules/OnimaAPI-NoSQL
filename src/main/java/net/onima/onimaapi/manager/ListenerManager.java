@@ -32,6 +32,7 @@ import net.onima.onimaapi.listener.ShopSignListener;
 import net.onima.onimaapi.listener.SignColorsListener;
 import net.onima.onimaapi.listener.SpecialInventoryListener;
 import net.onima.onimaapi.listener.StatItemsListener;
+import net.onima.onimaapi.listener.StopLagListener;
 import net.onima.onimaapi.listener.WandListener;
 import net.onima.onimaapi.listener.WorldBorderListener;
 import net.onima.onimaapi.listener.fixes.BlockHitFixListener;
@@ -84,6 +85,7 @@ public class ListenerManager {
 		pm.registerEvents(new SignColorsListener(), plugin);
 		pm.registerEvents(new DisguiseListener(), plugin);
 		pm.registerEvents(new IgnoreListener(), plugin);
+		pm.registerEvents(new StopLagListener(), plugin);
 	}
 
 	public WorldBorderListener getWorldBorderListener() {
