@@ -13,7 +13,6 @@ import net.onima.onimaapi.OnimaAPI;
 import net.onima.onimaapi.caching.UUIDCache;
 import net.onima.onimaapi.gui.menu.report.ReportReasonMenu;
 import net.onima.onimaapi.players.APIPlayer;
-import net.onima.onimaapi.players.OfflineAPIPlayer;
 import net.onima.onimaapi.rank.OnimaPerm;
 import net.onima.onimaapi.report.PlayerReport;
 import net.onima.onimaapi.report.Report;
@@ -40,22 +39,20 @@ public class ReportCommand implements CommandExecutor {
 			return false;
 		}
 		
-		OfflineAPIPlayer.getPlayer(reported, offline -> {
-			if (args.length == 1) {
-				reporter.openMenu(new ReportReasonMenu(reporter.getUUID(), offline));
-				return;
-			} else {
-				Report report = new PlayerReport(reporter.getUUID(), StringUtils.join(args, ' ', 1, args.length), offline);
-				
-				if (report.getReason().length() < Report.MIN_REPORT_REASON_LENGTH) {
-					sender.sendMessage("§cLa raison du report est trop courte !");
-					return;
-				}
-				
-				sender.sendMessage("§eVous avez report §6" + Bukkit.getOfflinePlayer(reported).getName() + " §epour : §7" + report.getReason());
-				report.execute();
+		if (args.length == 1) {
+			reporter.openMenu(new ReportReasonMenu(reporter.getUUID(), reported));
+			return true;
+		} else {
+			Report report = new PlayerReport(reporter.getUUID(), StringUtils.join(args, ' ', 1, args.length), reported);
+			
+			if (report.getReason().length() < Report.MIN_REPORT_REASON_LENGTH) {
+				sender.sendMessage("§cLa raison du report est trop courte !");
+				return false;
 			}
-		});
+			
+			sender.sendMessage("§eVous avez report §6" + Bukkit.getOfflinePlayer(reported).getName() + " §epour : §7" + report.getReason());
+			report.execute();
+		}
 		
 		return true;
 	}

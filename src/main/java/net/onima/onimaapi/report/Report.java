@@ -15,6 +15,7 @@ import net.onima.onimaapi.manager.ConfigManager;
 import net.onima.onimaapi.report.struct.ReportStatus;
 import net.onima.onimaapi.report.struct.Verdict;
 import net.onima.onimaapi.saver.FileSaver;
+import net.onima.onimaapi.utils.BetterItem;
 import net.onima.onimaapi.utils.Config;
 
 public abstract class Report implements FileSaver {
@@ -48,7 +49,7 @@ public abstract class Report implements FileSaver {
 	
 	protected int id;
 	protected UUID reporter;
-	protected String reason;
+	protected String reason, doneBy;
 	protected long time;
 	protected ReportStatus status;
 	protected Verdict verdict;
@@ -66,6 +67,7 @@ public abstract class Report implements FileSaver {
 	}
 	
 	public abstract boolean execute();
+	public abstract BetterItem getItem();
 	
 	public void initID() {
 		id = ID++;
@@ -81,6 +83,14 @@ public abstract class Report implements FileSaver {
 	
 	public String getReason() {
 		return reason;
+	}
+	
+	public String getDoneBy() {
+		return doneBy;
+	}
+	
+	public void setDoneBy(String doneBy) {
+		this.doneBy = doneBy;
 	}
 	
 	public long getTime() {

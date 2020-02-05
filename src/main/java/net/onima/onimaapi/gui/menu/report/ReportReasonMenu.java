@@ -2,8 +2,8 @@ package net.onima.onimaapi.gui.menu.report;
 
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -12,13 +12,9 @@ import net.onima.onimaapi.gui.PacketMenu;
 import net.onima.onimaapi.gui.buttons.DisplayButton;
 import net.onima.onimaapi.gui.buttons.utils.Button;
 import net.onima.onimaapi.players.APIPlayer;
-import net.onima.onimaapi.players.OfflineAPIPlayer;
 import net.onima.onimaapi.report.PlayerReport;
-import net.onima.onimaapi.report.Report;
 import net.onima.onimaapi.report.struct.ReportReason;
 import net.onima.onimaapi.utils.BetterItem;
-import net.onima.onimaapi.utils.Methods;
-import net.onima.onimaapi.utils.OSound;
 
 public class ReportReasonMenu extends PacketMenu {
 	
@@ -29,13 +25,16 @@ public class ReportReasonMenu extends PacketMenu {
 	}
 	
 	private UUID reporter;
-	private OfflineAPIPlayer reported;
+	private UUID reported;
+	private String name;
 
-	public ReportReasonMenu(UUID reporter, OfflineAPIPlayer reported) {
-		super("report_reasons_menu", "§6Report §7» §c" + Methods.getName(reported), MAX_SIZE, false);
+	public ReportReasonMenu(UUID reporter, UUID reported) {
+		super("report_reasons_menu", "§6Report §7» §c" + Bukkit.getOfflinePlayer(reported).getName(), MAX_SIZE, false);
 		
 		this.reporter = reporter;
 		this.reported = reported;
+		
+		name = Bukkit.getOfflinePlayer(reported).getName();
 	}
 
 	@Override
@@ -59,22 +58,13 @@ public class ReportReasonMenu extends PacketMenu {
 
 		@Override
 		public BetterItem getButtonItem(Player player) {
-			return new BetterItem(reason.getMaterial(), 1, reason.getDamage(), "§7Report pour : §e" + reason.getNiceName(), "§6Cliquez §7pour report §c" + Methods.getName(reported), "§7avec la raison : §e" + reason.getNiceName());
+			return new BetterItem(reason.getMaterial(), 1, reason.getDamage(), "§7Report pour : §e" + reason.getNiceName(), "§6Cliquez §7pour report §c" + name, "§7avec la raison : §e" + reason.getNiceName());
 		}
 
 		@Override
 		public void click(PacketMenu menu, Player clicker, ItemStack current, InventoryClickEvent event) {
 			event.setCancelled(true);
-			
-			Report report = new PlayerReport(reporter, reason.name(), reported);
-			
-			if (!report.execute())
-				new OSound(Sound.VILLAGER_NO, 1F, 2F).play(clicker);
-			else {
-				clicker.sendMessage("§eVous avez report §6" + Methods.getName(reported) + " §epour : §7" + ReportReason.valueOf(report.getReason()).getNiceName());
-				new OSound(Sound.VILLAGER_YES, 1F, 2F).play(clicker);
-			}
-			
+			new PlayerReport(reporter, reason.name(), reported).execute();
 			menu.close(APIPlayer.getPlayer(clicker), true);
 		}
 		

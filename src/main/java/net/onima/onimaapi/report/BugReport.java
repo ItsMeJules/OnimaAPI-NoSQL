@@ -9,6 +9,7 @@ import net.onima.onimaapi.cooldown.BugReportCooldown;
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.players.utils.PlayerOption;
 import net.onima.onimaapi.rank.OnimaPerm;
+import net.onima.onimaapi.utils.BetterItem;
 import net.onima.onimaapi.utils.JSONMessage;
 import net.onima.onimaapi.utils.Methods;
 
@@ -46,6 +47,12 @@ public class BugReport extends Report {
 		}
 		
 		return true;
+	}
+	
+	@Override
+	public BetterItem getItem() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
