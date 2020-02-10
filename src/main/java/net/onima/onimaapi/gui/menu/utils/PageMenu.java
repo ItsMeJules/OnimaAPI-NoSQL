@@ -11,7 +11,7 @@ import net.onima.onimaapi.gui.buttons.PageButton;
 import net.onima.onimaapi.gui.buttons.utils.Button;
 import net.onima.onimaapi.players.APIPlayer;
 
-public abstract class PageMenu extends PacketMenu {
+public abstract class PageMenu extends PacketMenu { //TODO Mettre le bouton changer de page quand la limite est atteinte, sinon rien mettre.
 	
 	protected int currentPage = 1;
 	protected Map<Integer, Button> allItems;

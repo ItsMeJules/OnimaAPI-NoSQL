@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
@@ -51,6 +52,7 @@ import net.onima.onimaapi.punishment.utils.ServerRestricted;
 import net.onima.onimaapi.rank.Rank;
 import net.onima.onimaapi.rank.RankType;
 import net.onima.onimaapi.report.Report;
+import net.onima.onimaapi.report.struct.ReportStat;
 import net.onima.onimaapi.saver.inventory.PlayerSaver;
 import net.onima.onimaapi.tasks.CooldownEntryTask;
 import net.onima.onimaapi.utils.Balance;
@@ -86,6 +88,7 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 	protected List<Note> notes;
 	protected List<String> ipHistory;
 	protected Set<Report> reports;
+	protected Map<ReportStat, Integer> reportStastitics;
 	
 	{
 		alts = new ArrayList<>();
@@ -113,6 +116,7 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 					return 0;
 			}
 		});
+		reportStastitics = ReportStat.newMap();
 	}
 
 	public OfflineAPIPlayer(OfflinePlayer offlinePlayer) {
@@ -170,6 +174,7 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 			notes = old.notes;
 			ipHistory = old.ipHistory;
 			reports = old.reports;
+			reportStastitics = old.reportStastitics;
 			
 			if (rank != old.rank) {
 				rank = old.rank;
@@ -513,6 +518,14 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 		return reports;
 	}
 	
+	public Map<ReportStat, Integer> getReportStastitics() {
+		return reportStastitics;
+	}
+	
+	public void addStatistic(ReportStat stat, int toAdd) {
+		reportStastitics.put(stat, reportStastitics.get(stat) + toAdd);
+	}
+	
 	@Override
 	public void save() {
 		offlinePlayers.put(uuid, this);
@@ -670,6 +683,9 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 		
 		for (String ignored : result.valueToList("ignored", String.class))
 			this.ignored.add(UUID.fromString(ignored));
+		
+		for (Entry<String, Integer> entry : result.valueToMap("report_stats", String.class, Integer.class).entrySet())
+			reportStastitics.put(ReportStat.valueOf(entry.getKey()), entry.getValue());
 	}
 
 	@Deprecated

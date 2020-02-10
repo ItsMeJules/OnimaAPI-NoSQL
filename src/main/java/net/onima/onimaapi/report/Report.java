@@ -85,6 +85,10 @@ public abstract class Report implements FileSaver {
 		return reason;
 	}
 	
+	public boolean isDone() {
+		return doneBy != null;
+	}
+	
 	public String getDoneBy() {
 		return doneBy;
 	}
@@ -225,6 +229,8 @@ public abstract class Report implements FileSaver {
 		return true;
 	}
 	
-	
+	public static Set<Report> getReports() {
+		return reports;
+	}
 	
 }

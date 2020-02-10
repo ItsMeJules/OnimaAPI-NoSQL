@@ -7,6 +7,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -16,6 +17,8 @@ import net.onima.onimaapi.OnimaAPI;
 import net.onima.onimaapi.crates.SupplyCrate;
 import net.onima.onimaapi.crates.utils.Crate;
 import net.onima.onimaapi.gui.PacketMenu;
+import net.onima.onimaapi.gui.buttons.utils.Button;
+import net.onima.onimaapi.gui.buttons.utils.DroppableButton;
 import net.onima.onimaapi.gui.menu.utils.AnvilMenu;
 import net.onima.onimaapi.players.APIPlayer;
 
@@ -36,6 +39,21 @@ public class MenuListener implements Listener {
 		
 		if (slot == event.getRawSlot() && menu.getTitle().equalsIgnoreCase(event.getInventory().getName()) && menu.getButtons().containsKey(slot))
 			menu.getButtons().get(slot).click(menu, clicker, item, event);
+	}
+	
+	@EventHandler
+	public void onDrop(PlayerDropItemEvent event) {
+		ItemStack item = event.getItemDrop().getItemStack();
+		Player dropper = event.getPlayer();
+		PacketMenu menu = APIPlayer.getPlayer(dropper).getViewingMenu();
+		
+		if (menu == null || menu instanceof AnvilMenu /*|| menu instanceof PlayerInventoryMenu*/)
+			return;
+		
+		for (Button button : menu.getButtons().values()) {
+			if (button instanceof DroppableButton && button.getButtonItem(dropper).toItemStack().isSimilar(item))
+				((DroppableButton) button).drop(menu, dropper, item, event);
+		}
 	}
 	
 	@EventHandler

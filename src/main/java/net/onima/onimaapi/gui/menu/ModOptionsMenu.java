@@ -4,11 +4,14 @@ import net.onima.onimaapi.gui.menu.utils.OptionsMenu;
 import net.onima.onimaapi.mod.ModItem;
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.players.utils.PlayerOption;
+import net.onima.onimaapi.rank.OnimaPerm;
 
 public class ModOptionsMenu extends OptionsMenu {
 	
 	public ModOptionsMenu(APIPlayer apiPlayer) {
 		super("mod_options", ModItem.MOD_PREFIX + " §8Customisation", MIN_SIZE * 2, apiPlayer);
+		
+		permission = OnimaPerm.MOD_COMMAND;
 	}
 	
 	@Override

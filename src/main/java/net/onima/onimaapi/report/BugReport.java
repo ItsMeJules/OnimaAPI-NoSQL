@@ -3,13 +3,18 @@ package net.onima.onimaapi.report;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.enchantments.Enchantment;
 
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.onima.onimaapi.cooldown.BugReportCooldown;
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.players.utils.PlayerOption;
 import net.onima.onimaapi.rank.OnimaPerm;
+import net.onima.onimaapi.report.struct.ReportStat;
+import net.onima.onimaapi.report.struct.ReportStatus;
 import net.onima.onimaapi.utils.BetterItem;
+import net.onima.onimaapi.utils.ConfigurationService;
 import net.onima.onimaapi.utils.JSONMessage;
 import net.onima.onimaapi.utils.Methods;
 
@@ -31,6 +36,7 @@ public class BugReport extends Report {
 		initID();
 		save();
 		
+		apiPlayer.addStatistic(ReportStat.REPORTS, 1);
 		apiPlayer.getReports().add(this);
 		
 		JSONMessage msg = new JSONMessage("§a" + Methods.getRealName(Bukkit.getOfflinePlayer(reporter)) + " §2a signalé un bug !",
@@ -51,8 +57,20 @@ public class BugReport extends Report {
 	
 	@Override
 	public BetterItem getItem() {
-		// TODO Auto-generated method stub
-		return null;
+		BetterItem item = new BetterItem(status.getMaterial(), 1, status.getColor());
+		
+		if (status.equals(ReportStatus.WAITING))
+			item.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
+		
+		OfflinePlayer rerOff = Bukkit.getOfflinePlayer(reporter);
+		
+		return item.setName("§aBug Report §7#" + id)
+				.addLore("")
+				.addLore("§7Status : " + status.getTitle(doneBy))
+				.addLore("§7Date : §e" + Methods.toFormatDate(time, ConfigurationService.DATE_FORMAT_HOURS))
+				.addLore("")
+				.addLore("§7Report par : §a" + Methods.getRealName(rerOff) + "§7(" + (rerOff.isOnline() ? "§aconnecté" : "§cdéconnecté") + "§7)")
+				.addLore("§7Raison : §6" + reason);
 	}
 
 }

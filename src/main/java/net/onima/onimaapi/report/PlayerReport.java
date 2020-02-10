@@ -14,6 +14,7 @@ import net.onima.onimaapi.players.OfflineAPIPlayer;
 import net.onima.onimaapi.players.utils.PlayerOption;
 import net.onima.onimaapi.rank.OnimaPerm;
 import net.onima.onimaapi.report.struct.ReportReason;
+import net.onima.onimaapi.report.struct.ReportStat;
 import net.onima.onimaapi.report.struct.ReportStatus;
 import net.onima.onimaapi.utils.BetterItem;
 import net.onima.onimaapi.utils.ConfigurationService;
@@ -69,8 +70,11 @@ public class PlayerReport extends Report { //TODO Ajouter les effets que le joue
 			initID();
 			save();
 			
+			apiPlayer.addStatistic(ReportStat.REPORTS, 1);
 			apiPlayer.getReports().add(this);
+			
 			offline.getReports().add(this);
+			offline.addStatistic(ReportStat.REPORTED_TIMES, 1);
 			
 			JSONMessage msg = new JSONMessage("§a" + Methods.getRealName(Bukkit.getOfflinePlayer(reporter)) + " §7a report §c" + Methods.getName(offline, true) + "§7(" + (offline.isOnline() ? "§aconnecté" : "§cdéconnecté") + "§7)",
 					"§7Raison : §6" + reason +
@@ -113,10 +117,7 @@ public class PlayerReport extends Report { //TODO Ajouter les effets que le joue
 				.addLore("")
 				.addLore("§7Report par : §a" + Methods.getRealName(rerOff) + "§7(" + (rerOff.isOnline() ? "§aconnecté" : "§cdéconnecté") + "§7)")
 				.addLore("§7Joueur report : §c" + Methods.getRealName(redOff) + "§7(" + (redOff.isOnline() ? "§aconnecté" : "§cdéconnecté") + "§7)")
-				.addLore("§7Raison : §6" + reason)
-				.addLore("")
-				.addLore("§6Cliquez gauche §7pour afficher les détails.")
-				.addLore("§6Droppez l'item §7pour le supprimer.");
+				.addLore("§7Raison : §6" + reason);
 	}
 	
 	public UUID getReported() {

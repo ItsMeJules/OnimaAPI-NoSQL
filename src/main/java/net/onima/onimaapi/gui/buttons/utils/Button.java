@@ -9,7 +9,7 @@ import net.onima.onimaapi.utils.BetterItem;
 
 public interface Button {
 
-	public BetterItem getButtonItem(Player player);
-	public void click(PacketMenu menu, Player clicker, ItemStack current, InventoryClickEvent event);
+	BetterItem getButtonItem(Player player);
+	void click(PacketMenu menu, Player clicker, ItemStack current, InventoryClickEvent event);
 	
 }

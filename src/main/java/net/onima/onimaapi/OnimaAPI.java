@@ -25,6 +25,8 @@ import net.onima.onimaapi.gui.PacketMenu;
 import net.onima.onimaapi.gui.menu.FreezeMenu;
 import net.onima.onimaapi.gui.menu.OnlineStaffMenu;
 import net.onima.onimaapi.gui.menu.RankMenu;
+import net.onima.onimaapi.gui.menu.report.ReportsMenu;
+import net.onima.onimaapi.gui.sign.utils.SignHandler;
 import net.onima.onimaapi.limiter.EnchantLimiter;
 import net.onima.onimaapi.limiter.PotionLimiter;
 import net.onima.onimaapi.manager.ChatManager;
@@ -119,6 +121,7 @@ public class OnimaAPI extends JavaPlugin {
 		ConfigManager.loadConfigs();
 		FakeBlocksFix.hook(this);
 		SilentChest.hook(this);
+		SignHandler.hook(this);
 		UUIDCache.load();
 		
 		Crate.deserialize();
@@ -143,6 +146,7 @@ public class OnimaAPI extends JavaPlugin {
 		PacketMenu.getStaticMenus().add(new OnlineStaffMenu());
 		PacketMenu.getStaticMenus().add(new FreezeMenu());
 		PacketMenu.getStaticMenus().add(new RankMenu());
+		PacketMenu.getStaticMenus().add(new ReportsMenu());
 		
 		Options.register(PlayerOption.ModOptions.ATTACK_PLAYER, false);
 		Options.register(PlayerOption.ModOptions.BREAK_BLOCK, false);

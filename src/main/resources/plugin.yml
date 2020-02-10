@@ -231,9 +231,9 @@ commands:
   report:
     description: Report un joueur.
     permission: onimaapi.report.command
-#  reports:
-#    description: Commande principale pour gérer les reports.
-#    permission: onimaapi.reports.command
+  reports:
+    description: Commande principale pour gérer les reports.
+    permission: onimaapi.reports.command
   bugreport:
     description: Signale un bug.
     permission: onimaapi.bugreport.command

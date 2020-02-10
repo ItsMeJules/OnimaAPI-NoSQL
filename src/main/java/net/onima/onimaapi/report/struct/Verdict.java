@@ -8,9 +8,9 @@ public enum Verdict {
 	UNCERTAIN("§eIncertain", Material.STAINED_CLAY, (short) 4),
 	FALSE("§c§lFaux", Material.STAINED_CLAY, (short) 14);
 	
-	private String title;
-	private Material material;
-	private short damage;
+	protected String title;
+	protected Material material;
+	protected short damage;
 
 	private Verdict(String title, Material material, short damage) {
 		this.title = title;

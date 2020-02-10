@@ -10,7 +10,7 @@ public class GlobalOptionsMenu extends OptionsMenu {
 	public GlobalOptionsMenu(APIPlayer apiPlayer) {
 		super("global_options", "§8Options globale", MIN_SIZE * 3, apiPlayer);
 		
-		permission = OnimaPerm.MOD_COMMAND;
+		permission = OnimaPerm.SETTINGS_COMMAND;
 	}
 
 	@Override

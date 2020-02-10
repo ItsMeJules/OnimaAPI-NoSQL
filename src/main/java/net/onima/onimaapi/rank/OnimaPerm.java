@@ -862,7 +862,11 @@ public enum OnimaPerm {
 	
 	BUG_REPORT_COMMAND("onimaapi.bugreport.command", "Signale un bug."),
 	
-	BUG_REPORTS_COMMAND("onimaapi.bugreports.command", "Commande principale pour gérer les signalement de bugs.");
+	BUG_REPORTS_COMMAND("onimaapi.bugreports.command", "Commande principale pour gérer les signalement de bugs."),
+	
+	REPORT_STATS_CHECK("onimaapi.reports.check", "Permet de voir ses statistiques de report."),
+	
+	REPORTS_USER_ARGUMENT("onimaapi.reports.user.argument", "Permet d'afficher les reports d'un joueur.");
 	
 	private String permission, description;
 	

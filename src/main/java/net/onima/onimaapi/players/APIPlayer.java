@@ -56,6 +56,9 @@ import net.onima.onimaapi.players.notes.Note;
 import net.onima.onimaapi.players.utils.PlayerOption;
 import net.onima.onimaapi.players.utils.SpecialPlayerInventory;
 import net.onima.onimaapi.rank.OnimaPerm;
+import net.onima.onimaapi.report.Report;
+import net.onima.onimaapi.report.ReportComment;
+import net.onima.onimaapi.report.struct.CommentStatus;
 import net.onima.onimaapi.saver.inventory.InventorySaver;
 import net.onima.onimaapi.saver.inventory.PlayerSaver;
 import net.onima.onimaapi.saver.inventory.PlayerSaver.SaveType;
@@ -155,6 +158,16 @@ public class APIPlayer extends OfflineAPIPlayer {
 			ipHistory.add(ip);
 		
 		CooldownEntryTask.get().insert(this);
+		
+		for (Report report : reports) {
+			if (report.getComments().isEmpty())
+				continue;
+			
+			for (ReportComment comment : report.getComments()) {
+				if (comment.getStatus() == CommentStatus.SENT)
+					comment.sendToReporter(this);
+			}
+		}
 	}
 	
 	public void setLoaded(boolean loaded) {

@@ -69,7 +69,9 @@ import net.onima.onimaapi.commands.punishment.remover.UnblacklistCommand;
 import net.onima.onimaapi.commands.punishment.remover.UnmuteCommand;
 import net.onima.onimaapi.commands.rank.RankExecutor;
 import net.onima.onimaapi.commands.region.RegionExecutor;
+import net.onima.onimaapi.commands.reports.BugReportCommand;
 import net.onima.onimaapi.commands.reports.ReportCommand;
+import net.onima.onimaapi.commands.reports.admin.ReportsExecutor;
 import net.onima.onimaapi.commands.supplycrate.SupplyCrateExecutor;
 import net.onima.onimaapi.commands.warp.WarpExecutor;
 
@@ -155,6 +157,8 @@ public class CommandManager {
 		plugin.getCommand("enderchest").setExecutor(new EnderchestCommand());
 		plugin.getCommand("broadcast").setExecutor(new BroadcastCommand());
 		plugin.getCommand("report").setExecutor(new ReportCommand());
+		plugin.getCommand("reports").setExecutor(new ReportsExecutor());
+		plugin.getCommand("bugreport").setExecutor(new BugReportCommand());
 	}
 
 
