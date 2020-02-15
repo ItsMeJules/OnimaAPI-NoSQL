@@ -7,7 +7,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import net.onima.onimaapi.gui.PacketMenu;
-import net.onima.onimaapi.gui.PacketMenuType;
 import net.onima.onimaapi.gui.buttons.BackButton;
 import net.onima.onimaapi.gui.buttons.MenuOpenerButton;
 import net.onima.onimaapi.gui.buttons.ReportButton;
@@ -29,7 +28,7 @@ public class ReportInfoMenu extends PacketMenu {
 	private Report report;
 
 	public ReportInfoMenu(Report report) {
-		super("report_info", "§7Report §c#" + report.getId(), PacketMenuType.CHEST, false);
+		super("report_info", "§7Report §c#" + report.getId(), MIN_SIZE * 3, false);
 		
 		this.report = report;
 	}
@@ -41,7 +40,7 @@ public class ReportInfoMenu extends PacketMenu {
 			buttons.put(3, new ReporterButton(offline));
 			buttons.put(4, new AbusiveReportButton(offline));
 		});
-		buttons.put(8, new BackButton(PacketMenu.getMenu("reports")));
+		buttons.put(8, new BackButton(new ReportsMenu(false)));
 		
 		int index = 12;
 		for (ReportStatus status : ReportStatus.values()) {
@@ -54,7 +53,7 @@ public class ReportInfoMenu extends PacketMenu {
 		}
 		
 		buttons.put(18, new DeleteReportButton());
-		buttons.put(size - 1, new CommentsMenuButton());
+		buttons.put(26, new CommentsMenuButton());
 	}
 	
 	private class AbusiveReportButton implements Button {
@@ -70,8 +69,8 @@ public class ReportInfoMenu extends PacketMenu {
 			String realName = Methods.getRealName(offline.getOfflinePlayer());
 			
 			return new BetterItem(ReportStat.ABUSIVE.getMaterial(), 1, ReportStat.ABUSIVE.getDamage(), ReportStat.ABUSIVE.getTitle(), "",
-					"§6Clic gauche §7pour warn §lsilencieusement §a" + realName + " §7pour report abusif.",
-					"§6Clic droit §7pour warn §lpubliquement §a" + realName + " §7pour report abusif.");
+					"§6Clic gauche §7pour warn §lsilencieusement", "§a" + realName + " §7pour report abusif.",
+					"§6Clic droit §7pour warn §lpubliquement", "§a" + realName + " §7pour report abusif.");
 		}
 
 		@Override
@@ -79,8 +78,9 @@ public class ReportInfoMenu extends PacketMenu {
 			event.setCancelled(true);
 			Punishment warn = new Warn(clicker.getUniqueId(), offline.getUUID());
 			
-			warn.setReason("Report abusif (ID du report : §7# " + report.getId() + ")");
+			warn.setReason("Report abusif (ID du report : §7#" + report.getId() + "§a)");
 			warn.setSilent(event.isLeftClick());
+			warn.execute();
 		}
 		
 	}
@@ -95,7 +95,7 @@ public class ReportInfoMenu extends PacketMenu {
 
 		@Override
 		public BetterItem getButtonItem(Player player) {
-			BetterItem item = new BetterItem(status.getMaterial(), 1, status.getColor(), status.getTitle(null), "");
+			BetterItem item = new BetterItem(Material.STAINED_CLAY, 1, status.getColor(), status.getTitle(null), "");
 			
 			if (status == report.getStatus()) {
 				item.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
@@ -108,7 +108,9 @@ public class ReportInfoMenu extends PacketMenu {
 
 		@Override
 		public void click(PacketMenu menu, Player clicker, ItemStack current, InventoryClickEvent event) {
+			event.setCancelled(true);
 			report.setStatus(status);
+			updateItems(clicker);
 		}
 		
 	}
@@ -129,11 +131,17 @@ public class ReportInfoMenu extends PacketMenu {
 			
 			if (report instanceof PlayerReport)
 				OfflineAPIPlayer.getPlayer(((PlayerReport) report).getReported(), offline -> offline.getReports().remove(report));
+			
+			menu.close(APIPlayer.getPlayer(clicker), true);
 		}
 		
 	}
 	
 	private class ReporterButton extends HeadButton {
+		
+		{
+			lore();
+		}
 
 		public ReporterButton(OfflineAPIPlayer owner) {
 			super(owner);
@@ -162,7 +170,7 @@ public class ReportInfoMenu extends PacketMenu {
 		@Override
 		public BetterItem getButtonItem(Player player) {
 			int size = report.getComments().size();
-			return new BetterItem(Material.CHEST, size > 64 ? 64 : size, 0, "§eCommentaires sur ce report.", "", "§6Clic §7pour afficher les \n§7commentaires.");
+			return new BetterItem(Material.CHEST, size > 64 ? 64 : size, 0, "§eCommentaires sur ce report.", "", "§6Clic §7pour afficher les", "§7commentaires.");
 		}
 
 		@Override
@@ -170,7 +178,7 @@ public class ReportInfoMenu extends PacketMenu {
 			event.setCancelled(true);
 			APIPlayer apiPlayer = APIPlayer.getPlayer(clicker);
 			
-			apiPlayer.openMenu(new CommentsMenu(report, apiPlayer));
+			apiPlayer.openMenu(new CommentsMenu(report, apiPlayer, ReportInfoMenu.this));
 		}
 		
 	}

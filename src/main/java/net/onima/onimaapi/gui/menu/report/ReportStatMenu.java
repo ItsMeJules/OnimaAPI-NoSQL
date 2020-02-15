@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import net.onima.onimaapi.gui.PacketMenu;
 import net.onima.onimaapi.gui.buttons.DisplayButton;
 import net.onima.onimaapi.gui.buttons.utils.Button;
+import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.players.OfflineAPIPlayer;
 import net.onima.onimaapi.rank.OnimaPerm;
 import net.onima.onimaapi.report.struct.ReportStat;
@@ -58,8 +59,8 @@ public class ReportStatMenu extends PacketMenu {
 
 		@Override
 		public void click(PacketMenu menu, Player clicker, ItemStack current, InventoryClickEvent event) {
-			// TODO Auto-generated method stub
-			
+			event.setCancelled(true);
+			new PlayerReceivedReportsMenu(ReportStatMenu.this, offline).open(APIPlayer.getPlayer(clicker));
 		}
 		
 	}
@@ -79,8 +80,8 @@ public class ReportStatMenu extends PacketMenu {
 
 		@Override
 		public void click(PacketMenu menu, Player clicker, ItemStack current, InventoryClickEvent event) {
-			// TODO Auto-generated method stub
-			
+			event.setCancelled(true);
+			new PlayerSentReportsMenu(ReportStatMenu.this, offline).open(APIPlayer.getPlayer(clicker));
 		}
 		
 	}

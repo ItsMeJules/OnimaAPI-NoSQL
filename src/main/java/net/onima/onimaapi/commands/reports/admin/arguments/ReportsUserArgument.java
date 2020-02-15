@@ -41,15 +41,15 @@ public class ReportsUserArgument extends BasicCommandArgument {
 			return false;
 		}
 		
-		if (!args[2].equalsIgnoreCase("sent") || !args[2].equalsIgnoreCase("received")) {
+		if (args[2].equalsIgnoreCase("sent") || args[2].equalsIgnoreCase("received")) {
+			boolean sent = args[2].equalsIgnoreCase("sent") ? true : false;
+			
+			OfflineAPIPlayer.getPlayer(uuid, offline -> apiPlayer.openMenu(sent ? new PlayerSentReportsMenu(null, offline) : new PlayerReceivedReportsMenu(null, offline)));
+			return true;
+		} else {
 			sender.sendMessage("§cVeuillez préciser quels reports afficher.");
 			return false;
 		}
-		
-		boolean sent = args[2].equalsIgnoreCase("sent") ? true : false;
-		
-		OfflineAPIPlayer.getPlayer(uuid, offline -> apiPlayer.openMenu(sent ? new PlayerSentReportsMenu(null, offline) : new PlayerReceivedReportsMenu(null, offline)));
-		return true;
 	}
 	
 	@Override

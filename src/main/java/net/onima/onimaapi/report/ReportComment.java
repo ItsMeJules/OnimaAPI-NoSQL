@@ -1,5 +1,10 @@
 package net.onima.onimaapi.report;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.common.collect.Lists;
+
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.report.struct.CommentStatus;
 import net.onima.onimaapi.saver.Saver;
@@ -14,11 +19,12 @@ public class ReportComment implements Saver, SerializableString {
 	private Report report;
 	private String author;
 	private CommentStatus status;
-	private String comment;
+	private List<String> comment;
 	
 	{
 		time = System.currentTimeMillis();
 		status = CommentStatus.PRIVATE;
+		comment = new ArrayList<>();
 	}
 	
 	public ReportComment(Report report, String author) {
@@ -40,9 +46,9 @@ public class ReportComment implements Saver, SerializableString {
 	}
 	
 	public void sendToReporter(APIPlayer apiPlayer) {
-		apiPlayer.sendMessage(author + " a écrit un commentaire sur votre §creport §7#" + report.getId() +
+		apiPlayer.sendMessage(author + " §fa écrit un commentaire sur votre §creport §7#" + report.getId() +
 				"\n§7Ecrit le : §e" + Methods.toFormatDate(time, ConfigurationService.DATE_FORMAT_HOURS) +
-				"\n§7Commentaire : §e" + comment);
+				"\n§7Commentaire : §e" + commentAsString().replace("£", " "));
 		status = CommentStatus.READ;
 	}
 	
@@ -70,19 +76,25 @@ public class ReportComment implements Saver, SerializableString {
 		this.status = status;
 	}
 	
-	public String getComment() {
+	public List<String> getComment() {
 		return comment;
 	}
 	
-	public void setComment(String comment) {
+	public void setComment(List<String> comment) {
 		this.comment = comment;
 	}
 
 	public void addToComment(String comment) {
-		if (this.comment == null)
-			this.comment = comment;
+		this.comment.add(comment);
+	}
+	
+	public String commentAsString() {
+		StringBuilder builder = new StringBuilder();
 		
-		this.comment += comment;
+		for (String part : this.comment)
+			builder.append(part).append("£");
+		
+		return builder.toString();
 	}
 	
 	@Override
@@ -102,12 +114,24 @@ public class ReportComment implements Saver, SerializableString {
 	
 	@Override
 	public String asSerializableString() {
-		return new StringBuilder("id=").append(id).append(';')
-				.append("time=").append(time).append(';')
-				.append("report_id=").append(report.id).append(';')
-				.append("author=").append(author).append(';')
-				.append("status=").append(status.name()).append(';')
-				.append("comment=").append(comment).toString();
+		return new StringBuilder().append(id).append(';')
+				.append(time).append(';')
+				.append(author).append(';')
+				.append(status.name()).append(';')
+				.append(commentAsString()).toString();
+	}
+
+	public static ReportComment fromString(String str, Report report) {
+		String[] parts = str.split(";");
+		
+		ReportComment comment = new ReportComment(report, parts[2]);
+		
+		comment.id = Integer.valueOf(parts[0]);
+		comment.time = Long.valueOf(parts[1]);
+		comment.status = CommentStatus.valueOf(parts[3]);
+		comment.comment = Lists.newArrayList(parts[4].split("£"));
+		
+		return comment;
 	}
 
 }

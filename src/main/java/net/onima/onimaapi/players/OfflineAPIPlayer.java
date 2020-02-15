@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
@@ -550,6 +549,7 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 		Document oresDoc = result.getValue("ores", Document.class);
 		Document rankDoc = result.getValue("rank", Document.class);
 		Document optionsDoc = result.getValue("options", Document.class);
+		Document reportStatsDoc = result.getValue("report_stats", Document.class);
 		
 		kills = document.getInteger("kills");
 		deaths = document.getInteger("deaths");
@@ -684,8 +684,8 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 		for (String ignored : result.valueToList("ignored", String.class))
 			this.ignored.add(UUID.fromString(ignored));
 		
-		for (Entry<String, Integer> entry : result.valueToMap("report_stats", String.class, Integer.class).entrySet())
-			reportStastitics.put(ReportStat.valueOf(entry.getKey()), entry.getValue());
+		for (ReportStat stat : ReportStat.values())
+			reportStastitics.put(stat, reportStatsDoc.getInteger(stat.name()));
 	}
 
 	@Deprecated

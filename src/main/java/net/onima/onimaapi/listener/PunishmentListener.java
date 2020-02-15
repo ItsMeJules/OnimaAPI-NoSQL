@@ -57,10 +57,10 @@ public class PunishmentListener implements Listener {
 			if (punishment == null || !punishment.isActive()) {
 				try {
 					Document document = OnimaMongo.get(OnimaCollection.PLAYERS)
-							.find(and(or(eq("uuid", uuid.toString()), eq("ip", event.getAddress().getHostAddress())),
-									  in("punishments.punishment_type", "BAN", "TEMPBAN", "BLACKLIST"),
+							.find(and(or(eq("uuid", uuid.toString()),   eq("ip", event.getAddress().getHostAddress())),
+									     in("punishments.punishment_type", "BAN", "TEMPBAN", "BLACKLIST"),
 									  or(gt("punishments.expire", now), eq("punishments.expire", Ban.CANT_EXPIRE_TIME)),
-									  eq("punishments.remover_uuid", null))).first();
+									     eq("punishments.remover_uuid", null))).first();
 					
 					if (document == null)
 						return;
@@ -89,6 +89,11 @@ public class PunishmentListener implements Listener {
 										punishDoc.getBoolean("silent"),
 										punishDoc.getLong("issued"),
 										punishDoc.getLong("expire"));
+								
+								if (punishment.isRemoved()) {
+									punishment = null;
+									continue;
+								}
 								
 								loadedPunishment.put(uuid, punishment);
 								break loop;

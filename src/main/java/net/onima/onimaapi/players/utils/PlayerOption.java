@@ -162,7 +162,7 @@ public interface PlayerOption {
 		/**
 		 * Whether or not the player can see disguise warn messages.
 		 */
-		DISGUISE_MESSAGES_WARN(11, OnimaPerm.ONIMAAPI_DISGUISE_COMMAND_LIST, "§7Afficher les messages de prévention quand\n§7un joueur se /disguise proche d'ennemies : %value%"),
+		DISGUISE_MESSAGES_WARN(11, OnimaPerm.ONIMAAPI_DISGUISE_COMMAND_LIST, "§7Vous prévient quand un joueur se /disguise proche d'ennemies : %value%"),
 		
 		/**
 		 * Whether or not the player receives reports messages.

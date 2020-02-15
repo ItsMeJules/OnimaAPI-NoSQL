@@ -22,6 +22,7 @@ import net.onima.onimaapi.commands.PayCommand;
 import net.onima.onimaapi.commands.PunishmentCommand;
 import net.onima.onimaapi.commands.ReplyCommand;
 import net.onima.onimaapi.commands.RestoreCommand;
+import net.onima.onimaapi.commands.SettingsCommand;
 import net.onima.onimaapi.commands.SocialSpyCommand;
 import net.onima.onimaapi.commands.SpawnerCommand;
 import net.onima.onimaapi.commands.VanishCommand;
@@ -156,6 +157,7 @@ public class CommandManager {
 		plugin.getCommand("stoplag").setExecutor(new StopLagCommand());
 		plugin.getCommand("enderchest").setExecutor(new EnderchestCommand());
 		plugin.getCommand("broadcast").setExecutor(new BroadcastCommand());
+		plugin.getCommand("settings").setExecutor(new SettingsCommand());
 		plugin.getCommand("report").setExecutor(new ReportCommand());
 		plugin.getCommand("reports").setExecutor(new ReportsExecutor());
 		plugin.getCommand("bugreport").setExecutor(new BugReportCommand());

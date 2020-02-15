@@ -47,22 +47,20 @@ public class PlayerReport extends Report { //TODO Ajouter les effets que le joue
 		OfflineAPIPlayer.getPlayer(reported, offline -> {
 			APIPlayer apiPlayer = APIPlayer.getPlayer(reporter);
 			
-			if (offline.getRank().getRankType().hasPermisssion(OnimaPerm.REPORT_EXEMPT)) {
-				new OSound(Sound.VILLAGER_NO, 1F, 2F).play(apiPlayer);
-				apiPlayer.sendMessage("§cVous ne pouvez pas report ce joueur !");
-				return;
-			}
+//			if (offline.getRank().getRankType().hasPermisssion(OnimaPerm.REPORT_EXEMPT)) {
+//				new OSound(Sound.VILLAGER_NO, 1F, 2F).play(apiPlayer);
+//				apiPlayer.sendMessage("§cVous ne pouvez pas report ce joueur !");
+//				return;
+//			}
 			
 			if (!apiPlayer.getReports().isEmpty()) {
 				for (Report report : apiPlayer.getReports()) {
-					if (report instanceof PlayerReport && reported.equals(((PlayerReport) report).reported)) {
-						PlayerReport r1 = (PlayerReport) report;
-						
-						if (report.time - r1.time <= PlayerReport.TIME_BETWEEN_REPORT_SAME_PLAYER) {
-							new OSound(Sound.VILLAGER_NO, 1F, 2F).play(apiPlayer);
-							apiPlayer.sendMessage("§cVous avez déjà report ce joueur, veuillez patienter !");
-							return;
-						}
+					if (report instanceof PlayerReport
+							&& reported.equals(((PlayerReport) report).reported)
+							&& time - report.time <= PlayerReport.TIME_BETWEEN_REPORT_SAME_PLAYER) {
+						new OSound(Sound.VILLAGER_NO, 1F, 2F).play(apiPlayer);
+						apiPlayer.sendMessage("§cVous avez déjà report ce joueur, veuillez patienter !");
+						return;
 					}
 				}
 			}
@@ -82,7 +80,7 @@ public class PlayerReport extends Report { //TODO Ajouter les effets que le joue
 					"\n§7du §creport §6#" + id);
 			
 			msg.setClickAction(ClickEvent.Action.RUN_COMMAND);
-			msg.setClickString("/reports #" + id);
+			msg.setClickString("/reports id " + id);
 
 			for (APIPlayer player : APIPlayer.getOnlineAPIPlayers()) {
 				if (player.getOptions().getBoolean(PlayerOption.GlobalOptions.REPORT_NOTIFY) && player.toPlayer().hasPermission(OnimaPerm.REPORTS_COMMAND.getPermission()))
@@ -94,7 +92,6 @@ public class PlayerReport extends Report { //TODO Ajouter les effets que le joue
 				apiPlayer.sendMessage("§eVous avez report §6" + Methods.getName(offline) + " §epour : §7" + ReportReason.valueOf(reason).getNiceName());
 			} else
 				apiPlayer.sendMessage("§eVous avez report §6" + Methods.getName(offline) + " §epour : §7" + reason);
-		
 		});
 		
 		return true;
@@ -126,7 +123,7 @@ public class PlayerReport extends Report { //TODO Ajouter les effets que le joue
 	
 	@Override
 	public void serialize() {
-		file.set("reports." + id + ".reported", reported.toString());
+		file.set("player_reports." + id + ".reported", reported.toString());
 		
 		super.serialize();
 	}

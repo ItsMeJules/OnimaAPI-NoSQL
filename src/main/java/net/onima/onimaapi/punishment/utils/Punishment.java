@@ -119,7 +119,9 @@ public abstract class Punishment implements MongoSerializer {
 	}
 	
 	public boolean isActive() {
-		if (expire == CANT_EXPIRE_TIME)
+		if (isRemoved())
+			return false;
+		else if (expire == CANT_EXPIRE_TIME)
 			return true;
 		else if (expire == -1)
 			return false;

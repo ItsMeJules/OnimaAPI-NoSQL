@@ -21,7 +21,7 @@ public class BroadcastCommand implements CommandExecutor {
 			return false;
 		}
 		
-		Methods.playServerSound(new OSound(Sound.LEVEL_UP, 1.5F, 2F));
+		Methods.playServerSound(new OSound(Sound.LEVEL_UP, 2F, 2F));
 		Bukkit.broadcastMessage("§4Alerte §7» §9" + StringUtils.replaceChars(StringUtils.join(args, ' ', 0, args.length), '&', '§') + " §6#" + Methods.getRealName(sender));
 		return true;
 	}

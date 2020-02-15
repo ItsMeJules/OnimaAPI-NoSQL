@@ -45,7 +45,7 @@ public class BugReport extends Report {
 				"\n§2du §asignalement §6#" + id);
 		
 		msg.setClickAction(ClickEvent.Action.RUN_COMMAND);
-		msg.setClickString("/bugreports #" + id);
+		msg.setClickString("/bugreports id " + id);
 
 		for (APIPlayer player : APIPlayer.getOnlineAPIPlayers()) {
 			if (player.getOptions().getBoolean(PlayerOption.GlobalOptions.REPORT_NOTIFY) && player.toPlayer().hasPermission(OnimaPerm.REPORTS_COMMAND.getPermission()))

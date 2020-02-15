@@ -42,7 +42,7 @@ public class Warn extends Punishment {
 		String senderName = ConfigurationService.CONSOLE_UUID.equals(sender) ? "Console" : APIPlayer.getPlayer(sender).getName();
 		OfflineAPIPlayer receiverPlayer = OfflineAPIPlayer.getOfflineAPIPlayers().get(receiver);
 		String silentStr = (silent ? "§7[Silencieux] " : "") + "§f";
-		int warns = (int) receiverPlayer.getPunishments().stream().filter(punishment -> punishment instanceof Warn).count();
+		int warns = (int) receiverPlayer.getPunishments().stream().filter(punishment -> punishment instanceof Warn).count() + 1;
 		
 		BaseComponent[] builderPlayers = new ComponentBuilder(silentStr + receiverPlayer.getName() + " §aa été §6warn §apar §f" + senderName + "§a.")
 				.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§eAïe aïe aïe.").create())).create();
@@ -72,20 +72,27 @@ public class Warn extends Punishment {
 		
 		switch (warns) {
 		case 3:
-			Punishment tempBan = new TempBan(ConfigurationService.CONSOLE_UUID, receiver, 15 * Time.DAY);
+			Punishment tempBan = new TempBan(ConfigurationService.CONSOLE_UUID, receiver, 5 * Time.DAY);
 			
 			tempBan.setSilent(true);
 			tempBan.setReason("Vous avez reçu trop de warns ! §f(§c" + warns + "§r)");
 			tempBan.execute();
 			break;
 		case 6:
-			Punishment temp = new TempBan(ConfigurationService.CONSOLE_UUID, receiver, Time.MONTH);
+			Punishment temp = new TempBan(ConfigurationService.CONSOLE_UUID, receiver, 14 * Time.DAY);
 			
 			temp.setSilent(true);
 			temp.setReason("Vous avez reçu trop de warns ! §f(§c" + warns + "§r)");
 			temp.execute();
 			break;
 		case 9:
+			Punishment tempban = new Ban(ConfigurationService.CONSOLE_UUID, receiver);
+			
+			tempban.setSilent(true);
+			tempban.setReason("Vous avez reçu trop de warns ! §f(§c" + warns + "§r)");
+			tempban.execute();
+			break;
+		case 12:
 			Punishment ban = new Ban(ConfigurationService.CONSOLE_UUID, receiver);
 			
 			ban.setSilent(true);

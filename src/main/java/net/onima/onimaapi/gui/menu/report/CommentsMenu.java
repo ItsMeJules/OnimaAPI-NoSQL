@@ -1,18 +1,20 @@
 package net.onima.onimaapi.gui.menu.report;
 
-import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.google.common.collect.Lists;
+
+import net.onima.onimaapi.OnimaAPI;
 import net.onima.onimaapi.gui.PacketMenu;
+import net.onima.onimaapi.gui.buttons.BackButton;
 import net.onima.onimaapi.gui.buttons.DisplayButton;
 import net.onima.onimaapi.gui.buttons.ReportButton;
 import net.onima.onimaapi.gui.buttons.utils.Button;
@@ -35,11 +37,13 @@ public class CommentsMenu extends PacketMenu {
 	}
 
 	private Report report;
+	private ReportInfoMenu menu;
 
-	public CommentsMenu(Report report, APIPlayer opener) {
+	public CommentsMenu(Report report, APIPlayer opener, ReportInfoMenu menu) {
 		super("comments_menu", "§6Commentaires §cReport #" + report.getId(), MAX_SIZE, false);
 		
 		this.report = report;
+		this.menu = menu;
 	}
 
 	@Override
@@ -53,14 +57,14 @@ public class CommentsMenu extends PacketMenu {
 		
 		int i = 18;
 		for (ReportComment comment : report.getComments()) {
-			if (i >= size)
+			if (i + 1 >= size)
 				continue;
 			
 			buttons.put(i, new CommentButton(comment));
 			i++;
 		}
 		
-//		buttons.put(size - 1, null);
+		buttons.put(size - 1, new BackButton(menu));
 	}
 	
 	private class WriteCommentButton implements Button {
@@ -68,12 +72,13 @@ public class CommentsMenu extends PacketMenu {
 		@Override
 		public BetterItem getButtonItem(Player player) {
 			return new BetterItem(Material.BOOK_AND_QUILL, 1, 0, "§eEcrire un commentaire.",
-					"§6Clic gauche §7pour rédiger un commentaire \n" + CommentStatus.PRIVATE.getTitle().toLowerCase() + " §7sur ce report.",
-					"§6Clic autre que gauche §7pour rédiger un \n§7commentaire §aà envoyer §7sur ce report.");
+					"§6Clic gauche §7pour rédiger un commentaire", CommentStatus.PRIVATE.getTitle().toLowerCase() + " §7sur ce report.",
+					"§6Clic autre que gauche §7pour rédiger un", "§7commentaire §aà envoyer §7sur ce report.");
 		}
 
 		@Override
 		public void click(PacketMenu menu, Player clicker, ItemStack current, InventoryClickEvent event) {
+			event.setCancelled(true);
 			APIPlayer apiPlayer = APIPlayer.getPlayer(clicker);
 			
 			menu.close(apiPlayer, true);
@@ -81,8 +86,10 @@ public class CommentsMenu extends PacketMenu {
 			new InputSign(clicker).open((player, lines) -> {
 				ReportComment comment = new ReportComment(report, apiPlayer.getColoredName(true));
 				
-				for (String line : lines)
-					comment.addToComment(line);
+				for (String line : lines) {
+					if (!line.isEmpty())
+						comment.addToComment(line);
+				}
 				
 				comment.setStatus(event.isLeftClick() ? CommentStatus.PRIVATE : CommentStatus.SENT);
 				comment.save();
@@ -90,7 +97,7 @@ public class CommentsMenu extends PacketMenu {
 				if (comment.getStatus() == CommentStatus.SENT)
 					comment.sendToReporter();
 				
-				apiPlayer.openMenu(CommentsMenu.this);
+				Bukkit.getScheduler().runTask(OnimaAPI.getInstance(), () -> apiPlayer.openMenu(CommentsMenu.this));
 			});
 		}
 		
@@ -107,12 +114,15 @@ public class CommentsMenu extends PacketMenu {
 
 		@Override
 		public BetterItem getButtonItem(Player player) {
-			List<String> lore = Arrays.asList("",
+			List<String> list = comment.getComment();
+			List<String> lore = Lists.newArrayList("",
 					"§7Status : " + comment.getStatus().getTitle(),
 					"§7Auteur : " + comment.getAuthor(),
 					"§7Date : §e" + Methods.toFormatDate(comment.getTime(), ConfigurationService.DATE_FORMAT_HOURS),
-					"§7Message : " + format(comment.getComment()),
-					"");
+					"§7Message : " + list.get(0));
+			
+			for (int i = 1; i < list.size(); i++)
+				lore.add(list.get(i));
 			
 			if (Methods.getRealName((OfflinePlayer) player).equalsIgnoreCase(ChatColor.stripColor(comment.getAuthor()))) {
 				lore.add("§6Clic gauche §7pour éditer le commentaire.");
@@ -128,17 +138,21 @@ public class CommentsMenu extends PacketMenu {
 
 		@Override
 		public void click(PacketMenu menu, Player clicker, ItemStack current, InventoryClickEvent event) {
+			event.setCancelled(true);
+			
 			if (event.isLeftClick() && isCreator) {
 				new InputSign(clicker).open((player, lines) -> {
-					String oldComment = comment.getComment();
+					List<String> oldComment = comment.getComment();
 					
-					for (String line : lines)
-						comment.addToComment(line);
+					for (String line : lines) {
+						if (!line.isEmpty())
+							comment.addToComment(line);
+					}
 
-					if (!oldComment.equalsIgnoreCase(comment.getComment()) && comment.getStatus() != CommentStatus.PRIVATE) {
+					if (!oldComment.equals(comment.getComment()) && comment.getStatus() != CommentStatus.PRIVATE) {
 						comment.setStatus(CommentStatus.SENT);
 						comment.sendToReporter();
-						APIPlayer.getPlayer(clicker).openMenu(CommentsMenu.this);
+						Bukkit.getScheduler().runTask(OnimaAPI.getInstance(), () -> APIPlayer.getPlayer(clicker).openMenu(CommentsMenu.this));
 					}
 				});
 			} else if (event.isRightClick() && comment.getStatus() == CommentStatus.PRIVATE) {
@@ -149,43 +163,12 @@ public class CommentsMenu extends PacketMenu {
 		}
 
 		@Override
-		public void drop(PacketMenu menu, Player clicker, ItemStack current, PlayerDropItemEvent event) {
+		public void drop(PacketMenu menu, Player clicker, ItemStack current, InventoryClickEvent event) {
+			event.setCancelled(true);
 			comment.remove();
 			menu.updateItems(clicker);
 		}
 		
-	}
-	
-	private String format(String text) { //A améliorer
-		StringBuilder sentence = new StringBuilder();
-		int maxLength = 24;
-		int actualLength = 0;
-		String lastColors = "";
-		
-		for (String word : text.split(" ")) {
-			int wordLength = ChatColor.stripColor(StringUtils.replace(word, "\n", "")).length();
-			String lastSearch = ChatColor.getLastColors(word);
-			
-			lastColors = lastSearch.isEmpty() ? lastColors : lastSearch;
-			
-			if (wordLength >= maxLength) {
-				sentence.append(word.substring(0, wordLength / 2))
-				.append('\n').append(lastColors).append(word.substring(wordLength / 2, wordLength))
-				.append(' ');
-				
-				actualLength = 0;
-				continue;
-			} else if (actualLength >= maxLength) {
-				sentence.append('\n').append(lastColors).append(word);
-				actualLength = 0;
-			} else
-				sentence.append(word);
-			
-			sentence.append(' ');
-			actualLength += wordLength;
-		}
-		
-		return sentence.toString();
 	}
 	
 }

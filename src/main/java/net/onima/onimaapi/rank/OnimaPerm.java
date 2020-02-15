@@ -866,7 +866,13 @@ public enum OnimaPerm {
 	
 	REPORT_STATS_CHECK("onimaapi.reports.check", "Permet de voir ses statistiques de report."),
 	
-	REPORTS_USER_ARGUMENT("onimaapi.reports.user.argument", "Permet d'afficher les reports d'un joueur.");
+	REPORTS_USER_ARGUMENT("onimaapi.reports.user.argument", "Permet d'afficher les reports d'un joueur."),
+	
+	REPORTS_DONE_ARGUMENT("onimaapi.reports.done.argument", "Permet d'afficher les reports traités."),
+	
+	REPORTS_HASHTAG_ARGUMENT("onimaapi.reports.hashtag.argument", "Permet d'afficher les infos d'un report."),
+	
+	REPORTS_DATA_ARGUMENT("onimaapi.reports.data.argument", "Permet d'afficher les données d'un joueur.");
 	
 	private String permission, description;
 	

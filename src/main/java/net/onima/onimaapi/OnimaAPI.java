@@ -25,7 +25,6 @@ import net.onima.onimaapi.gui.PacketMenu;
 import net.onima.onimaapi.gui.menu.FreezeMenu;
 import net.onima.onimaapi.gui.menu.OnlineStaffMenu;
 import net.onima.onimaapi.gui.menu.RankMenu;
-import net.onima.onimaapi.gui.menu.report.ReportsMenu;
 import net.onima.onimaapi.gui.sign.utils.SignHandler;
 import net.onima.onimaapi.limiter.EnchantLimiter;
 import net.onima.onimaapi.limiter.PotionLimiter;
@@ -146,7 +145,6 @@ public class OnimaAPI extends JavaPlugin {
 		PacketMenu.getStaticMenus().add(new OnlineStaffMenu());
 		PacketMenu.getStaticMenus().add(new FreezeMenu());
 		PacketMenu.getStaticMenus().add(new RankMenu());
-		PacketMenu.getStaticMenus().add(new ReportsMenu());
 		
 		Options.register(PlayerOption.ModOptions.ATTACK_PLAYER, false);
 		Options.register(PlayerOption.ModOptions.BREAK_BLOCK, false);
@@ -172,6 +170,7 @@ public class OnimaAPI extends JavaPlugin {
 		Options.register(PlayerOption.GlobalOptions.SHOW_INVISIBLE_PLAYERS, false);
 		Options.register(PlayerOption.GlobalOptions.CAPZONE_MESSAGES, true);
 		Options.register(PlayerOption.GlobalOptions.DISGUISE_MESSAGES_WARN, false);
+		Options.register(PlayerOption.GlobalOptions.REPORT_NOTIFY, false);
 		
 		for (String str : (Set<String>) new CommandDispatcher().a().keySet()) {
 			switch (str) {

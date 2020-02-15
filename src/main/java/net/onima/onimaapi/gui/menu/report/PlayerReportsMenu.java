@@ -38,12 +38,16 @@ public abstract class PlayerReportsMenu extends PageMenu {
 	@Override
 	public Map<Integer, Button> getGlobalButtons() {
 		Map<Integer, Button> map = new HashMap<>();
+		BetterItem item = new BetterItem(Material.BOOKSHELF, 1, 0, "§eFiltrer ces reports", "", "§6Clic §7pour filtrer ces reports.");
+		
+		if (filters.size() > 1)
+			item.addLore("").addLore("§7Il y a actuellement §6" + (filters.size() - 1) + " §7filtre" + (filters.size() > 2 ? "s" : "") + '.');
 		
 		if (backMenu != null) {
 			map.put(52, new BackButton(backMenu));
-			map.put(51, new MenuOpenerButton(new BetterItem(Material.BOOKSHELF, 1, 0, "§eFiltrer ces reports", "", "§6Clic §7pour filtrer ces reports."), new ReportFiltersMenu(this, offline.getUUID())));
+			map.put(51, new MenuOpenerButton(item, new ReportFiltersMenu(this)));
 		} else
-			map.put(52, new MenuOpenerButton(new BetterItem(Material.BOOKSHELF, 1, 0, "§eFiltrer ces reports", "", "§6Clic §7pour filtrer ces reports."), new ReportFiltersMenu(this, offline.getUUID())));
+			map.put(52, new MenuOpenerButton(item, new ReportFiltersMenu(this)));
 		
 		return map;
 	}

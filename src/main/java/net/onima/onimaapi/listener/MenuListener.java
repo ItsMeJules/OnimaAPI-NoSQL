@@ -7,7 +7,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -37,24 +36,30 @@ public class MenuListener implements Listener {
 		if (menu == null || menu instanceof AnvilMenu /*|| menu instanceof PlayerInventoryMenu*/)
 			return;
 		
-		if (slot == event.getRawSlot() && menu.getTitle().equalsIgnoreCase(event.getInventory().getName()) && menu.getButtons().containsKey(slot))
-			menu.getButtons().get(slot).click(menu, clicker, item, event);
-	}
-	
-	@EventHandler
-	public void onDrop(PlayerDropItemEvent event) {
-		ItemStack item = event.getItemDrop().getItemStack();
-		Player dropper = event.getPlayer();
-		PacketMenu menu = APIPlayer.getPlayer(dropper).getViewingMenu();
+		if (slot == event.getRawSlot() && menu.getTitle().equalsIgnoreCase(event.getInventory().getName()) && menu.getButtons().containsKey(slot)) {
+			Button button = menu.getButtons().get(slot);
 		
-		if (menu == null || menu instanceof AnvilMenu /*|| menu instanceof PlayerInventoryMenu*/)
-			return;
-		
-		for (Button button : menu.getButtons().values()) {
-			if (button instanceof DroppableButton && button.getButtonItem(dropper).toItemStack().isSimilar(item))
-				((DroppableButton) button).drop(menu, dropper, item, event);
+			if (button instanceof DroppableButton && event.getAction().toString().contains("DROP"))
+				((DroppableButton) button).drop(menu, clicker, item, event);
+			else if (!event.getAction().toString().contains("DROP"))
+				button.click(menu, clicker, item, event);
 		}
 	}
+	
+//	@EventHandler
+//	public void onDrop(PlayerDropItemEvent event) {
+//		ItemStack item = event.getItemDrop().getItemStack();
+//		Player dropper = event.getPlayer();
+//		PacketMenu menu = APIPlayer.getPlayer(dropper).getViewingMenu();
+//		
+//		if (menu == null || menu instanceof AnvilMenu /*|| menu instanceof PlayerInventoryMenu*/)
+//			return;
+//		
+//		for (Button button : menu.getButtons().values()) {
+//			if (button instanceof DroppableButton && button.getButtonItem(dropper).toItemStack().isSimilar(item))
+//				((DroppableButton) button).drop(menu, dropper, item, event);
+//		}
+//	}
 	
 	@EventHandler
 	public void onInventoryClose(InventoryCloseEvent event) {

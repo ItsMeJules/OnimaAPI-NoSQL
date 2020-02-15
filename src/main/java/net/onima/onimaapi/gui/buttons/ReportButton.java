@@ -2,7 +2,6 @@ package net.onima.onimaapi.gui.buttons;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 import net.onima.onimaapi.gui.PacketMenu;
@@ -44,7 +43,7 @@ public class ReportButton implements DroppableButton, UpdatableButton {
 	}
 
 	@Override
-	public void drop(PacketMenu menu, Player clicker, ItemStack current, PlayerDropItemEvent event) {
+	public void drop(PacketMenu menu, Player clicker, ItemStack current, InventoryClickEvent event) {
 		event.setCancelled(true);
 		
 		if (!performActions)

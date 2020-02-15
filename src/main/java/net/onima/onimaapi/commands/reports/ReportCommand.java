@@ -3,7 +3,6 @@ package net.onima.onimaapi.commands.reports;
 import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -50,7 +49,6 @@ public class ReportCommand implements CommandExecutor {
 				return false;
 			}
 			
-			sender.sendMessage("§eVous avez report §6" + Bukkit.getOfflinePlayer(reported).getName() + " §epour : §7" + report.getReason());
 			report.execute();
 		}
 		

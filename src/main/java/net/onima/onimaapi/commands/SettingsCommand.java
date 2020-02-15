@@ -26,6 +26,8 @@ public class SettingsCommand implements CommandExecutor {
 		
 		APIPlayer target = null;
 		
+		System.out.println(args.length);
+		
 		if (args.length > 0) {
 			target = APIPlayer.getPlayer(UUIDCache.getUUID(args[0]));
 			
@@ -33,12 +35,14 @@ public class SettingsCommand implements CommandExecutor {
 				sender.sendMessage(args[0] + " n'est pas en ligne !");
 				return false;
 			}
-		} else
+		} else {
 			target = APIPlayer.getPlayer((Player) sender);
+			
+			target.openMenu(target.getMenu("global_options"));
+			return true;
+		}
 		
-		APIPlayer player = APIPlayer.getPlayer((Player) sender);
-
-		player.openMenu(target.getMenu("global_options"));
+		APIPlayer.getPlayer((Player) sender).openMenu(target.getMenu("global_options"));
 		return true;
 	}
 

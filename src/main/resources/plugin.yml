@@ -224,6 +224,7 @@ commands:
     permission: onimaapi.enderchest.command
   broadcast:
     description: Ecrit un message général.
+    aliases: bc
     permission: onimaapi.broadcast.command
   settings:
     description: Gère ses options.

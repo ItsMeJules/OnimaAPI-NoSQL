@@ -11,7 +11,9 @@ import java.util.stream.Collectors;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import net.onima.onimaapi.OnimaAPI;
 import net.onima.onimaapi.manager.ConfigManager;
+import net.onima.onimaapi.players.OfflineAPIPlayer;
 import net.onima.onimaapi.report.struct.ReportStatus;
 import net.onima.onimaapi.report.struct.Verdict;
 import net.onima.onimaapi.saver.FileSaver;
@@ -68,6 +70,13 @@ public abstract class Report implements FileSaver {
 	
 	public abstract boolean execute();
 	public abstract BetterItem getItem();
+	
+	public void process(Verdict verdict, String doneBy) {
+		this.verdict = verdict;
+		this.doneBy = doneBy;
+		
+		status = ReportStatus.DONE;
+	}
 	
 	public void initID() {
 		id = ID++;
@@ -145,11 +154,13 @@ public abstract class Report implements FileSaver {
 	@Override
 	public void remove() {
 		reports.remove(this);
+		OnimaAPI.getShutdownSavers().remove(this);
 	}
 	
 	@Override
 	public void save() {
 		reports.add(this);
+		OnimaAPI.getShutdownSavers().add(this);
 	}
 	
 	@Override
@@ -157,14 +168,63 @@ public abstract class Report implements FileSaver {
 		if (!refreshed)
 			refreshFile();
 		
-		String path = "reports." + id + ".";
+		String path = (this instanceof PlayerReport ? "player" : "bug")+ "_reports." + id + ".";
 		
 		file.set(path + "reporter", reporter.toString());
 		file.set(path + "reason", reason);
+		file.set(path + "done_by", doneBy);
 		file.set(path + "time", time);
 		file.set(path + "status", status.name());
 		file.set(path + "verdict", verdict == null ? null : verdict.name());
 		file.set(path + "comments", comments.stream().map(ReportComment::asSerializableString).collect(Collectors.toCollection(() -> new ArrayList<>(comments.size()))));
+	}
+	
+	public static void deserialize() {
+		ConfigurationSection section = file.getConfigurationSection("player_reports");
+		
+		if (section != null) {
+			for (String id : section.getKeys(false)) {
+				String path = id + ".";
+				String verdict = section.getString(path + "verdict");
+				PlayerReport report = new PlayerReport(UUID.fromString(section.getString(path + "reporter")), section.getString(path + "reason"), UUID.fromString(section.getString(path + "reported")));
+				
+				OfflineAPIPlayer.getPlayer(report.getReporter(), offline -> offline.getReports().add(report));
+				OfflineAPIPlayer.getPlayer(report.getReported(), offline -> offline.getReports().add(report));
+				report.save();
+				
+				report.id = Integer.valueOf(id);
+				report.time = section.getLong(path + "time");
+				report.status = ReportStatus.valueOf(section.getString(path + "status"));
+				report.verdict = verdict == null ? null : Verdict.valueOf(verdict);
+				report.doneBy = section.getString(path + "done_by");
+				
+				for (String line : section.getStringList(path + "comments"))
+					report.comments.add(ReportComment.fromString(line, report));
+				
+			}
+		}
+		
+		ConfigurationSection bugSection = file.getConfigurationSection("bug_reports");
+		
+		if (bugSection != null) {
+			for (String id : section.getKeys(false)) {
+				String path = id + ".";
+				String verdict = section.getString(path + "verdict");
+				BugReport report = new BugReport(UUID.fromString(section.getString(path + "reporter")), section.getString(path + "reason"));
+				
+				OfflineAPIPlayer.getPlayer(report.getReporter(), offline -> offline.getReports().add(report));
+				report.save();
+				
+				report.id = Integer.valueOf(id);
+				report.time = section.getLong(path + "time");
+				report.status = ReportStatus.valueOf(section.getString(path + "status"));
+				report.verdict = verdict == null ? null : Verdict.valueOf(verdict);
+				report.doneBy = section.getString(path + "done_by");
+				
+				for (String line : section.getStringList(path + "comments"))
+					report.comments.add(ReportComment.fromString(line, report));
+			}
+		}
 	}
 	
 	@Override

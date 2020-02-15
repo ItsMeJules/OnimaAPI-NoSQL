@@ -10,6 +10,7 @@ import net.onima.onimaapi.gui.buttons.BackButton;
 import net.onima.onimaapi.gui.buttons.DisplayButton;
 import net.onima.onimaapi.gui.buttons.ReportButton;
 import net.onima.onimaapi.gui.buttons.utils.Button;
+import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.players.OfflineAPIPlayer;
 import net.onima.onimaapi.report.Report;
 import net.onima.onimaapi.report.struct.ReportStat;
@@ -74,25 +75,40 @@ public class VerdictMenu extends PacketMenu {
 		
 		@Override
 		public BetterItem getButtonItem(Player player) {
-			return new BetterItem(verdict.getMaterial(), 1, verdict.getDamage(), verdict.getTitle(), "§6Cliquez §7pour soumettre le", "verdict : " + verdict.getTitle());
+			return new BetterItem(verdict.getMaterial(), 1, verdict.getDamage(), verdict.getTitle(), "", "§6Cliquez §7pour soumettre le", "§7verdict : " + verdict.getTitle());
 		}
 
 		@Override
 		public void click(PacketMenu menu, Player clicker, ItemStack current, InventoryClickEvent event) {
+			APIPlayer apiPlayer = APIPlayer.getPlayer(clicker);
+			
+			event.setCancelled(true);
+			report.process(verdict, apiPlayer.getDisplayName(false));
+			
 			switch (verdict) {
 			case FALSE:
-				OfflineAPIPlayer.getPlayer(report.getReporter(), offline -> offline.addStatistic(ReportStat.FALSE_APPRECIATIONS, 1));
+				OfflineAPIPlayer.getPlayer(report.getReporter(), offline -> { 
+					offline.addStatistic(ReportStat.FALSE_APPRECIATIONS, 1);
+					offline.addStatistic(ReportStat.PROCESSED_REPORTS, 1);
+				});
 				break;
 			case TRUE:
-				OfflineAPIPlayer.getPlayer(report.getReporter(), offline -> offline.addStatistic(ReportStat.TRUE_APPRECIATIONS, 1));
+				OfflineAPIPlayer.getPlayer(report.getReporter(), offline -> { 
+					offline.addStatistic(ReportStat.TRUE_APPRECIATIONS, 1);
+					offline.addStatistic(ReportStat.PROCESSED_REPORTS, 1);
+				});
 				break;
 			case UNCERTAIN:
-				OfflineAPIPlayer.getPlayer(report.getReporter(), offline -> offline.addStatistic(ReportStat.UNCERTAIN_APPRECIATIONS, 1));
+				OfflineAPIPlayer.getPlayer(report.getReporter(), offline -> { 
+					offline.addStatistic(ReportStat.UNCERTAIN_APPRECIATIONS, 1);
+					offline.addStatistic(ReportStat.PROCESSED_REPORTS, 1);
+				});
 				break;
 			default:
 				break;
 			}
 			
+			apiPlayer.openMenu(new ReportsMenu(false));
 		}
 		
 	}

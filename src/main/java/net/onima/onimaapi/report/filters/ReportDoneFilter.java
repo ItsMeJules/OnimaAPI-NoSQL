@@ -12,7 +12,7 @@ public class ReportDoneFilter implements ReportFilter {
 	
 	@Override
 	public String getDispalyName() {
-		return "§eFiltre les reports traités";
+		return "§eFiltre les reports "+ (done ? "" : "non-") + "traités";
 	}
 	
 	@Override
