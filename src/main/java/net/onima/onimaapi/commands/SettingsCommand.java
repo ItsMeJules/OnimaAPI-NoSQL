@@ -26,8 +26,6 @@ public class SettingsCommand implements CommandExecutor {
 		
 		APIPlayer target = null;
 		
-		System.out.println(args.length);
-		
 		if (args.length > 0) {
 			target = APIPlayer.getPlayer(UUIDCache.getUUID(args[0]));
 			

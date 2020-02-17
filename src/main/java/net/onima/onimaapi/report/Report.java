@@ -220,6 +220,9 @@ public abstract class Report implements FileSaver {
 				report.status = ReportStatus.valueOf(section.getString(path + "status"));
 				report.verdict = verdict == null ? null : Verdict.valueOf(verdict);
 				report.doneBy = section.getString(path + "done_by");
+				report.timeWhenBugOccured = section.getLong(path + "time_bug_occured");
+				report.linkToProof = section.getString(path + "proof_link");
+				report.playerActionsDescription = section.getString(path + "player_actions");
 				
 				for (String line : section.getStringList(path + "comments"))
 					report.comments.add(ReportComment.fromString(line, report));

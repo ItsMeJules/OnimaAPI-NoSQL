@@ -145,6 +145,10 @@ public class BetterItem implements Cloneable {
 		return damage;
 	}
 	
+	public void setDamage(int damage) {
+		this.damage = (short) damage;
+	}
+	
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}

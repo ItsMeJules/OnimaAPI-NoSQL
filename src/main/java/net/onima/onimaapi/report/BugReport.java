@@ -19,6 +19,10 @@ import net.onima.onimaapi.utils.JSONMessage;
 import net.onima.onimaapi.utils.Methods;
 
 public class BugReport extends Report {
+	
+	protected long timeWhenBugOccured;
+	protected String linkToProof;
+	protected String playerActionsDescription;
 
 	public BugReport(UUID reporter, String reason) {
 		super(reporter, reason);
@@ -28,7 +32,7 @@ public class BugReport extends Report {
 	public boolean execute() {
 		APIPlayer apiPlayer = APIPlayer.getPlayer(reporter);
 
-		if (apiPlayer.getTimeLeft(BugReportCooldown.class) >= 0L) {
+		if (apiPlayer.getTimeLeft(BugReportCooldown.class) > 0L) {
 			apiPlayer.sendMessage("§cVous ne pouvez pas soumettre de bug report pour le moment.");
 			return false;
 		}
@@ -52,6 +56,8 @@ public class BugReport extends Report {
 				player.sendMessage(msg);
 		}
 		
+		apiPlayer.sendMessage("§eVous avez report un bug. Revenez voir dans quelque temps.");
+		apiPlayer.startCooldown(BugReportCooldown.class);
 		return true;
 	}
 	
@@ -71,6 +77,27 @@ public class BugReport extends Report {
 				.addLore("")
 				.addLore("§7Report par : §a" + Methods.getRealName(rerOff) + "§7(" + (rerOff.isOnline() ? "§aconnecté" : "§cdéconnecté") + "§7)")
 				.addLore("§7Raison : §6" + reason);
+	}
+	
+	public long getTimeWhenBugOccured() {
+		return timeWhenBugOccured;
+	}
+	
+	public String getLinkToProof() {
+		return linkToProof;
+	}
+	
+	public String getPlayerActionsDescription() {
+		return playerActionsDescription;
+	}
+	
+	@Override
+	public void serialize() {
+		file.set("bug_reports." + id + ".time_bug_occured", timeWhenBugOccured);
+		file.set("bug_reports." + id + ".proof_link", linkToProof);
+		file.set("bug_reports." + id + ".player_actions", playerActionsDescription);
+		
+		super.serialize();
 	}
 
 }
