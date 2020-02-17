@@ -61,6 +61,7 @@ public class BugReportMenu extends PacketMenu {
 		cbck.setCallBack(val -> {
 			cbck.getEvent().setCancelled(true);
 			val.submitBug(reporter.getUUID());
+			close(reporter, true);
 			return true;
 		});
 		
@@ -87,7 +88,7 @@ public class BugReportMenu extends PacketMenu {
 		
 		if (transaction.hasLinkToBugProof()) {
 			linkItem.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
-			linkItem.addLore("").addLore("§7Description actuelle : ");
+			linkItem.addLore("").addLore("§7Lien :");
 			
 			for (String desc : transaction.getLinkToBugProof().split("(?<=\\G.{34})"))
 				linkItem.addLore("§6" + desc);
@@ -128,7 +129,7 @@ public class BugReportMenu extends PacketMenu {
 		
 		@Override
 		public void call(Conversable conversable) {
-			conversable.beginConversation(new ConversationFactory(OnimaAPI.getInstance()).withFirstPrompt(this).withEscapeSequence("/no").withTimeout(30).withModality(false).withLocalEcho(true).buildConversation(reporter.toPlayer()));
+			conversable.beginConversation(new ConversationFactory(OnimaAPI.getInstance()).withFirstPrompt(this).withEscapeSequence("/no").withModality(false).withLocalEcho(true).buildConversation(reporter.toPlayer()));
 		}
 
 		@Override
@@ -155,7 +156,7 @@ public class BugReportMenu extends PacketMenu {
 		
 		@Override
 		public void call(Conversable conversable) {
-			conversable.beginConversation(new ConversationFactory(OnimaAPI.getInstance()).withFirstPrompt(this).withEscapeSequence("/no").withTimeout(30).withModality(false).withLocalEcho(true).buildConversation(reporter.toPlayer()));
+			conversable.beginConversation(new ConversationFactory(OnimaAPI.getInstance()).withFirstPrompt(this).withEscapeSequence("/no").withModality(false).withLocalEcho(true).buildConversation(reporter.toPlayer()));
 		}
 
 		@Override
@@ -178,7 +179,7 @@ public class BugReportMenu extends PacketMenu {
 		
 		@Override
 		public void call(Conversable conversable) {
-			conversable.beginConversation(new ConversationFactory(OnimaAPI.getInstance()).withFirstPrompt(this).withEscapeSequence("/no").withTimeout(30).withModality(false).withLocalEcho(true).buildConversation(reporter.toPlayer()));
+			conversable.beginConversation(new ConversationFactory(OnimaAPI.getInstance()).withFirstPrompt(this).withEscapeSequence("/no").withModality(false).withLocalEcho(true).buildConversation(reporter.toPlayer()));
 		}
 
 		@Override
@@ -201,7 +202,7 @@ public class BugReportMenu extends PacketMenu {
 		
 		@Override
 		public void call(Conversable conversable) {
-			conversable.beginConversation(new ConversationFactory(OnimaAPI.getInstance()).withFirstPrompt(this).withEscapeSequence("/no").withTimeout(30).withModality(false).withLocalEcho(true).buildConversation(reporter.toPlayer()));
+			conversable.beginConversation(new ConversationFactory(OnimaAPI.getInstance()).withFirstPrompt(this).withEscapeSequence("/no").withModality(false).withLocalEcho(true).buildConversation(reporter.toPlayer()));
 		}
 
 		@Override
@@ -221,7 +222,7 @@ public class BugReportMenu extends PacketMenu {
 
 		@Override
 		public String getPromptText(ConversationContext context) {
-			return "§7Entrez une date et une heure sous le format suivant -> §ejj/mm/yyyy - hh:MM \n§7Exemple: §e§o16/02/20 - 13:41§7.";
+			return "§7Entrez une date et une heure sous le format suivant -> §ejj/mm/yyyy - hh:MM \n§7Exemple: §e§o16/02/2020 - 13:41§7.";
 		}
 		
 	}

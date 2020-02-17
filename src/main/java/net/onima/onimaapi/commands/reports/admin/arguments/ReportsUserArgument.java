@@ -54,7 +54,7 @@ public class ReportsUserArgument extends BasicCommandArgument {
 	
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
-		if (!(sender instanceof Player) || OnimaPerm.REPORTS_USER_ARGUMENT.has(sender))
+		if (!(sender instanceof Player) || !OnimaPerm.REPORTS_USER_ARGUMENT.has(sender))
 			return Collections.emptyList();
 		
 		if (args.length == 2)

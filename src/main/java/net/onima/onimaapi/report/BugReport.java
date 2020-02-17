@@ -49,7 +49,7 @@ public class BugReport extends Report {
 				"\n§2du §asignalement §6#" + id);
 		
 		msg.setClickAction(ClickEvent.Action.RUN_COMMAND);
-		msg.setClickString("/bugreports id " + id);
+		msg.setClickString("/reports id " + id);
 
 		for (APIPlayer player : APIPlayer.getOnlineAPIPlayers()) {
 			if (player.getOptions().getBoolean(PlayerOption.GlobalOptions.REPORT_NOTIFY) && player.toPlayer().hasPermission(OnimaPerm.REPORTS_COMMAND.getPermission()))
@@ -63,20 +63,26 @@ public class BugReport extends Report {
 	
 	@Override
 	public BetterItem getItem() {
-		BetterItem item = new BetterItem(status.getMaterial(), 1, status.getColor());
+		BetterItem item = new BetterItem(status.getMaterial(true), 1, status.getColor(true));
 		
 		if (status.equals(ReportStatus.WAITING))
 			item.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
 		
 		OfflinePlayer rerOff = Bukkit.getOfflinePlayer(reporter);
 		
-		return item.setName("§aBug Report §7#" + id)
-				.addLore("")
-				.addLore("§7Status : " + status.getTitle(doneBy))
-				.addLore("§7Date : §e" + Methods.toFormatDate(time, ConfigurationService.DATE_FORMAT_HOURS))
-				.addLore("")
-				.addLore("§7Report par : §a" + Methods.getRealName(rerOff) + "§7(" + (rerOff.isOnline() ? "§aconnecté" : "§cdéconnecté") + "§7)")
-				.addLore("§7Raison : §6" + reason);
+		item.setName("§aBug Report §7#" + id)
+			.addLore("")
+			.addLore("§7Status : " + status.getTitle(doneBy))
+			.addLore("§7Date : §e" + Methods.toFormatDate(time, ConfigurationService.DATE_FORMAT_HOURS));
+		
+		if (verdict != null)
+			item.addLore("§7Verdict : " + verdict.getTitle());
+		
+		item.addLore("")
+			.addLore("§7Report par : §a" + Methods.getRealName(rerOff) + "§7(" + (rerOff.isOnline() ? "§aconnecté" : "§cdéconnecté") + "§7)")
+			.addLore("§7Raison : §6" + reason);
+		
+		return item;
 	}
 	
 	public long getTimeWhenBugOccured() {

@@ -99,7 +99,7 @@ public class PlayerReport extends Report { //TODO Ajouter les effets que le joue
 	
 	@Override
 	public BetterItem getItem() {
-		BetterItem item = new BetterItem(status.getMaterial(), 1, status.getColor());
+		BetterItem item = new BetterItem(status.getMaterial(false), 1, status.getColor(false));
 		
 		if (status.equals(ReportStatus.WAITING))
 			item.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
@@ -107,14 +107,20 @@ public class PlayerReport extends Report { //TODO Ajouter les effets que le joue
 		OfflinePlayer rerOff = Bukkit.getOfflinePlayer(reporter);
 		OfflinePlayer redOff = Bukkit.getOfflinePlayer(reported);
 		
-		return item.setName("§cReport §7#" + id)
-				.addLore("")
-				.addLore("§7Status : " + status.getTitle(doneBy))
-				.addLore("§7Date : §e" + Methods.toFormatDate(time, ConfigurationService.DATE_FORMAT_HOURS))
-				.addLore("")
-				.addLore("§7Report par : §a" + Methods.getRealName(rerOff) + "§7(" + (rerOff.isOnline() ? "§aconnecté" : "§cdéconnecté") + "§7)")
-				.addLore("§7Joueur report : §c" + Methods.getRealName(redOff) + "§7(" + (redOff.isOnline() ? "§aconnecté" : "§cdéconnecté") + "§7)")
-				.addLore("§7Raison : §6" + reason);
+		item.setName("§cReport §7#" + id)
+			.addLore("")
+			.addLore("§7Status : " + status.getTitle(doneBy))
+			.addLore("§7Date : §e" + Methods.toFormatDate(time, ConfigurationService.DATE_FORMAT_HOURS));
+		
+		if (verdict != null)
+			item.addLore("§7Verdict : " + verdict.getTitle());
+		
+		item.addLore("")
+			.addLore("§7Report par : §a" + Methods.getRealName(rerOff) + "§7(" + (rerOff.isOnline() ? "§aconnecté" : "§cdéconnecté") + "§7)")
+			.addLore("§7Joueur report : §c" + Methods.getRealName(redOff) + "§7(" + (redOff.isOnline() ? "§aconnecté" : "§cdéconnecté") + "§7)")
+			.addLore("§7Raison : §6" + reason);
+		
+		return item;
 	}
 	
 	public UUID getReported() {

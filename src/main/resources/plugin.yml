@@ -238,6 +238,3 @@ commands:
   bugreport:
     description: Signale un bug.
     permission: onimaapi.bugreport.command
-#  bugreports:
-#    description: Commande principale pour gérer les signalement de bugs.
-#    permission: onimaapi.bugreports.command

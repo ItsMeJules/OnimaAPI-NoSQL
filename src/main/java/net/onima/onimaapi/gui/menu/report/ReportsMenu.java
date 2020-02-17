@@ -13,7 +13,7 @@ public class ReportsMenu extends PageMenu {
 	private boolean done;
 
 	public ReportsMenu(boolean done) {
-		super("reports_" + done, "§6Reports " + (done ? "traités" : "non-traités") + " §7» §e" + Report.getReports().size(), MAX_SIZE, false);
+		super("reports_" + done, "§6Reports " + (done ? "traités" : "non-traités"), MAX_SIZE, false);
 		
 		this.done = done;
 	}

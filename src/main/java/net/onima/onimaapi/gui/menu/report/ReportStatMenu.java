@@ -37,24 +37,15 @@ public class ReportStatMenu extends PacketMenu {
 			buttons.put(stat.getSlot(), new DisplayButton(new BetterItem(stat.getMaterial(), value > 64 ? 64 : value, stat.getDamage(), stat.getTitle() + "§b" + value)));
 		}
 		
-		buttons.put(10, new ReportsReceivedButton(false));
-		buttons.put(12, new ReportsReceivedButton(true));
-		
-		buttons.put(14, new ReportsSentButton(false));
-		buttons.put(16, new ReportsSentButton(true));
+		buttons.put(12, new ReportsReceivedButton());
+		buttons.put(14, new ReportsSentButton());
 	}
 	
 	private class ReportsReceivedButton implements Button {
 		
-		private boolean processed;
-
-		public ReportsReceivedButton(boolean processed) {
-			this.processed = processed;
-		}
-		
 		@Override
 		public BetterItem getButtonItem(Player player) {
-			return new BetterItem(processed ? Material.BOOKSHELF : Material.BOOK_AND_QUILL, 1, 0, "§eReports " + (processed ? "§cnon-" : "§a") + "classés §eà l'encontre de §7" + offline.getName());
+			return new BetterItem(Material.BOOK_AND_QUILL, 1, 0, "§eReports à l'encontre de §7" + offline.getName());
 		}
 
 		@Override
@@ -67,15 +58,9 @@ public class ReportStatMenu extends PacketMenu {
 	
 	private class ReportsSentButton implements Button {
 		
-		private boolean processed;
-
-		public ReportsSentButton(boolean processed) {
-			this.processed = processed;
-		}
-		
 		@Override
 		public BetterItem getButtonItem(Player player) {
-			return new BetterItem(processed ? Material.BOOKSHELF : Material.BOOK_AND_QUILL, 1, 0, "§eReports " + (processed ? "§cnon-" : "§a") + "classés §eenvoyés par §7" + offline.getName());
+			return new BetterItem(Material.BOOKSHELF, 1, 0, "§eReports envoyés par §7" + offline.getName());
 		}
 
 		@Override

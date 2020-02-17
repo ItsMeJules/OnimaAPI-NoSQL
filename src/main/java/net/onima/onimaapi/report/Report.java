@@ -2,7 +2,11 @@ package net.onima.onimaapi.report;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
@@ -181,6 +185,7 @@ public abstract class Report implements FileSaver {
 	
 	public static void deserialize() {
 		ConfigurationSection section = file.getConfigurationSection("player_reports");
+		Map<UUID, Set<Report>> savedRep = new HashMap<>();
 		
 		if (section != null) {
 			for (String id : section.getKeys(false)) {
@@ -188,8 +193,14 @@ public abstract class Report implements FileSaver {
 				String verdict = section.getString(path + "verdict");
 				PlayerReport report = new PlayerReport(UUID.fromString(section.getString(path + "reporter")), section.getString(path + "reason"), UUID.fromString(section.getString(path + "reported")));
 				
-				OfflineAPIPlayer.getPlayer(report.getReporter(), offline -> offline.getReports().add(report));
-				OfflineAPIPlayer.getPlayer(report.getReported(), offline -> offline.getReports().add(report));
+				if (!savedRep.containsKey(report.getReporter()))
+					savedRep.put(report.getReporter(), new HashSet<>());
+					
+				if (!savedRep.containsKey(report.getReported()))
+					savedRep.put(report.getReported(), new HashSet<>());
+				
+				savedRep.get(report.getReporter()).add(report);
+				savedRep.get(report.getReported()).add(report);
 				report.save();
 				
 				report.id = Integer.valueOf(id);
@@ -207,27 +218,33 @@ public abstract class Report implements FileSaver {
 		ConfigurationSection bugSection = file.getConfigurationSection("bug_reports");
 		
 		if (bugSection != null) {
-			for (String id : section.getKeys(false)) {
+			for (String id : bugSection.getKeys(false)) {
 				String path = id + ".";
-				String verdict = section.getString(path + "verdict");
-				BugReport report = new BugReport(UUID.fromString(section.getString(path + "reporter")), section.getString(path + "reason"));
+				String verdict = bugSection.getString(path + "verdict");
+				BugReport report = new BugReport(UUID.fromString(bugSection.getString(path + "reporter")), bugSection.getString(path + "reason"));
 				
-				OfflineAPIPlayer.getPlayer(report.getReporter(), offline -> offline.getReports().add(report));
+				if (!savedRep.containsKey(report.getReporter()))
+					savedRep.put(report.getReporter(), new HashSet<>());
+				
+				savedRep.get(report.getReporter()).add(report);
 				report.save();
 				
 				report.id = Integer.valueOf(id);
-				report.time = section.getLong(path + "time");
-				report.status = ReportStatus.valueOf(section.getString(path + "status"));
+				report.time = bugSection.getLong(path + "time");
+				report.status = ReportStatus.valueOf(bugSection.getString(path + "status"));
 				report.verdict = verdict == null ? null : Verdict.valueOf(verdict);
-				report.doneBy = section.getString(path + "done_by");
-				report.timeWhenBugOccured = section.getLong(path + "time_bug_occured");
-				report.linkToProof = section.getString(path + "proof_link");
-				report.playerActionsDescription = section.getString(path + "player_actions");
+				report.doneBy = bugSection.getString(path + "done_by");
+				report.timeWhenBugOccured = bugSection.getLong(path + "time_bug_occured");
+				report.linkToProof = bugSection.getString(path + "proof_link");
+				report.playerActionsDescription = bugSection.getString(path + "player_actions");
 				
-				for (String line : section.getStringList(path + "comments"))
+				for (String line : bugSection.getStringList(path + "comments"))
 					report.comments.add(ReportComment.fromString(line, report));
 			}
 		}
+		
+		for (Entry<UUID, Set<Report>> entry : savedRep.entrySet())
+			OfflineAPIPlayer.getPlayer(entry.getKey(), offline -> offline.getReports().addAll(entry.getValue()));
 	}
 	
 	@Override

@@ -15,8 +15,11 @@ import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.rank.OnimaPerm;
 import net.onima.onimaapi.report.PlayerReport;
 import net.onima.onimaapi.report.Report;
+import net.onima.onimaapi.utils.JSONMessage;
 
 public class ReportCommand implements CommandExecutor {
+	
+	private JSONMessage usage = new JSONMessage("§7/report <player> (reason)", "§d§oSignalez un joueur.");
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -27,6 +30,11 @@ public class ReportCommand implements CommandExecutor {
 		
 		if (!(sender instanceof Player)) {
 			sender.sendMessage("§cSeulement les joueurs peuvent utiliser cette commande !");
+			return false;
+		}
+		
+		if (args.length < 1) {
+			usage.send(sender, "§7Utilisation : ");
 			return false;
 		}
 		

@@ -29,12 +29,12 @@ public class ReportFiltersMenu extends PacketMenu {
 		buttons.put(2, new FilterButton(ReportFilter.COMMENTED_REPORT_FILTER, Material.BOOK, 2));
 		buttons.put(3, new FilterButton(ReportFilter.DONE_REPORT_FILTER, Material.EMERALD, 3));
 		buttons.put(4, new FilterButton(ReportFilter.NOT_DONE_REPORT_FILTER, Material.COAL, 4));
-		buttons.put(5, new FilterButton(ReportFilter.WAITING_STATUS_REPORT_FILTER, Material.DISPENSER, 7));
-		buttons.put(6, new FilterButton(ReportFilter.IN_PROGRESS_STATUS_REPORT_FILTER, Material.GOLD_NUGGET, 8));
-		buttons.put(7, new FilterButton(ReportFilter.IMPORTANT_STATUS_REPORT_FILTER, Material.TNT, 9));
-		buttons.put(8, new FilterButton(ReportFilter.TRUE_VERDICT_REPORT_FILTER, Material.INK_SACK, 10, 10));
-		buttons.put(9, new FilterButton(ReportFilter.UNCERTAIN_VERDICT_REPORT_FILTER, Material.INK_SACK, 14, 11));
-		buttons.put(10, new FilterButton(ReportFilter.FALSE_VERDICT_REPORT_FILTER, Material.INK_SACK, 1, 12));
+		buttons.put(5, new FilterButton(ReportFilter.WAITING_STATUS_REPORT_FILTER, Material.DISPENSER, 5));
+		buttons.put(6, new FilterButton(ReportFilter.IN_PROGRESS_STATUS_REPORT_FILTER, Material.GOLD_NUGGET, 6));
+		buttons.put(7, new FilterButton(ReportFilter.IMPORTANT_STATUS_REPORT_FILTER, Material.TNT, 7));
+		buttons.put(8, new FilterButton(ReportFilter.TRUE_VERDICT_REPORT_FILTER, Material.INK_SACK, 10, 8));
+		buttons.put(9, new FilterButton(ReportFilter.UNCERTAIN_VERDICT_REPORT_FILTER, Material.INK_SACK, 14, 9));
+		buttons.put(10, new FilterButton(ReportFilter.FALSE_VERDICT_REPORT_FILTER, Material.INK_SACK, 1, 10));
 		
 		buttons.put(size - 1, new MenuOpenerButton(new BetterItem(Material.BLAZE_ROD, 1, 0, "§6Retourner au menu", "", "§6Clic §7pour appliquer les filtres", "§7et retourner au menu.", "", "§7§oAttention, si vous fermez l'inventaire,", "§7les filtres ne seront plus applicables."), initialMenu));
 	}
