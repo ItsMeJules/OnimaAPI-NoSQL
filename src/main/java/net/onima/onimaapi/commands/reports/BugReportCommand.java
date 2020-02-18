@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import net.onima.onimaapi.OnimaAPI;
-import net.onima.onimaapi.gui.menu.report.BugReportMenu;
+import net.onima.onimaapi.gui.menu.report.admin.BugReportMenu;
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.rank.OnimaPerm;
 

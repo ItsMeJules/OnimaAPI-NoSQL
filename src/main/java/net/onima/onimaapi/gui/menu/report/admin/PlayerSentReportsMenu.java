@@ -1,4 +1,4 @@
-package net.onima.onimaapi.gui.menu.report;
+package net.onima.onimaapi.gui.menu.report.admin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,12 +10,12 @@ import net.onima.onimaapi.players.OfflineAPIPlayer;
 import net.onima.onimaapi.report.Report;
 import net.onima.onimaapi.report.filters.ReportFilter;
 
-public class PlayerReceivedReportsMenu extends PlayerReportsMenu {
-
-	public PlayerReceivedReportsMenu(PacketMenu backMenu, OfflineAPIPlayer offline) {
-		super("player_received_reports", "§6Reports reçus", backMenu, offline);
+public class PlayerSentReportsMenu extends PlayerReportsMenu {
+	
+	public PlayerSentReportsMenu(PacketMenu backMenu, OfflineAPIPlayer offline) {
+		super("player_sent_reports", "§6Reports envoyés", backMenu, offline);
 		
-		addFilter(ReportFilter.getPlayerFilter(offline.getUUID(), false));
+		addFilter(ReportFilter.getPlayerFilter(offline.getUUID(), true));
 	}
 
 	@Override
@@ -29,5 +29,5 @@ public class PlayerReceivedReportsMenu extends PlayerReportsMenu {
 		
 		return map;
 	}
-	
+
 }

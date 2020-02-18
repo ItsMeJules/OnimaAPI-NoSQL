@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import net.onima.onimaapi.caching.UUIDCache;
-import net.onima.onimaapi.gui.menu.report.ReportStatMenu;
+import net.onima.onimaapi.gui.menu.report.admin.ReportStatMenu;
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.players.OfflineAPIPlayer;
 import net.onima.onimaapi.rank.OnimaPerm;

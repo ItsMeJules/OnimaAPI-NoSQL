@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import net.onima.onimaapi.gui.PacketMenu;
 import net.onima.onimaapi.gui.buttons.utils.DroppableButton;
 import net.onima.onimaapi.gui.buttons.utils.UpdatableButton;
-import net.onima.onimaapi.gui.menu.report.ReportInfoMenu;
+import net.onima.onimaapi.gui.menu.report.admin.ReportInfoMenu;
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.players.OfflineAPIPlayer;
 import net.onima.onimaapi.report.PlayerReport;

@@ -1,4 +1,4 @@
-package net.onima.onimaapi.gui.menu.report;
+package net.onima.onimaapi.gui.menu.report.admin;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -10,6 +10,7 @@ import net.onima.onimaapi.gui.buttons.BackButton;
 import net.onima.onimaapi.gui.buttons.DisplayButton;
 import net.onima.onimaapi.gui.buttons.ReportButton;
 import net.onima.onimaapi.gui.buttons.utils.Button;
+import net.onima.onimaapi.gui.menu.report.RewardMenu;
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.players.OfflineAPIPlayer;
 import net.onima.onimaapi.report.Report;
@@ -108,7 +109,7 @@ public class VerdictMenu extends PacketMenu {
 				break;
 			}
 			
-			apiPlayer.openMenu(new ReportsMenu(false));
+			apiPlayer.openMenu(new RewardMenu(report, true));
 		}
 		
 	}

@@ -28,7 +28,8 @@ public class MenuListener implements Listener {
 		ItemStack item = event.getCurrentItem();
 		Player clicker = (Player) event.getWhoClicked();
 		
-		if (item == null || item.getType() == Material.AIR || !event.getClickedInventory().equals(event.getView().getTopInventory())) return;
+		if (item == null || item.getType() == Material.AIR || !event.getClickedInventory().equals(event.getView().getTopInventory()))
+			return;
 		
 		PacketMenu menu = APIPlayer.getPlayer(clicker).getViewingMenu();
 		int slot = event.getSlot();

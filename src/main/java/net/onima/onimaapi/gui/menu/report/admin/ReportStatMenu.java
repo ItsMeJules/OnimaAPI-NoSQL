@@ -1,4 +1,4 @@
-package net.onima.onimaapi.gui.menu.report;
+package net.onima.onimaapi.gui.menu.report.admin;
 
 import java.util.Map.Entry;
 

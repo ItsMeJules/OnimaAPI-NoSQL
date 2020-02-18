@@ -8,7 +8,7 @@ import net.onima.onimaapi.commands.reports.admin.arguments.ReportsDataArgument;
 import net.onima.onimaapi.commands.reports.admin.arguments.ReportsDoneArgument;
 import net.onima.onimaapi.commands.reports.admin.arguments.ReportsIdArgument;
 import net.onima.onimaapi.commands.reports.admin.arguments.ReportsUserArgument;
-import net.onima.onimaapi.gui.menu.report.ReportsMenu;
+import net.onima.onimaapi.gui.menu.report.admin.ReportsMenu;
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.rank.OnimaPerm;
 import net.onima.onimaapi.utils.commands.ArgumentExecutor;

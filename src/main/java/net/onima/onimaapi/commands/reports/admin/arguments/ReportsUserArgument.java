@@ -11,8 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import net.onima.onimaapi.caching.UUIDCache;
-import net.onima.onimaapi.gui.menu.report.PlayerReceivedReportsMenu;
-import net.onima.onimaapi.gui.menu.report.PlayerSentReportsMenu;
+import net.onima.onimaapi.gui.menu.report.admin.PlayerReceivedReportsMenu;
+import net.onima.onimaapi.gui.menu.report.admin.PlayerSentReportsMenu;
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.players.OfflineAPIPlayer;
 import net.onima.onimaapi.rank.OnimaPerm;

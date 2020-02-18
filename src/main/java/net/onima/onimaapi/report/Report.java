@@ -12,17 +12,21 @@ import java.util.TreeSet;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.ItemStack;
 
 import net.onima.onimaapi.OnimaAPI;
 import net.onima.onimaapi.manager.ConfigManager;
+import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.players.OfflineAPIPlayer;
 import net.onima.onimaapi.report.struct.ReportStatus;
 import net.onima.onimaapi.report.struct.Verdict;
 import net.onima.onimaapi.saver.FileSaver;
 import net.onima.onimaapi.utils.BetterItem;
 import net.onima.onimaapi.utils.Config;
+import net.onima.onimaapi.utils.Methods;
 
 public abstract class Report implements FileSaver {
 	
@@ -60,11 +64,14 @@ public abstract class Report implements FileSaver {
 	protected ReportStatus status;
 	protected Verdict verdict;
 	protected List<ReportComment> comments;
+	protected List<ItemStack> rewards;
+	protected boolean receivedRewards;
 	
 	{
 		time = System.currentTimeMillis();
 		status = ReportStatus.WAITING;
 		comments = new ArrayList<>();
+		rewards = new ArrayList<>();
 	}
 	
 	public Report(UUID reporter, String reason) {
@@ -80,6 +87,19 @@ public abstract class Report implements FileSaver {
 		this.doneBy = doneBy;
 		
 		status = ReportStatus.DONE;
+	}
+	
+	public boolean giftRewards(APIPlayer apiPlayer) {
+		if (receivedRewards)
+			return false;
+		
+		receivedRewards = true;
+		Location loc = apiPlayer.toPlayer().getLocation();
+		
+		for (Entry<Integer, ItemStack> entry : apiPlayer.toPlayer().getInventory().addItem(rewards.toArray(new ItemStack[rewards.size()])).entrySet())
+			loc.getWorld().dropItemNaturally(loc, entry.getValue());
+		
+		return true;
 	}
 	
 	public void initID() {
@@ -134,6 +154,14 @@ public abstract class Report implements FileSaver {
 		return comments;
 	}
 	
+	public List<ItemStack> getRewards() {
+		return rewards;
+	}
+	
+	public boolean hasReceivedRewards() {
+		return receivedRewards;
+	}
+	
 	@Override
 	public boolean isSaved() {
 		return reports.contains(this);
@@ -181,6 +209,14 @@ public abstract class Report implements FileSaver {
 		file.set(path + "status", status.name());
 		file.set(path + "verdict", verdict == null ? null : verdict.name());
 		file.set(path + "comments", comments.stream().map(ReportComment::asSerializableString).collect(Collectors.toCollection(() -> new ArrayList<>(comments.size()))));
+		
+		StringBuilder serializedRewards = new StringBuilder();
+		
+		for (ItemStack item : rewards)
+			serializedRewards.append(Methods.serializeItem(item, true)).append(";");
+		
+		file.set(path + "rewards", serializedRewards.toString());
+		file.set(path + "received_rewards", receivedRewards);
 	}
 	
 	public static void deserialize() {
@@ -208,6 +244,11 @@ public abstract class Report implements FileSaver {
 				report.status = ReportStatus.valueOf(section.getString(path + "status"));
 				report.verdict = verdict == null ? null : Verdict.valueOf(verdict);
 				report.doneBy = section.getString(path + "done_by");
+				
+				for (String str : section.getString(path + "rewards").split(";"))
+					report.rewards.add(Methods.deserializeItem(str, true));
+				
+				report.receivedRewards = section.getBoolean(path + "received_rewards");
 				
 				for (String line : section.getStringList(path + "comments"))
 					report.comments.add(ReportComment.fromString(line, report));
@@ -237,6 +278,11 @@ public abstract class Report implements FileSaver {
 				report.timeWhenBugOccured = bugSection.getLong(path + "time_bug_occured");
 				report.linkToProof = bugSection.getString(path + "proof_link");
 				report.playerActionsDescription = bugSection.getString(path + "player_actions");
+				
+				for (String str : section.getString(path + "rewards").split(";"))
+					report.rewards.add(Methods.deserializeItem(str, true));
+				
+				report.receivedRewards = section.getBoolean(path + "received_rewards");
 				
 				for (String line : bugSection.getStringList(path + "comments"))
 					report.comments.add(ReportComment.fromString(line, report));

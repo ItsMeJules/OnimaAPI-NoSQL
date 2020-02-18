@@ -9,14 +9,15 @@ import org.bukkit.inventory.ItemStack;
 import net.onima.onimaapi.gui.PacketMenu;
 import net.onima.onimaapi.gui.buttons.MenuOpenerButton;
 import net.onima.onimaapi.gui.buttons.utils.Button;
+import net.onima.onimaapi.gui.menu.utils.FiltrableInventory;
 import net.onima.onimaapi.report.filters.ReportFilter;
 import net.onima.onimaapi.utils.BetterItem;
 
 public class ReportFiltersMenu extends PacketMenu {
 
-	private PlayerReportsMenu initialMenu;
+	private FiltrableInventory initialMenu;
 
-	public ReportFiltersMenu(PlayerReportsMenu initialMenu) {
+	public ReportFiltersMenu(FiltrableInventory initialMenu) {
 		super("report_filters", "§6Filtrer les reports.", MIN_SIZE * 2, false);
 		
 		this.initialMenu = initialMenu;
@@ -36,7 +37,7 @@ public class ReportFiltersMenu extends PacketMenu {
 		buttons.put(9, new FilterButton(ReportFilter.UNCERTAIN_VERDICT_REPORT_FILTER, Material.INK_SACK, 14, 9));
 		buttons.put(10, new FilterButton(ReportFilter.FALSE_VERDICT_REPORT_FILTER, Material.INK_SACK, 1, 10));
 		
-		buttons.put(size - 1, new MenuOpenerButton(new BetterItem(Material.BLAZE_ROD, 1, 0, "§6Retourner au menu", "", "§6Clic §7pour appliquer les filtres", "§7et retourner au menu.", "", "§7§oAttention, si vous fermez l'inventaire,", "§7les filtres ne seront plus applicables."), initialMenu));
+		buttons.put(size - 1, new MenuOpenerButton(new BetterItem(Material.BLAZE_ROD, 1, 0, "§6Retourner au menu", "", "§6Clic §7pour appliquer les filtres", "§7et retourner au menu.", "", "§7§oAttention, si vous fermez l'inventaire,", "§7les filtres ne seront plus applicables."), initialMenu.asPacketMenu()));
 	}
 
 	private class FilterButton implements Button {
