@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 
 import net.onima.onimaapi.gui.PacketMenu;
 import net.onima.onimaapi.gui.buttons.MenuOpenerButton;
@@ -13,9 +17,13 @@ import net.onima.onimaapi.gui.buttons.utils.Button;
 import net.onima.onimaapi.gui.menu.utils.FiltrableInventory;
 import net.onima.onimaapi.gui.menu.utils.PageMenu;
 import net.onima.onimaapi.players.APIPlayer;
+import net.onima.onimaapi.report.BugReport;
 import net.onima.onimaapi.report.Report;
 import net.onima.onimaapi.report.filters.ReportFilter;
+import net.onima.onimaapi.report.struct.ReportStatus;
 import net.onima.onimaapi.utils.BetterItem;
+import net.onima.onimaapi.utils.ConfigurationService;
+import net.onima.onimaapi.utils.Methods;
 
 public class MyReportsMenu extends PageMenu implements FiltrableInventory {
 	
@@ -38,6 +46,12 @@ public class MyReportsMenu extends PageMenu implements FiltrableInventory {
 	@Override
 	public Map<Integer, Button> getAllPagesItems() {
 		Map<Integer, Button> map = new HashMap<>();
+		
+		for (Report report : apiPlayer.getReports()) {
+			if (isValid(report))
+				map.put(map.size(), new ReportNoDeleteButton(report));
+		}
+		
 		return map;
 	}
 
@@ -96,6 +110,45 @@ public class MyReportsMenu extends PageMenu implements FiltrableInventory {
 	@Override
 	public PacketMenu asPacketMenu() {
 		return this;
+	}
+	
+	public static class ReportNoDeleteButton implements Button {
+		
+		private Report report;
+
+		public ReportNoDeleteButton(Report report) {
+			this.report = report;
+		}
+
+		@Override
+		public BetterItem getButtonItem(Player player) {
+			ReportStatus status = report.getStatus();
+			BetterItem item = new BetterItem(status.getMaterial(false), 1, status.getColor(false));
+			
+			item.setName((report instanceof BugReport ? "§aBug Report" : "§cReport") +  " §7#" + report.getId())
+				.addLore("")
+				.addLore("§7Status : " + status.getTitle(report.getDoneBy()))
+				.addLore("§7Date : §e" + Methods.toFormatDate(report.getTime(), ConfigurationService.DATE_FORMAT_HOURS));
+			
+			if (report.getVerdict() != null)
+				item.addLore("§7Verdict : " + report.getVerdict().getTitle());
+		
+			item.addLore("").addLore("§7Raison : §6" + report.getReason());
+			
+			if (!report.getRewards().isEmpty()) {
+				item.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
+				item.addLore("").addLore("§eVous avez des récompenses !");
+			}
+			
+			return item;
+		}
+
+		@Override
+		public void click(PacketMenu menu, Player clicker, ItemStack current, InventoryClickEvent event) {
+			event.setCancelled(true);
+			new ReportPlayerInfoMenu(report).open(APIPlayer.getPlayer(clicker));
+		}
+		
 	}
 
 }

@@ -59,7 +59,7 @@ public abstract class Report implements FileSaver {
 	
 	protected int id;
 	protected UUID reporter;
-	protected String reason, doneBy;
+	protected String reason, doneBy, rewardedBy;
 	protected long time;
 	protected ReportStatus status;
 	protected Verdict verdict;
@@ -162,6 +162,14 @@ public abstract class Report implements FileSaver {
 		return receivedRewards;
 	}
 	
+	public String getRewardedBy() {
+		return rewardedBy;
+	}
+	
+	public void setRewardedBy(String rewardedBy) {
+		this.rewardedBy = rewardedBy;
+	}
+	
 	@Override
 	public boolean isSaved() {
 		return reports.contains(this);
@@ -205,6 +213,7 @@ public abstract class Report implements FileSaver {
 		file.set(path + "reporter", reporter.toString());
 		file.set(path + "reason", reason);
 		file.set(path + "done_by", doneBy);
+		file.set(path + "rewarded_by", rewardedBy);
 		file.set(path + "time", time);
 		file.set(path + "status", status.name());
 		file.set(path + "verdict", verdict == null ? null : verdict.name());
@@ -244,6 +253,7 @@ public abstract class Report implements FileSaver {
 				report.status = ReportStatus.valueOf(section.getString(path + "status"));
 				report.verdict = verdict == null ? null : Verdict.valueOf(verdict);
 				report.doneBy = section.getString(path + "done_by");
+				report.rewardedBy = section.getString(path + "rewarded_by");
 				
 				for (String str : section.getString(path + "rewards").split(";"))
 					report.rewards.add(Methods.deserializeItem(str, true));
@@ -278,6 +288,7 @@ public abstract class Report implements FileSaver {
 				report.timeWhenBugOccured = bugSection.getLong(path + "time_bug_occured");
 				report.linkToProof = bugSection.getString(path + "proof_link");
 				report.playerActionsDescription = bugSection.getString(path + "player_actions");
+				report.rewardedBy = section.getString(path + "rewarded_by");
 				
 				for (String str : section.getString(path + "rewards").split(";"))
 					report.rewards.add(Methods.deserializeItem(str, true));

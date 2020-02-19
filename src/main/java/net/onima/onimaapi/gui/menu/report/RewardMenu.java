@@ -11,6 +11,7 @@ import net.onima.onimaapi.gui.menu.report.admin.ReportsMenu;
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.report.Report;
 import net.onima.onimaapi.utils.BetterItem;
+import net.onima.onimaapi.utils.Methods;
 
 public class RewardMenu extends PacketMenu {
 
@@ -41,9 +42,18 @@ public class RewardMenu extends PacketMenu {
 		public void click(PacketMenu menu, Player clicker, ItemStack current, InventoryClickEvent event) {
 			event.setCancelled(true);
 			
-			for (int i = 0; i < MAX_SIZE - 1; i++)
-				report.getRewards().add(menu.getInventory().getItem(i));
-			
+			for (int i = 0; i < MIN_SIZE - 1; i++) {
+				ItemStack item = menu.getInventory().getItem(i);
+				
+				if (item == null)
+					continue;
+				
+				report.getRewards().add(item);
+			}
+
+			if (!report.getRewards().isEmpty())
+				report.setRewardedBy(Methods.getRealName(APIPlayer.getPlayer(clicker).getOfflinePlayer()));
+				
 			if (admin)
 				APIPlayer.getPlayer(clicker).openMenu(new ReportsMenu(false));
 		}

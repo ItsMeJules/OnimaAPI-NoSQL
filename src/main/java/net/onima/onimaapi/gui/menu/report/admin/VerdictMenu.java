@@ -1,6 +1,7 @@
 package net.onima.onimaapi.gui.menu.report.admin;
 
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -17,6 +18,7 @@ import net.onima.onimaapi.report.Report;
 import net.onima.onimaapi.report.struct.ReportStat;
 import net.onima.onimaapi.report.struct.Verdict;
 import net.onima.onimaapi.utils.BetterItem;
+import net.onima.onimaapi.utils.Methods;
 
 public class VerdictMenu extends PacketMenu {
 	
@@ -84,7 +86,7 @@ public class VerdictMenu extends PacketMenu {
 			APIPlayer apiPlayer = APIPlayer.getPlayer(clicker);
 			
 			event.setCancelled(true);
-			report.process(verdict, apiPlayer.getDisplayName(false));
+			report.process(verdict, Methods.getRealName(apiPlayer.getOfflinePlayer()));
 			
 			switch (verdict) {
 			case FALSE:
