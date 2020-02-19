@@ -6,6 +6,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import net.onima.onimaapi.gui.PacketMenu;
+import net.onima.onimaapi.gui.buttons.BackButton;
+import net.onima.onimaapi.gui.buttons.DisplayButton;
+import net.onima.onimaapi.gui.buttons.TakeableButton;
 import net.onima.onimaapi.gui.buttons.utils.Button;
 import net.onima.onimaapi.gui.menu.report.admin.ReportsMenu;
 import net.onima.onimaapi.players.APIPlayer;
@@ -27,8 +30,15 @@ public class RewardMenu extends PacketMenu {
 
 	@Override
 	public void registerItems() {
+		if (!report.getRewards().isEmpty()) {
+			for (ItemStack reward : report.getRewards())
+				buttons.put(buttons.size(), admin ? new TakeableButton(reward) : new DisplayButton(reward));
+		}
+		
 		if (admin)
 			buttons.put(8, new SetRewardsButton());
+		else
+			buttons.put(8, new BackButton(new MyReportsMenu(APIPlayer.getPlayer(report.getReporter()))));
 	}
 	
 	private class SetRewardsButton implements Button {
@@ -41,6 +51,7 @@ public class RewardMenu extends PacketMenu {
 		@Override
 		public void click(PacketMenu menu, Player clicker, ItemStack current, InventoryClickEvent event) {
 			event.setCancelled(true);
+			report.getRewards().clear();
 			
 			for (int i = 0; i < MIN_SIZE - 1; i++) {
 				ItemStack item = menu.getInventory().getItem(i);
