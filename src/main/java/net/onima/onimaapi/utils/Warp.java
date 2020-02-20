@@ -68,6 +68,9 @@ public class Warp implements FileSaver {
 	public void remove() {
 		warps.remove(this);
 		OnimaAPI.getShutdownSavers().remove(this);
+		
+		if (warps.size() == 0)
+			stuffConfig.remove("warps", false);
 	}
 
 	@Override

@@ -59,6 +59,17 @@ public abstract class HCFSign implements FileSaver {
 	public void remove() {
 		signs.remove(this);
 		OnimaAPI.getShutdownSavers().remove(this);
+		
+		if (signs.size() == 0) {
+			String section = "shop-signs";
+			
+			if (this instanceof ElevatorSign)
+				section = "elevator-signs";
+			else if (this instanceof SubclaimSign)
+				section = "subclaim-signs";
+			
+			signSerialConfig.remove(section, false);
+		}
 	}
 
 	@Override

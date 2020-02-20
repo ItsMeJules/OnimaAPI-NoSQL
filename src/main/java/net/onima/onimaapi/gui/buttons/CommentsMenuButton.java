@@ -16,10 +16,16 @@ public class CommentsMenuButton implements Button {
 	
 	private Report report;
 	private PacketMenu backMenu;
-
-	public CommentsMenuButton(Report report, PacketMenu backMenu) {
+	private boolean canWrite;
+	
+	public CommentsMenuButton(Report report, PacketMenu backMenu, boolean canWrite) {
 		this.report = report;
 		this.backMenu = backMenu;
+		this.canWrite = canWrite;
+	}
+
+	public CommentsMenuButton(Report report, PacketMenu backMenu) {
+		this(report, backMenu, true);
 	}
 
 	@Override
@@ -33,7 +39,7 @@ public class CommentsMenuButton implements Button {
 		event.setCancelled(true);
 		APIPlayer apiPlayer = APIPlayer.getPlayer(clicker);
 		
-		apiPlayer.openMenu(new CommentsMenu(report, apiPlayer, backMenu));
+		apiPlayer.openMenu(new CommentsMenu(report, apiPlayer, backMenu, canWrite));
 	}
 	
 }

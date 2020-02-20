@@ -1,4 +1,4 @@
-package net.onima.onimaapi.gui.menu.report.admin;
+package net.onima.onimaapi.gui.menu.report;
 
 import org.bukkit.Material;
 import org.bukkit.conversations.Conversable;
@@ -139,8 +139,9 @@ public class BugReportMenu extends PacketMenu {
 			else {
 				transaction.setLinkToBugProof(input);
 				context.getForWhom().sendRawMessage("§aLien ajouté.");
-				reporter.openMenu(BugReportMenu.this);
 			}
+			
+			reporter.openMenu(BugReportMenu.this);
 			
 			return Prompt.END_OF_CONVERSATION;
 		}

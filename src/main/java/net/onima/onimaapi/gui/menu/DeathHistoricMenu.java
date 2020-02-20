@@ -249,7 +249,6 @@ public class DeathHistoricMenu extends PageMenu {
 					public void onEvent(AnvilClickEvent event) {
 						if (event.getSlot() == AnvilSlot.OUTPUT) {
 							new RestoreRequest(clicker.getUniqueId(), offline.getUUID(), saver.getId(), Methods.colors(event.getInput())).register(saver);
-							clicker.sendMessage("§2Vous avez §arestauré §2l'inventaire de " + offline.getName());
 							yes.play(clicker);
 							event.setWillClose(true);
 							event.setWillDestroy(true);

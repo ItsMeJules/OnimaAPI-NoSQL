@@ -45,13 +45,15 @@ public class RewardMenu extends PacketMenu {
 
 		@Override
 		public BetterItem getButtonItem(Player player) {
-			return new BetterItem(Material.NETHER_STAR, 1, 0, "§eValider ces items comme récompense", "", "§7§oSi vous ne mettez aucun item", "§7§ole joueur ne recevra rien.", "§7§oSi vous souhaitez donc ne rien lui", "§7§olaissez cet inventaire vide.");
+			return new BetterItem(Material.NETHER_STAR, 1, 0, "§eValider ces items comme récompense", "", "§7§oSi vous ne mettez aucun item", "§7§ole joueur ne recevra rien.", "§7§oSi vous souhaitez donc ne rien lui donner", "§7§olaissez cet inventaire vide.");
 		}
 
 		@Override
 		public void click(PacketMenu menu, Player clicker, ItemStack current, InventoryClickEvent event) {
 			event.setCancelled(true);
-			report.getRewards().clear();
+			
+			if (admin)
+				report.getRewards().clear();
 			
 			for (int i = 0; i < MIN_SIZE - 1; i++) {
 				ItemStack item = menu.getInventory().getItem(i);
@@ -62,11 +64,18 @@ public class RewardMenu extends PacketMenu {
 				report.getRewards().add(item);
 			}
 
-			if (!report.getRewards().isEmpty())
-				report.setRewardedBy(Methods.getRealName(APIPlayer.getPlayer(clicker).getOfflinePlayer()));
+			if (!report.getRewards().isEmpty()) {
+				APIPlayer apiPlayer = APIPlayer.getPlayer(report.getReporter());
 				
-			if (admin)
-				APIPlayer.getPlayer(clicker).openMenu(new ReportsMenu(false));
+				if (apiPlayer != null)
+					apiPlayer.sendMessage("§eVous avez été récompensé pour votre report §7" + report.getId());
+				
+				report.setRewardedBy(Methods.getRealName(APIPlayer.getPlayer(clicker).getOfflinePlayer()));
+			}
+				
+			APIPlayer apiPlayer = APIPlayer.getPlayer(clicker);
+			
+			apiPlayer.openMenu(admin ? new ReportsMenu(false) : new MyReportsMenu(apiPlayer));
 		}
 		
 	}

@@ -20,6 +20,7 @@ import net.onima.onimaapi.gui.buttons.utils.Button;
 import net.onima.onimaapi.gui.buttons.utils.DroppableButton;
 import net.onima.onimaapi.gui.menu.utils.AnvilMenu;
 import net.onima.onimaapi.players.APIPlayer;
+import net.onima.onimaapi.rank.OnimaPerm;
 
 public class MenuListener implements Listener {
 	
@@ -28,10 +29,19 @@ public class MenuListener implements Listener {
 		ItemStack item = event.getCurrentItem();
 		Player clicker = (Player) event.getWhoClicked();
 		
-		if (item == null || item.getType() == Material.AIR || !event.getClickedInventory().equals(event.getView().getTopInventory()))
+		if (item == null || item.getType() == Material.AIR)
 			return;
 		
 		PacketMenu menu = APIPlayer.getPlayer(clicker).getViewingMenu();
+		
+		if (event.isShiftClick() && menu != null) {
+			if (OnimaPerm.MOD_COMMAND.has(clicker))
+				clicker.sendMessage("§cLe shift click est désactivé dans les menus virtuels suite à un bug.");
+			
+			event.setCancelled(true);
+			return;
+		}
+			
 		int slot = event.getSlot();
 		
 		if (menu == null || menu instanceof AnvilMenu /*|| menu instanceof PlayerInventoryMenu*/)

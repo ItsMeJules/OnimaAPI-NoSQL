@@ -71,6 +71,7 @@ import net.onima.onimaapi.commands.punishment.remover.UnmuteCommand;
 import net.onima.onimaapi.commands.rank.RankExecutor;
 import net.onima.onimaapi.commands.region.RegionExecutor;
 import net.onima.onimaapi.commands.reports.BugReportCommand;
+import net.onima.onimaapi.commands.reports.MyReportsCommand;
 import net.onima.onimaapi.commands.reports.ReportCommand;
 import net.onima.onimaapi.commands.reports.admin.ReportsExecutor;
 import net.onima.onimaapi.commands.supplycrate.SupplyCrateExecutor;
@@ -161,6 +162,7 @@ public class CommandManager {
 		plugin.getCommand("report").setExecutor(new ReportCommand());
 		plugin.getCommand("reports").setExecutor(new ReportsExecutor());
 		plugin.getCommand("bugreport").setExecutor(new BugReportCommand());
+		plugin.getCommand("myreports").setExecutor(new MyReportsCommand());
 	}
 
 

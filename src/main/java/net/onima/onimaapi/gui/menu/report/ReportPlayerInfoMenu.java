@@ -15,7 +15,6 @@ import net.onima.onimaapi.gui.buttons.utils.HeadButton;
 import net.onima.onimaapi.gui.menu.report.MyReportsMenu.ReportNoDeleteButton;
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.players.OfflineAPIPlayer;
-import net.onima.onimaapi.rank.OnimaPerm;
 import net.onima.onimaapi.report.BugReport;
 import net.onima.onimaapi.report.PlayerReport;
 import net.onima.onimaapi.report.Report;
@@ -52,7 +51,7 @@ public class ReportPlayerInfoMenu extends PacketMenu {
 		}
 		
 		buttons.put(8, new BackButton(new MyReportsMenu(APIPlayer.getPlayer(report.getReporter()))));
-		buttons.put(26, new CommentsMenuButton(report, this));
+		buttons.put(26, new CommentsMenuButton(report, this, false));
 	}
 	
 	private class ReportedButton extends HeadButton {
@@ -77,7 +76,7 @@ public class ReportPlayerInfoMenu extends PacketMenu {
 
 		@Override
 		public BetterItem getButtonItem(Player player) {
-			BetterItem item = new BetterItem(Material.ENDER_CHEST, 1, 0, "§5Récompenses");
+			BetterItem item = new BetterItem(Material.GOLD_INGOT, 1, 0, "§5Récompenses");
 			
 			if (!report.getRewards().isEmpty()) {
 				leftClick = true;
@@ -90,7 +89,7 @@ public class ReportPlayerInfoMenu extends PacketMenu {
 					
 					rightClick = true;
 				} else
-					item.addLore("§6Clic gauche §7pour les visualiser.");
+					item.addLore("").addLore("§6Clic gauche §7pour les visualiser.");
 			}
 			
 			return item;
@@ -101,9 +100,11 @@ public class ReportPlayerInfoMenu extends PacketMenu {
 			event.setCancelled(true);
 			
 			if (leftClick && event.isLeftClick())
-				new RewardMenu(report, OnimaPerm.REPORTS_COMMAND.has(clicker)).open(APIPlayer.getPlayer(clicker));
-			else if (rightClick && event.isRightClick())
+				new RewardMenu(report, false).open(APIPlayer.getPlayer(clicker));
+			else if (rightClick && event.isRightClick()) {
 				report.giftRewards(APIPlayer.getPlayer(clicker));
+				menu.updateLocalized(clicker, event.getSlot());
+			}
 		}
 		
 	}

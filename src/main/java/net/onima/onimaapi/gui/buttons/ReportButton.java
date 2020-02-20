@@ -1,9 +1,11 @@
 package net.onima.onimaapi.gui.buttons;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import net.onima.onimaapi.OnimaAPI;
 import net.onima.onimaapi.gui.PacketMenu;
 import net.onima.onimaapi.gui.buttons.utils.DroppableButton;
 import net.onima.onimaapi.gui.buttons.utils.UpdatableButton;
@@ -51,6 +53,7 @@ public class ReportButton implements DroppableButton, UpdatableButton {
 		
 		report.remove();
 		
+		Bukkit.getScheduler().runTask(OnimaAPI.getInstance(), () -> menu.updateItems(clicker));
 		OfflineAPIPlayer.getPlayer(report.getReporter(), offline -> offline.getReports().remove(report));
 		
 		if (report instanceof PlayerReport)

@@ -53,6 +53,7 @@ public abstract class Report implements FileSaver {
 					return 0;
 			}
 		});
+		
 		config = ConfigManager.getReportSerialConfig();
 		file = config.getConfig();
 	}
@@ -195,6 +196,9 @@ public abstract class Report implements FileSaver {
 	public void remove() {
 		reports.remove(this);
 		OnimaAPI.getShutdownSavers().remove(this);
+		
+		if (reports.size() == 0)
+			config.remove((this instanceof PlayerReport ? "player" : "bug") + "_reports", false);
 	}
 	
 	@Override
@@ -246,7 +250,6 @@ public abstract class Report implements FileSaver {
 				
 				savedRep.get(report.getReporter()).add(report);
 				savedRep.get(report.getReported()).add(report);
-				report.save();
 				
 				report.id = Integer.valueOf(id);
 				report.time = section.getLong(path + "time");
@@ -255,14 +258,19 @@ public abstract class Report implements FileSaver {
 				report.doneBy = section.getString(path + "done_by");
 				report.rewardedBy = section.getString(path + "rewarded_by");
 				
-				for (String str : section.getString(path + "rewards").split(";"))
-					report.rewards.add(Methods.deserializeItem(str, true));
+				String rewards = section.getString(path + "rewards");
+				
+				if (rewards != null && !rewards.isEmpty()) {
+					for (String str : rewards.split(";"))
+						report.rewards.add(Methods.deserializeItem(str, true));
+				}
 				
 				report.receivedRewards = section.getBoolean(path + "received_rewards");
 				
 				for (String line : section.getStringList(path + "comments"))
 					report.comments.add(ReportComment.fromString(line, report));
 				
+				report.save();
 			}
 		}
 		
@@ -278,7 +286,6 @@ public abstract class Report implements FileSaver {
 					savedRep.put(report.getReporter(), new HashSet<>());
 				
 				savedRep.get(report.getReporter()).add(report);
-				report.save();
 				
 				report.id = Integer.valueOf(id);
 				report.time = bugSection.getLong(path + "time");
@@ -290,13 +297,19 @@ public abstract class Report implements FileSaver {
 				report.playerActionsDescription = bugSection.getString(path + "player_actions");
 				report.rewardedBy = section.getString(path + "rewarded_by");
 				
-				for (String str : section.getString(path + "rewards").split(";"))
-					report.rewards.add(Methods.deserializeItem(str, true));
+				String rewards = section.getString(path + "rewards");
+				
+				if (rewards != null && !rewards.isEmpty()) {
+					for (String str : rewards.split(";"))
+						report.rewards.add(Methods.deserializeItem(str, true));
+				}
 				
 				report.receivedRewards = section.getBoolean(path + "received_rewards");
 				
 				for (String line : bugSection.getStringList(path + "comments"))
 					report.comments.add(ReportComment.fromString(line, report));
+				
+				report.save();
 			}
 		}
 		

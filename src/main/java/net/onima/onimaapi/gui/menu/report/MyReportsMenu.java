@@ -135,7 +135,7 @@ public class MyReportsMenu extends PageMenu implements FiltrableInventory {
 		
 			item.addLore("").addLore("§7Raison : §6" + report.getReason());
 			
-			if (!report.getRewards().isEmpty()) {
+			if (!report.hasReceivedRewards() && !report.getRewards().isEmpty()) {
 				item.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
 				item.addLore("").addLore("§eVous avez des récompenses !");
 			}

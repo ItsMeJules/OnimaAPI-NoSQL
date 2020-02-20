@@ -872,7 +872,9 @@ public enum OnimaPerm {
 	
 	REPORTS_HASHTAG_ARGUMENT("onimaapi.reports.hashtag.argument", "Permet d'afficher les infos d'un report."),
 	
-	REPORTS_DATA_ARGUMENT("onimaapi.reports.data.argument", "Permet d'afficher les données d'un joueur.");
+	REPORTS_DATA_ARGUMENT("onimaapi.reports.data.argument", "Permet d'afficher les données d'un joueur."),
+	
+	MYREPORTS_COMMAND("onimaapi.myreports.command", "Affiche l'historique de ses reports.");
 	
 	private String permission, description;
 	

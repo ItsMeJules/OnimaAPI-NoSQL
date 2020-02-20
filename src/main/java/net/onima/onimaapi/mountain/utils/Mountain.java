@@ -220,6 +220,9 @@ public abstract class Mountain implements FileSaver, MinecraftCuboid, Scheduler 
 		mountains.remove(this);
 		OnimaAPI.getScheduled().remove(this);
 		OnimaAPI.getShutdownSavers().remove(this);
+		
+		if (mountains.size() == 0)
+			mountainSerialConfig.remove("mountains", false);
 	}
 	
 	@Override

@@ -39,31 +39,37 @@ public class CommentsMenu extends PacketMenu {
 	}
 
 	private Report report;
+	private APIPlayer opener;
 	private PacketMenu menu;
-	private boolean isStaff;
+	private boolean canWrite;
 
-	public CommentsMenu(Report report, APIPlayer opener, PacketMenu menu) {
+	public CommentsMenu(Report report, APIPlayer opener, PacketMenu menu, boolean canWrite) {
 		super("comments_menu", "§6Commentaires §cReport #" + report.getId(), MAX_SIZE, false);
 		
 		this.report = report;
+		this.opener = opener;
 		this.menu = menu;
-		isStaff = opener.getRank().getRankType().hasPermisssion(OnimaPerm.REPORTS_COMMAND);
+		this.canWrite = canWrite;
 	}
 
 	@Override
 	public void registerItems() {
-		buttons.put(0, isStaff ? new ReportButton(report, false) : new ReportNoDeleteButton(report));
+		buttons.put(0, canWrite ? new ReportButton(report, false) : new ReportNoDeleteButton(report));
 		buttons.put(4, new DisplayButton(new BetterItem(Material.WRITTEN_BOOK, report.getComments().size() > 64 ? 64 : report.getComments().size(), 0, "§eCommentaires sur ce report.")));
 		
-		if (isStaff)
+		if (canWrite)
 			buttons.put(8, new WriteCommentButton());
 		
 		for (int i = 9; i < 18; i++)
 			buttons.put(i, splitter);
 		
 		int i = 18;
+		boolean canSeePrivate = opener.getRank().getRankType().hasPermisssion(OnimaPerm.REPORTS_COMMAND);
 		for (ReportComment comment : report.getComments()) {
 			if (i + 1 >= size)
+				continue;
+			
+			if (comment.getStatus() == CommentStatus.PRIVATE && !canSeePrivate)
 				continue;
 			
 			buttons.put(i, new CommentButton(comment));
@@ -97,11 +103,13 @@ public class CommentsMenu extends PacketMenu {
 						comment.addToComment(line);
 				}
 				
-				comment.setStatus(event.isLeftClick() ? CommentStatus.PRIVATE : CommentStatus.SENT);
-				comment.save();
-				
-				if (comment.getStatus() == CommentStatus.SENT)
-					comment.sendToReporter();
+				if (!comment.getComment().isEmpty()) {
+					comment.setStatus(event.isLeftClick() ? CommentStatus.PRIVATE : CommentStatus.SENT);
+					comment.save();
+					
+					if (comment.getStatus() == CommentStatus.SENT)
+						comment.sendToReporter();
+				}
 				
 				Bukkit.getScheduler().runTask(OnimaAPI.getInstance(), () -> apiPlayer.openMenu(CommentsMenu.this));
 			});
@@ -130,7 +138,7 @@ public class CommentsMenu extends PacketMenu {
 			for (int i = 1; i < list.size(); i++)
 				lore.add(list.get(i));
 			
-			if (isStaff) {
+			if (canWrite) {
 				if (Methods.getRealName((OfflinePlayer) player).equalsIgnoreCase(ChatColor.stripColor(comment.getAuthor()))) {
 					lore.add("§6Clic gauche §7pour éditer le commentaire.");
 					isCreator = true;
@@ -149,7 +157,7 @@ public class CommentsMenu extends PacketMenu {
 		public void click(PacketMenu menu, Player clicker, ItemStack current, InventoryClickEvent event) {
 			event.setCancelled(true);
 			
-			if (!isStaff)
+			if (!canWrite)
 				return;
 			
 			if (event.isLeftClick() && isCreator) {
@@ -178,7 +186,7 @@ public class CommentsMenu extends PacketMenu {
 		public void drop(PacketMenu menu, Player clicker, ItemStack current, InventoryClickEvent event) {
 			event.setCancelled(true);
 			
-			if (!isStaff)
+			if (!canWrite)
 				return;
 			
 			comment.remove();

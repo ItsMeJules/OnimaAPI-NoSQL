@@ -76,6 +76,9 @@ public class WorldChanger implements FileSaver {
 	public void remove() {
 		worlds.remove(this);
 		OnimaAPI.getShutdownSavers().remove(this);
+		
+		if (worlds.size() == 0)
+			stuffsSerialConfig.remove("world-changer", false);
 	}
 
 	@Override

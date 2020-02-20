@@ -238,3 +238,6 @@ commands:
   bugreport:
     description: Signale un bug.
     permission: onimaapi.bugreport.command
+  myreports:
+    description: Affiche l'historique de ses reprots.
+    permission: onimaapi.myreports.command

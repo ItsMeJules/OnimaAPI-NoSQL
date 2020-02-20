@@ -173,6 +173,9 @@ public abstract class Crate implements FileSaver {
 	public void remove() {
 		crates.remove(this);
 		OnimaAPI.getShutdownSavers().remove(this);
+		
+		if (crates.size() == 0)
+			crateConfig.remove("crates", false);
 	}
 	
 	@Override
