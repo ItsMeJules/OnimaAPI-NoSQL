@@ -41,6 +41,11 @@ public class MessageCommand implements CommandExecutor {
 			return false;
 		}
 		
+		if (apiPlayer.toPlayer().equals(sender)) {
+			sender.sendMessage("§cVous ne pouvez pas vous envoyer de message !");
+			return false;
+		}
+		
 		Options options = apiPlayer.getOptions();
 		
 		if (!options.getBoolean(PlayerOption.GlobalOptions.PRIVATE_MESSAGE)) {

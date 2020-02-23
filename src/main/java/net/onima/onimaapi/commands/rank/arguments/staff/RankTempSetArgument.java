@@ -79,7 +79,7 @@ public class RankTempSetArgument extends BasicCommandArgument {
 			}
 			
 			String format = LongTime.setYMDWHMSFormat(time);
-			Rank rank = new Rank(offlinePlayer, newRank);
+			Rank rank = new Rank(offlinePlayer, newRank, time);
 			
 			sender.sendMessage("§d§oVous §7avez défini le rank de §d§o" + Methods.getName(offlinePlayer, true) + " §7sur " + newRank.getName() + " §7pour §a" + format + "§7.");
 			offlinePlayer.setRank(rank);

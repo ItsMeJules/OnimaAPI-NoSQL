@@ -56,7 +56,7 @@ public class BalanceTopArgument extends BasicCommandArgument {
 			
 			for (Document document : list) {
 				helps++;
-				pages.get(index).add(position + ". §e" + Methods.getRealName(Bukkit.getOfflinePlayer(UUID.fromString(document.getString("uuid")))) + " §7- §e" + ((Number) document.get("amount")).intValue() + ConfigurationService.MONEY_SYMBOL);
+				pages.get(index).add(position + ". §e" + Methods.getRealName(Bukkit.getOfflinePlayer(UUID.fromString(document.getString("uuid")))) + " §7- §e" + ((Number) document.get("balance", Document.class).get("amount")).intValue() + ConfigurationService.MONEY_SYMBOL);
 				
 				if (helps == MAX_BALANCE_PER_PAGE) {
 					index++;

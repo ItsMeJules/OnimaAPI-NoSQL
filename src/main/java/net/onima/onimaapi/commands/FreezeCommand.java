@@ -1,10 +1,13 @@
 package net.onima.onimaapi.commands;
 
+import java.util.UUID;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import net.onima.onimaapi.OnimaAPI;
+import net.onima.onimaapi.caching.UUIDCache;
 import net.onima.onimaapi.mod.ModItem;
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.players.OfflineAPIPlayer;
@@ -32,12 +35,14 @@ public class FreezeCommand implements CommandExecutor {
 			return false;
 		}
 		
-		OfflineAPIPlayer.getPlayer(args[0], offline -> {
-			if (offline == null) {
-				sender.sendMessage(ModItem.MOD_PREFIX + " §cLe joueur " + args[0] + " ne s'est jamais connecté !");
-				return;
-			}
-			
+		UUID uuid = UUIDCache.getUUID(args[0]);
+		
+		if (uuid == null) {
+			sender.sendMessage(ModItem.MOD_PREFIX + " §cLe joueur " + args[0] + " ne s'est jamais connecté !");
+			return false;
+		}
+		
+		OfflineAPIPlayer.getPlayer(uuid, offline -> {
 			String frozen = !offline.isFrozen() ? "§cfreeze" : "§adéfreeze";
 			
 			if (offline.isOnline()) {

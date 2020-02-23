@@ -1,6 +1,7 @@
 package net.onima.onimaapi.commands.essentials;
 
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Location;
@@ -14,6 +15,7 @@ import org.bukkit.entity.Player;
 import com.google.common.collect.ImmutableMap;
 
 import net.onima.onimaapi.OnimaAPI;
+import net.onima.onimaapi.caching.UUIDCache;
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.players.OfflineAPIPlayer;
 import net.onima.onimaapi.rank.OnimaPerm;
@@ -63,12 +65,14 @@ public class WhoisCommand implements CommandExecutor { //TODO mettre un max d'in
             sender.sendMessage("§e  Version du client : §6" + version + " §7[" + versions.get(version) + "]");
             sender.sendMessage("§7" + ConfigurationService.STAIGHT_LINE);
 		} else {
-			OfflineAPIPlayer.getPlayer(args[0], offline -> {
-				if (offline == null) {
-					sender.sendMessage("§c" + args[0] + " n'existe pas !");
-					return;
-				}
-				
+			UUID uuid = UUIDCache.getUUID(args[0]);
+			
+			if (uuid == null) {
+				sender.sendMessage("§cLe joueur " + args[0] + " n'existe pas !");
+				return false;
+			}
+			
+			OfflineAPIPlayer.getPlayer(uuid, offline -> {
 				sender.sendMessage("§7" + ConfigurationService.STAIGHT_LINE);
 				sender.sendMessage(" §a[" + offline.getColoredName(false) + "§a]");
 				sender.sendMessage("§e  Vanish : §6" + offline.isVanished() + " (rank=" + offline.getRank().getRankType().getName() + "§6)");

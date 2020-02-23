@@ -874,7 +874,9 @@ public enum OnimaPerm {
 	
 	REPORTS_DATA_ARGUMENT("onimaapi.reports.data.argument", "Permet d'afficher les données d'un joueur."),
 	
-	MYREPORTS_COMMAND("onimaapi.myreports.command", "Affiche l'historique de ses reports.");
+	MYREPORTS_COMMAND("onimaapi.myreports.command", "Affiche l'historique de ses reports."),
+	
+	CHAT_RESTRICTION_BYPASS("onimaapi.chat-restriction.bypass", "Permet de passer les restrictions de chat.");
 	
 	private String permission, description;
 	

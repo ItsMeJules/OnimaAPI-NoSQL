@@ -14,7 +14,7 @@ public class PayCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		if (OnimaPerm.ONIMAAPI_BALANCE_PAY_ARGUMENT.has(sender)) {
+		if (!OnimaPerm.ONIMAAPI_BALANCE_PAY_ARGUMENT.has(sender)) {
 			sender.sendMessage(OnimaAPI.UNKNOWN_COMMAND);
 			return false;
 		}

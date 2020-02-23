@@ -52,7 +52,7 @@ public class RankInfoArgument extends BasicCommandArgument {
 					.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/menu ranks")).create());
 			
 			if (rank.isTemporary())
-				sender.sendMessage("§7Il lui reste §a" + LongTime.setYMDWHMSFormat(rank.getInstant().toEpochMilli()) + " §7avant de perdre son rank.");
+				sender.sendMessage("§7Il lui reste §a" + LongTime.setYMDWHMSFormat(rank.getInstant().toEpochMilli() - System.currentTimeMillis()) + " §7avant de perdre son rank.");
 			else
 				sender.sendMessage("§7Son rank est à §avie§7.");
 		});

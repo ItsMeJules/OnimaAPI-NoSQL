@@ -3,6 +3,7 @@ package net.onima.onimaapi.commands.punishment.remover;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
@@ -13,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import net.onima.onimaapi.OnimaAPI;
+import net.onima.onimaapi.caching.UUIDCache;
 import net.onima.onimaapi.players.OfflineAPIPlayer;
 import net.onima.onimaapi.punishment.utils.Punishment;
 import net.onima.onimaapi.punishment.utils.PunishmentType;
@@ -37,12 +39,14 @@ public class UnblacklistCommand  implements CommandExecutor, TabCompleter {
 			return false;
 		}
 		
-		OfflineAPIPlayer.getPlayer(args[0], offline -> {
-			if (offline == null) {
-				sender.sendMessage("§cLe joueur " + args[0] + " n'existe pas !");
-				return;
-			}
-			
+		UUID uuid = UUIDCache.getUUID(args[0]);
+		
+		if (uuid == null) {
+			sender.sendMessage("§cLe joueur " + args[0] + " n'existe pas !");
+			return false;
+		}
+		
+		OfflineAPIPlayer.getPlayer(uuid, offline -> {
 			if (!offline.hasPunishment(PunishmentType.BLACKLIST)) {
 				sender.sendMessage("§c" + Methods.getName(offline, true) + " n'est pas blacklist !");
 				return;

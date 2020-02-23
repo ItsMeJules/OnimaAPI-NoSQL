@@ -3,6 +3,7 @@ package net.onima.onimaapi.commands;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.bukkit.Material;
@@ -18,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.StringUtil;
 
 import net.onima.onimaapi.OnimaAPI;
+import net.onima.onimaapi.caching.UUIDCache;
 import net.onima.onimaapi.crates.openers.VirtualKey;
 import net.onima.onimaapi.gui.PacketMenu;
 import net.onima.onimaapi.gui.PacketMenuType;
@@ -46,12 +48,14 @@ public class VirtualKeysCommand implements CommandExecutor, TabCompleter {
 		}
 		
 		if (args.length >= 2 && args[0].equalsIgnoreCase("asadmin") && OnimaPerm.VIRTUAL_KEYS_COMMAND_AS_ADMIN.has(sender)) {
-			OfflineAPIPlayer.getPlayer(args[1], offline -> {
-				if (offline == null) {
-					apiPlayer.sendMessage("Le joueur " + args[1] + " n'existe pas.");
-					return;
-				}
-				
+			UUID uuid = UUIDCache.getUUID(args[1]);
+			
+			if (uuid == null) {
+				sender.sendMessage("§c" + args[1] + " ne s'est jamais connecté sur le serveur !");
+				return false;
+			}
+			
+			OfflineAPIPlayer.getPlayer(uuid, offline -> {
 				new VirtualKeysAdminMenu(offline).open(apiPlayer);
 				apiPlayer.sendMessage("§dVous §7avez ouvert le menu de §dclefs virtuelles §7admin.");
 			});
@@ -124,14 +128,16 @@ public class VirtualKeysCommand implements CommandExecutor, TabCompleter {
 						@Override
 						public void onEvent(AnvilClickEvent anvilEvent) {
 							if (anvilEvent.getSlot() == AnvilSlot.OUTPUT) {
-								OfflineAPIPlayer.getPlayer(anvilEvent.getInput(), offlineTarget -> {
-									if (offlineTarget == null) {
-										anvilEvent.setWillClose(false);
-										anvilEvent.setWillDestroy(false);
-										clicker.sendMessage("§cLe joueur " + anvilEvent.getInput() + " n'existe pas !");
-										return;
-									}
-									
+								UUID uuid = UUIDCache.getUUID(anvilEvent.getInput());
+								
+								if (uuid == null) {
+									anvilEvent.setWillClose(false);
+									anvilEvent.setWillDestroy(false);
+									clicker.sendMessage("§cLe joueur " + anvilEvent.getInput() + " n'existe pas !");
+									return;
+								}
+								
+								OfflineAPIPlayer.getPlayer(uuid, offlineTarget -> {
 									VirtualKey key = ((VirtualKeyAdminButton) buttons.get(event.getSlot())).key;
 									
 									offlineTarget.addVirtualKey(key);

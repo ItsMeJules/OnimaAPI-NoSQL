@@ -73,7 +73,6 @@ public class AltsCommand implements CommandExecutor {
 		long now = System.currentTimeMillis();
 		Iterator<UUID> iterator = alts.iterator();
 		
-		sender.sendMessage("§f[§aConnecté§f], §f[§cBanni§f], §f[§7Déconnecté§f]");
 		while (iterator.hasNext()) {
 			UUID uuid = iterator.next();
 			OfflinePlayer offline = Bukkit.getOfflinePlayer(uuid);
@@ -91,6 +90,12 @@ public class AltsCommand implements CommandExecutor {
 			if (iterator.hasNext())
 				builder.append(", ");
 		}
+		if (builder.length() <= 0) {
+			sender.sendMessage("§cAucun compte alternatifs !");
+			return;
+		}
+			
+		sender.sendMessage("§f[§aConnecté§f], §f[§cBanni§f], §f[§7Déconnecté§f]");
 		sender.sendMessage(builder.toString());
 	}
 	

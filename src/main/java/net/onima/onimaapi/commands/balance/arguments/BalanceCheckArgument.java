@@ -1,9 +1,12 @@
 package net.onima.onimaapi.commands.balance.arguments;
 
+import java.util.UUID;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import net.onima.onimaapi.caching.UUIDCache;
 import net.onima.onimaapi.players.OfflineAPIPlayer;
 import net.onima.onimaapi.rank.OnimaPerm;
 import net.onima.onimaapi.utils.ConfigurationService;
@@ -45,8 +48,16 @@ public class BalanceCheckArgument extends BasicCommandArgument {
 				sender.sendMessage("§cLa console n'a pas de solde !");
 				return false;
 			}
-		} else
-			OfflineAPIPlayer.getPlayer(args[1], callback);
+		} else {
+			UUID uuid = UUIDCache.getUUID(args[1]);
+			
+			if (uuid == null) {
+				sender.sendMessage("§cLe joueur " + args[1] + " n'existe pas !");
+				return false;
+			}
+			
+			OfflineAPIPlayer.getPlayer(uuid, callback);
+		}
 		
 		return true;
 	}

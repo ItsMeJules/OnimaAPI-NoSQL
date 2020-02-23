@@ -19,7 +19,6 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 
-import net.onima.onimaapi.caching.UUIDCache;
 import net.onima.onimaapi.cooldown.utils.Cooldown;
 import net.onima.onimaapi.cooldown.utils.CooldownData;
 import net.onima.onimaapi.crates.booster.NoBooster;
@@ -714,13 +713,6 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 			Bukkit.getPluginManager().callEvent(event);
 		} else
 			callback.call(offlinePlayers.get(uuid));
-	}
-	
-	public static void getPlayer(String name, VoidCallback<OfflineAPIPlayer> callback) {
-		OfflinePlayer offline = Bukkit.getOfflinePlayer(UUIDCache.getUUID(name));
-
-		if (offline.hasPlayedBefore())
-			getPlayer(offline.getUniqueId(), callback);
 	}
 	
 	public static void getPlayer(OfflinePlayer offline, VoidCallback<OfflineAPIPlayer> callback) {

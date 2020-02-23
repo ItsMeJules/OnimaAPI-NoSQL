@@ -1,8 +1,11 @@
 package net.onima.onimaapi.commands.balance.arguments.staff;
 
+import java.util.UUID;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
+import net.onima.onimaapi.caching.UUIDCache;
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.players.OfflineAPIPlayer;
 import net.onima.onimaapi.rank.OnimaPerm;
@@ -25,12 +28,14 @@ public class BalanceRemoveArgument extends BasicCommandArgument {
 		if (checks(sender, args, 3, true))
 			return false;
 		
-		OfflineAPIPlayer.getPlayer(args[1], offline -> {
-			if (offline == null) {
-				sender.sendMessage("§c" + args[1] + " ne s'est jamais connecté sur le serveur !");
-				return;
-			}
-			
+		UUID uuid = UUIDCache.getUUID(args[1]);
+		
+		if (uuid == null) {
+			sender.sendMessage("§cLe joueur " + args[1] + " n'existe pas !");
+			return false;
+		}
+		
+		OfflineAPIPlayer.getPlayer(uuid, offline -> {
 			Balance balance = offline.getBalance();
 			
 			if (balance.isBanned()) {

@@ -1,11 +1,14 @@
 package net.onima.onimaapi.commands;
 
+import java.util.UUID;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import net.onima.onimaapi.OnimaAPI;
+import net.onima.onimaapi.caching.UUIDCache;
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.players.OfflineAPIPlayer;
 import net.onima.onimaapi.rank.OnimaPerm;
@@ -32,12 +35,14 @@ public class InvrestoredCommand implements CommandExecutor {
 			sender.sendMessage("§dVous §7avez ouvert vos inventaires en attente.");
 			return true;
 		} else if (args.length >= 1 && OnimaPerm.INVRESTORED_COMMAND_OTHER.has(sender)) {
-			OfflineAPIPlayer.getPlayer(args[0], offline -> {
-				if (offline == null) {
-					sender.sendMessage("§c" + args[0] + " ne s'est jamais connecté sur le serveur !");
-					return;
-				}
-				
+			UUID uuid = UUIDCache.getUUID(args[0]);
+			
+			if (uuid == null) {
+				sender.sendMessage("§c" + args[0] + " ne s'est jamais connecté sur le serveur !");
+				return false;
+			}
+			
+			OfflineAPIPlayer.getPlayer(uuid, offline -> {
 				apiPlayer.getMenu("pending_restores").open(apiPlayer);
 				sender.sendMessage("§dVous §7avez ouvert les inventaires en attente de §9" + Methods.getName(offline, true));
 			});

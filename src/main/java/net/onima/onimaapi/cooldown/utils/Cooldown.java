@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import com.google.common.base.Predicate;
 
 import net.onima.onimaapi.OnimaAPI;
+import net.onima.onimaapi.cooldown.ChatSlowCooldown;
 import net.onima.onimaapi.cooldown.GodAppleCooldown;
 import net.onima.onimaapi.event.CooldownEndEvent;
 import net.onima.onimaapi.event.CooldownExtendEvent;
@@ -30,10 +31,11 @@ public abstract class Cooldown implements Saver, MongoSerializer {
 		cooldowns = new ArrayList<>();
 		
 		register(new GodAppleCooldown());
+		register(new ChatSlowCooldown());
 	}
 	
 	protected String name;
-	protected byte id; //Last id = 17 -> BugReportCooldown
+	protected byte id; //Last id = 18 -> ChatSlowCooldown
 	protected long duration;
 	protected Map<UUID, CooldownData> datas;
 	

@@ -1,9 +1,12 @@
 package net.onima.onimaapi.commands.balance.arguments;
 
+import java.util.UUID;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import net.onima.onimaapi.caching.UUIDCache;
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.players.OfflineAPIPlayer;
 import net.onima.onimaapi.rank.OnimaPerm;
@@ -35,12 +38,19 @@ public class BalancePayArgument extends BasicCommandArgument {
 			return false;
 		}
 		
-		OfflineAPIPlayer.getPlayer(args[1], offline -> {
-			if (offline == null) {
-				sender.sendMessage("§c" + args[1] + " ne s'est jamais connecté sur le serveur !");
-				return;
-			}
-			
+		UUID uuid = UUIDCache.getUUID(args[1]);
+		
+		if (uuid == null) {
+			sender.sendMessage("§cLe joueur " + args[1] + " n'existe pas !");
+			return false;
+		}
+		
+		if (uuid.equals(apiPlayer.getUUID())) {
+			sender.sendMessage("§cVous ne pouvez pas vous envoyer de l'argent !");
+			return false;
+		}
+		
+		OfflineAPIPlayer.getPlayer(uuid, offline -> {
 			Balance offlineBalance = offline.getBalance();
 			
 			if (offlineBalance.isBanned()) {

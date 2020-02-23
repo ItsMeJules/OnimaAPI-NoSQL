@@ -44,14 +44,19 @@ public class PlayerReport extends Report { //TODO Ajouter les effets que le joue
 	 */
 	@Override
 	public boolean execute() {
+		APIPlayer apiPlayer = APIPlayer.getPlayer(reporter);
+		
+		if (reported.equals(reporter)) {
+			apiPlayer.sendMessage("§cVous ne pouvez pas vous report vous même.");
+			return true;
+		}
+		
 		OfflineAPIPlayer.getPlayer(reported, offline -> {
-			APIPlayer apiPlayer = APIPlayer.getPlayer(reporter);
-			
-//			if (offline.getRank().getRankType().hasPermisssion(OnimaPerm.REPORT_EXEMPT)) {
-//				new OSound(Sound.VILLAGER_NO, 1F, 2F).play(apiPlayer);
-//				apiPlayer.sendMessage("§cVous ne pouvez pas report ce joueur !");
-//				return;
-//			}
+			if (offline.getRank().getRankType().hasPermisssion(OnimaPerm.REPORT_EXEMPT)) {
+				new OSound(Sound.VILLAGER_NO, 1F, 2F).play(apiPlayer);
+				apiPlayer.sendMessage("§cVous ne pouvez pas report ce joueur !");
+				return;
+			}
 			
 			if (!apiPlayer.getReports().isEmpty()) {
 				for (Report report : apiPlayer.getReports()) {

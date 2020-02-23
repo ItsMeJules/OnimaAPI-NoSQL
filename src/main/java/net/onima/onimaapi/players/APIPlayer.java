@@ -56,6 +56,7 @@ import net.onima.onimaapi.players.notes.Note;
 import net.onima.onimaapi.players.utils.PlayerOption;
 import net.onima.onimaapi.players.utils.SpecialPlayerInventory;
 import net.onima.onimaapi.rank.OnimaPerm;
+import net.onima.onimaapi.rank.Rank;
 import net.onima.onimaapi.report.Report;
 import net.onima.onimaapi.report.ReportComment;
 import net.onima.onimaapi.report.struct.CommentStatus;
@@ -457,6 +458,14 @@ public class APIPlayer extends OfflineAPIPlayer {
 		}
 		
 		super.setFrozen(frozen);
+	}
+	
+	@Override
+	public void setRank(Rank rank) {
+		super.setRank(rank);
+		
+		setupPermissions();
+		loadFromPerms();
 	}
 	
 	public void sendMessage(String message) {

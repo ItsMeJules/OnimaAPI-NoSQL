@@ -2,6 +2,7 @@ package net.onima.onimaapi.gui.menu;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -10,6 +11,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import net.onima.onimaapi.caching.UUIDCache;
 import net.onima.onimaapi.crates.openers.VirtualKey;
 import net.onima.onimaapi.crates.utils.Crate;
 import net.onima.onimaapi.gui.PacketMenu;
@@ -70,14 +72,16 @@ public class VirtualKeysMenu extends PacketMenu {
 					@Override
 					public void onEvent(AnvilClickEvent anvilEvent) {
 						if (anvilEvent.getSlot() == AnvilSlot.OUTPUT) {
-							OfflineAPIPlayer.getPlayer(anvilEvent.getInput(), offlineTarget -> {
-								if (offlineTarget == null) {
-									anvilEvent.setWillClose(false);
-									anvilEvent.setWillDestroy(false);
-									clicker.sendMessage("§cLe joueur " + anvilEvent.getInput() + " n'existe pas !");
-									return;
-								}
-								
+							UUID uuid = UUIDCache.getUUID(anvilEvent.getInput());
+							
+							if (uuid == null) {
+								anvilEvent.setWillClose(false);
+								anvilEvent.setWillDestroy(false);
+								clicker.sendMessage("§cLe joueur " + anvilEvent.getInput() + " n'existe pas !");
+								return;
+							}
+							
+							OfflineAPIPlayer.getPlayer(uuid, offlineTarget -> {
 								VirtualKey key = ((VirtualKeyButton) VirtualKeysMenu.this.buttons.get(event.getSlot())).key;
 								
 								offlineTarget.addVirtualKey(key);

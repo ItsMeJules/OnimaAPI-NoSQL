@@ -2,12 +2,14 @@ package net.onima.onimaapi.commands.cooldown.arguments;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.util.StringUtil;
 
+import net.onima.onimaapi.caching.UUIDCache;
 import net.onima.onimaapi.cooldown.utils.Cooldown;
 import net.onima.onimaapi.players.APIPlayer;
 import net.onima.onimaapi.players.OfflineAPIPlayer;
@@ -30,12 +32,14 @@ public class CooldownAddArgument extends BasicCommandArgument {
 		if (checks(sender, args, 3, true))
 			return false;
 		
-		OfflineAPIPlayer.getPlayer(args[1], offline -> {
-			if (offline == null) {
-				sender.sendMessage("§cLe joueur " + args[1] + " ne s'est jamais connecté sur le serveur !");
-				return;
-			}
-			
+		UUID uuid = UUIDCache.getUUID(args[1]);
+		
+		if (uuid == null) {
+			sender.sendMessage("§cLe joueur " + args[1] + " n'existe pas !");
+			return false;
+		}
+		
+		OfflineAPIPlayer.getPlayer(uuid, offline -> {
 			Cooldown cooldown = Cooldown.getCooldown(args[2]);
 			
 			if (cooldown == null) {

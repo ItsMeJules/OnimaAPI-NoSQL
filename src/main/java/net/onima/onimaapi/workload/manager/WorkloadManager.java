@@ -16,8 +16,8 @@ public class WorkloadManager {
 	}
 	
 	public void registerWorkloads() {
-		WorkloadThread scheduler = distributor.newThread(0.5);
-		WorkloadThread ranks = distributor.newThread(1);
+		WorkloadThread scheduler = distributor.newThread(5);
+		WorkloadThread ranks = distributor.newThread(5);
 		
 		schedulerId = scheduler.id;
 		ranksId = ranks.id;
