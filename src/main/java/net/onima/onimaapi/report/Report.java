@@ -313,8 +313,12 @@ public abstract class Report implements FileSaver {
 			}
 		}
 		
-		for (Entry<UUID, Set<Report>> entry : savedRep.entrySet())
-			OfflineAPIPlayer.getPlayer(entry.getKey(), offline -> offline.getReports().addAll(entry.getValue()));
+		for (Entry<UUID, Set<Report>> entry : savedRep.entrySet()) {
+			OfflineAPIPlayer.getPlayer(entry.getKey(), offline -> {
+				if (offline != null)
+					offline.getReports().addAll(entry.getValue());
+			});
+		}
 	}
 	
 	@Override

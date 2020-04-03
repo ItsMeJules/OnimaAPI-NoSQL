@@ -217,7 +217,6 @@ public class BugReportMenu extends PacketMenu {
 			}
 			
 			conversable.sendRawMessage("§cFormat invalide ! Si vous souhaiter abadonner tapez §l/no");
-			conversable.sendRawMessage(getPromptText(context));
 			return new TimePrompt();
 		}
 

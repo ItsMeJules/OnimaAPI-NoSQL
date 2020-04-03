@@ -39,7 +39,7 @@ public class ChatClearArgument extends BasicCommandArgument {
 			sender.sendMessage("§aVous §eavez clear le chat de §a" + Methods.getName(sender, true));
 			OnimaAPI.getInstance().getChatManager().clear(95, target);
 			target.sendMessage("§a[" + Methods.getRealName(sender) + "] §7a clear votre chat !");
-			OnimaAPI.getInstance().getChatManager().clear(5);
+			OnimaAPI.getInstance().getChatManager().clear(5, target);
 		}
 		
 		return true;

@@ -161,7 +161,7 @@ public class RoomCrate extends PhysicalCrate {
 		if (OnimaPerm.ONIMAAPI_CRATE_INFO_ARGUMENT.has(sender)) {
 			sender.sendMessage("§7Nombre de prix à drop : §d" + prizeAmount);
 			sender.sendMessage("§7Pourcentage cumulé des prix : §d" + getTotalWeight() + '%');
-			sender.sendMessage("§7Nombre de coffres dans la salle d'ouverture : §d" + chests.size());
+			sender.sendMessage("§7Nombre de coffres dans la salle d'ouverture : §d" + (chests == null ? "§caucune salle" : chests.size()));
 			
 			if (sender instanceof Player && block != null) {
 				Location location = block.getWorld().getHighestBlockAt(block.getLocation()).getLocation();

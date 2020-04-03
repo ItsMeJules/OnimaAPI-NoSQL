@@ -489,9 +489,12 @@ public class OfflineAPIPlayer implements NoSQLSaver {
 						if (!alts.contains(uuid))
 							alts.add(uuid);
 						
-						if (OfflineAPIPlayer.isLoaded(uuid))
-							OfflineAPIPlayer.offlinePlayers.get(uuid).getAlts().add(this.uuid);
-						else {
+						if (OfflineAPIPlayer.isLoaded(uuid)) {
+							List<UUID> alts = OfflineAPIPlayer.offlinePlayers.get(uuid).getAlts();
+							
+							if (!alts.contains(this.uuid))
+								alts.add(this.uuid);
+						} else {
 							if (!docAlts.contains(this.uuid.toString())) {
 								docAlts.add(this.uuid.toString());
 								collection.updateOne(Filters.eq("uuid", uuid.toString()), Updates.set("alts", docAlts));

@@ -1,6 +1,7 @@
 package net.onima.onimaapi.crates.prizes;
 
 import java.util.AbstractMap;
+import java.util.Arrays;
 import java.util.Map.Entry;
 
 import org.bukkit.Color;
@@ -10,6 +11,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
@@ -21,6 +23,7 @@ import net.onima.onimaapi.saver.SerializableString;
 import net.onima.onimaapi.utils.BetterItem;
 import net.onima.onimaapi.utils.ConfigurationService;
 import net.onima.onimaapi.utils.InstantFirework;
+import net.onima.onimaapi.utils.Methods;
 import net.onima.onimaapi.utils.OSound;
 
 public abstract class Prize implements SerializableString {
@@ -35,14 +38,16 @@ public abstract class Prize implements SerializableString {
 		this.chance = chance;
 		this.rarity = rarity;
 		
-		BetterItem item = new BetterItem(displayItem, displayItem.getItemMeta().getDisplayName(), displayItem.getItemMeta().getLore());
+		ItemMeta meta = displayItem.getItemMeta();
+		BetterItem item = new BetterItem(displayItem, meta.hasDisplayName() ? meta.getDisplayName() : Methods.getItemName(displayItem), meta.hasLore() ? meta.getLore() : Arrays.asList(""));
 		item.addLore(ConfigurationService.CRATE_PRIZE_LORE_LINE.replace("%rarity%", rarity.getNiceName()).replace("%chance%", String.valueOf(chance)));
 		
 		this.displayItem = item.toItemStack();
 	}
 	
 	public void hologram(Location location) {
-		ItemStack floattingItem = new BetterItem(displayItem, displayItem.getItemMeta().getDisplayName(), String.valueOf(OnimaAPI.RANDOM.nextInt(Integer.MAX_VALUE))).toItemStack();
+		ItemMeta meta = displayItem.getItemMeta();
+		ItemStack floattingItem = new BetterItem(displayItem, meta.hasDisplayName() ? meta.getDisplayName() : Methods.getItemName(displayItem), String.valueOf(OnimaAPI.RANDOM.nextInt(Integer.MAX_VALUE))).toItemStack();
 		Item item = location.getWorld().dropItem(location, floattingItem);
 
 		if (effect != null)

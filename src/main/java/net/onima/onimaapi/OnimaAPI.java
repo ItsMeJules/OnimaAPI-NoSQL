@@ -74,6 +74,7 @@ public class OnimaAPI extends JavaPlugin {
 	private static List<String> needReplaceCommands;
 	private static boolean stopLag;
 	private static WorkloadDistributor workloadDistributor;
+	private static long lastSave;
 	
 	private ListenerManager listenerManager;
 	private EnchantLimiter enchantLimiter;
@@ -330,6 +331,14 @@ public class OnimaAPI extends JavaPlugin {
 	
 	public static WorkloadDistributor getDistributor() {
 		return workloadDistributor;
+	}
+	
+	public static long getLastSave() {
+		return lastSave;
+	}
+	
+	public static void setLastSave(long lastSave) {
+		OnimaAPI.lastSave = lastSave;
 	}
 	
 }

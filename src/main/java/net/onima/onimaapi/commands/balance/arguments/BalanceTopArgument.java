@@ -10,12 +10,15 @@ import org.bukkit.command.CommandSender;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
+import net.onima.onimaapi.OnimaAPI;
 import net.onima.onimaapi.rank.OnimaPerm;
 import net.onima.onimaapi.utils.Balance;
 import net.onima.onimaapi.utils.ConfigurationService;
 import net.onima.onimaapi.utils.JSONMessage;
 import net.onima.onimaapi.utils.Methods;
 import net.onima.onimaapi.utils.commands.BasicCommandArgument;
+import net.onima.onimaapi.utils.time.Time;
+import net.onima.onimaapi.utils.time.Time.LongTime;
 
 public class BalanceTopArgument extends BasicCommandArgument {
 	
@@ -57,6 +60,7 @@ public class BalanceTopArgument extends BasicCommandArgument {
 			for (Document document : list) {
 				helps++;
 				pages.get(index).add(position + ". §e" + Methods.getRealName(Bukkit.getOfflinePlayer(UUID.fromString(document.getString("uuid")))) + " §7- §e" + ((Number) document.get("balance", Document.class).get("amount")).intValue() + ConfigurationService.MONEY_SYMBOL);
+				position++;
 				
 				if (helps == MAX_BALANCE_PER_PAGE) {
 					index++;
@@ -72,8 +76,11 @@ public class BalanceTopArgument extends BasicCommandArgument {
 			sender.sendMessage("§7" + ConfigurationService.STAIGHT_LINE);
 			for (String line : pages.get(pageNumber)) 
 				sender.sendMessage(line);
+			
+			sender.sendMessage("\n§7§oUpdate dans : " + LongTime.setYMDWHMSFormat((OnimaAPI.getLastSave() + 5 * Time.MINUTE) - System.currentTimeMillis()));
 			sender.sendMessage("§7" + ConfigurationService.STAIGHT_LINE);
 		}, pageNumber * MAX_BALANCE_PER_PAGE);
+
 	}
 
 }

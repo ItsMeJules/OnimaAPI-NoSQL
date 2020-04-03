@@ -16,6 +16,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -184,6 +185,20 @@ public class ModListener implements Listener {
 				PacketMenu.getMenu("online_staff").updateItems(player.toPlayer());
 			});
 		}
+	}
+	
+	@EventHandler
+	public void onClick(InventoryClickEvent event) {
+		APIPlayer player = APIPlayer.getPlayer(event.getWhoClicked().getUniqueId());
+				
+		if (!player.isInModMode() && player.getViewingMenu() != null && !player.getViewingMenu().getId().equalsIgnoreCase("online_staff"))
+			return;
+		
+		for (ModItem item : ModItem.getModItems()) {
+			if (item.getSlot() == event.getHotbarButton())
+				event.setCancelled(true);
+		}
+			
 	}
 	
 	@EventHandler

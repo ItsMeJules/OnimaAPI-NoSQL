@@ -48,7 +48,7 @@ public class BlackList extends Punishment implements ServerRestricted {
 		boolean removed = isRemoved();
 		String senderName = ConfigurationService.CONSOLE_UUID.equals(removed ? remover : sender) ? "Console" : APIPlayer.getPlayer(removed ? remover : sender).getName();
 		OfflineAPIPlayer receiverPlayer = OfflineAPIPlayer.getOfflineAPIPlayers().get(receiver);
-		String banned = "a été " + (removed ? "dé" : "§c") + "§8§lblacklist §apar §f";
+		String banned = "a été " + (removed ? "§8§ldé" : "§c") + "§8§lblacklist §apar §f";
 		String silentStr = (silent ? "§7[Silencieux] " : "") + "§f";
 		
 		BaseComponent[] builderPlayers = new ComponentBuilder(silentStr + receiverPlayer.getName() + " §a" + banned + senderName + "§a.")
@@ -75,6 +75,16 @@ public class BlackList extends Punishment implements ServerRestricted {
 		if (!receiverPlayer.getPunishments().contains(this)) {
 			receiverPlayer.getPunishments().add(this);
 			PunishmentListener.loadedPunishment.put(receiver, this);
+		}
+		
+		for (UUID uuid : receiverPlayer.getAlts()) {
+			OfflineAPIPlayer.getPlayer(uuid, offline -> {
+				if (!offline.getPunishments().contains(this))
+					offline.getPunishments().add(this);
+				
+				if (offline.isOnline() && !removed)
+					((APIPlayer) offline).toPlayer().kickPlayer(errorMessage());
+			});
 		}
 		
 		if (!removed)

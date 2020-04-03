@@ -50,6 +50,7 @@ public class WhoisCommand implements CommandExecutor { //TODO mettre un max d'in
 			
 			sender.sendMessage("§7" + ConfigurationService.STAIGHT_LINE);
 			sender.sendMessage(" §a[" + apiPlayer.getColoredName(true) + "§a]");
+			sender.sendMessage("§e  UUID : §6" + apiPlayer.getUUID().toString());
             sender.sendMessage("§e  Vie : §6" + apiPlayer.getHealth() + '/' + apiPlayer.getMaxHealth());
             sender.sendMessage("§e  Faim : §6" + target.getFoodLevel() + '/' + 20 + " (" + target.getSaturation() + " saturation)");
             sender.sendMessage("§e  Expérience : §6" + apiPlayer.getExperienceManager().getCurrentExp());
@@ -60,6 +61,7 @@ public class WhoisCommand implements CommandExecutor { //TODO mettre un max d'in
             sender.sendMessage("§e  Disguise : §6" + (apiPlayer.getDisguiseManager().isDisguised() ? "true §7(§e" + apiPlayer.getDisguiseManager().getName() + "§7)" : "false"));
             sender.sendMessage("§e  Inactivité : §6" + LongTime.setYMDWHMSFormat(Methods.getIdleTime(target)));
             sender.sendMessage("§e  Temps de jeu : §6" + LongTime.setYMDWHMSFormat(apiPlayer.getPlayTime().getPlayTime()));
+            sender.sendMessage("§e  Dernière connexion : " + Methods.toFormatDate(target.getLastLogin(), ConfigurationService.DATE_FORMAT_HOURS));
             sender.sendMessage("§e  Adresse IP : §6" + target.getAddress().getHostString());
             int version = ((CraftPlayer) apiPlayer.toPlayer()).getHandle().playerConnection.networkManager.getVersion();
             sender.sendMessage("§e  Version du client : §6" + version + " §7[" + versions.get(version) + "]");

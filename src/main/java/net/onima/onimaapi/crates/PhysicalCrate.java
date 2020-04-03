@@ -120,7 +120,6 @@ public class PhysicalCrate extends Crate {
 		if (block.getState() instanceof Chest)
 			((CraftWorld) block.getWorld()).getHandle().playBlockAction(block.getX(), block.getY(), block.getZ(), CraftMagicNumbers.getBlock(block), 1, 0);
 	
-		player.closeMenu();
 		super.close(player);
 	}
 	

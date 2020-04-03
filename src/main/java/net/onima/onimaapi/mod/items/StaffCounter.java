@@ -1,8 +1,6 @@
 package net.onima.onimaapi.mod.items;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -31,7 +29,6 @@ public class StaffCounter extends ModItem {
 	public void rightClick(APIPlayer player) {
 		PacketMenu menu = PacketMenu.getMenu("online_staff");
 		
-		menu.updateItems(player.toPlayer());
 		menu.open(player);
 		useSucces.play(player);
 	}
@@ -43,11 +40,11 @@ public class StaffCounter extends ModItem {
 	
 	@Override
 	public void update(APIPlayer... players) {
-		List<APIPlayer> onlineStaff = new ArrayList<>();
+		int onlineStaff = 0;
 		
 		for (APIPlayer online : APIPlayer.getOnlineAPIPlayers()) {
-			if (OnimaPerm.STAFF_COUNTER_COUNT.has(online.toPlayer()))
-				onlineStaff.add(online);
+			if (online.isOnline() && OnimaPerm.STAFF_COUNTER_COUNT.has(online.toPlayer()))
+				onlineStaff++;
 		}
 		
 		for (APIPlayer player : players) {
@@ -57,9 +54,9 @@ public class StaffCounter extends ModItem {
 			ItemStack item = inventory.getItem(slot);
 			ItemMeta meta = item.getItemMeta();
 			
-			meta.setDisplayName(name.replace("%staff%", String.valueOf(onlineStaff.size())));
+			meta.setDisplayName(name.replace("%staff%", String.valueOf(onlineStaff)));
 
-			item.setAmount(onlineStaff.size());
+			item.setAmount(onlineStaff);
 			item.setItemMeta(meta);
 			inventory.setItem(slot, item);
 		}

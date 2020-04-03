@@ -82,6 +82,9 @@ public class BugReportTransaction {
 	    	date[i] = digits;
 	    }
 	    
+	    if (date[1] < 1 || date[1] > 12 || date[0] < 1 || date[0] > 31 || date[3] < 1 || date[4] > 60 || date[4] < 1 || date[4] > 60)
+	    	return false;
+	    
 	    timeWhenBugOccured = ZonedDateTime.now().withYear(date[2]).withMonth(date[1]).withDayOfMonth(date[0]).withHour(date[3]).withMinute(date[4]).toInstant().toEpochMilli();
 	    return true;
 	}

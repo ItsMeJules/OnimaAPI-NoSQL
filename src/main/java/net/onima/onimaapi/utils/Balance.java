@@ -54,7 +54,7 @@ public class Balance implements MongoSerializer {
 	public static void getHighestBalances(VoidCallback<List<Document>> callback, int size) {
 		OnimaMongo.executeAsync(OnimaCollection.PLAYERS, (collection) -> {
 			callback.call(Lists.newArrayList(collection.find()
-					.sort(Sorts.ascending("balance.amount"))
+					.sort(Sorts.descending("balance.amount"))
 					.projection(Projections.include("uuid", "balance.amount"))
 					.limit(size).iterator()));
 		}, true);

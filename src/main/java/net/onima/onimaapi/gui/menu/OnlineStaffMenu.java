@@ -32,6 +32,12 @@ public class OnlineStaffMenu extends PacketMenu implements PacketStaticMenu {
 			inventory.setItem(entry.getKey(), createItemStack(null, entry.getValue()));
 	}
 	
+	@Override
+	public void open(APIPlayer apiPlayer) {
+		updateItems(apiPlayer.toPlayer());
+		super.open(apiPlayer);
+	}
+	
 	public class StaffHeadButton extends TeleportHeadButton {
 		
 		{
