@@ -43,14 +43,14 @@ public class InventorySaver {
 		if (items.isEmpty())
 			return "";
 		
-		 StringBuilder builder = new StringBuilder();
+		StringBuilder builder = new StringBuilder();
 		 
-		 builder.append(inventorySize).append(';');
+		builder.append(inventorySize).append(';');
 		 
-		 for (InventoryItem item : items)
-			 builder.append(item.slot).append("#").append(Methods.serializeItem(item.item, true)).append(";");
+		for (InventoryItem item : items)
+			builder.append(item.slot).append("#").append(Methods.serializeItem(item.item, true)).append(";");
 			 
-		 return builder.toString();
+		return builder.toString();
 	}
 	
 	public long getSavedTime() {
